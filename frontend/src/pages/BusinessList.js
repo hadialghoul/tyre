@@ -8,7 +8,10 @@ import {
   MenuItem,
   CircularProgress,
   Alert,
+  InputAdornment,
+  Button,
 } from '@mui/material';
+import { Search as SearchIcon } from '@mui/icons-material';
 import { useSearchParams } from 'react-router-dom';
 import { loadBusinesses, loadCategories, getCategoryKind } from '../utils/catalog';
 import BusinessCard from '../components/BusinessCard';
@@ -17,18 +20,20 @@ import { useLanguage } from '../i18n/LanguageContext';
 
 const BusinessList = () => {
   const { t, categoryName, serviceName } = useLanguage();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [businesses, setBusinesses] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || '');
-  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
+  const selectedCategory = searchParams.get('category') || '';
+  const searchQuery = searchParams.get('search') || '';
+  const [draftSearch, setDraftSearch] = useState(searchQuery);
   const [serviceType, setServiceType] = useState('');
 
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
+      setError('');
       const filters = {};
       if (selectedCategory) filters.category = selectedCategory;
       if (searchQuery) filters.search = searchQuery;
@@ -44,17 +49,28 @@ const BusinessList = () => {
     } finally {
       setLoading(false);
     }
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, t]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
   useEffect(() => {
-    setSelectedCategory(searchParams.get('category') || '');
-    setSearchQuery(searchParams.get('search') || '');
+    setDraftSearch(searchQuery);
     setServiceType('');
-  }, [searchParams]);
+  }, [searchQuery, selectedCategory]);
+
+  const updateParams = (nextSearch, nextCategory) => {
+    const params = {};
+    if (nextSearch) params.search = nextSearch;
+    if (nextCategory) params.category = nextCategory;
+    setSearchParams(params);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    updateParams(draftSearch.trim(), selectedCategory);
+  };
 
   const selectedCategoryName = categories.find((cat) => cat._id === selectedCategory)?.name || '';
   const isServices = getCategoryKind(selectedCategoryName) === 'service';
@@ -102,31 +118,41 @@ const BusinessList = () => {
 
       <Container maxWidth="lg">
         <Box
+          component="form"
+          onSubmit={handleSearchSubmit}
           sx={{
             display: 'grid',
             gridTemplateColumns: {
               xs: '1fr',
-              md: isServices ? '1.2fr 0.8fr 0.8fr' : '1.4fr 0.8fr',
+              md: isServices ? '1.2fr 0.8fr 0.8fr auto' : '1.4fr 0.8fr auto',
             },
             gap: 2,
             mb: 6,
             p: { xs: 2, md: 2.5 },
             bgcolor: '#fff',
             border: '1px solid rgba(11,28,34,0.06)',
+            alignItems: 'end',
           }}
         >
           <TextField
             label={t('searchCity')}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={draftSearch}
+            onChange={(e) => setDraftSearch(e.target.value)}
             fullWidth
             variant="standard"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon sx={{ color: '#5d6b70' }} />
+                </InputAdornment>
+              ),
+            }}
           />
           <TextField
             select
             label={t('category')}
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            onChange={(e) => updateParams(draftSearch.trim(), e.target.value)}
             fullWidth
             variant="standard"
           >
@@ -154,6 +180,19 @@ const BusinessList = () => {
               ))}
             </TextField>
           )}
+          <Button
+            type="submit"
+            sx={{
+              px: 3,
+              py: 1.1,
+              bgcolor: '#0b1c22',
+              color: '#f6f0e6',
+              whiteSpace: 'nowrap',
+              '&:hover': { bgcolor: '#16343c' },
+            }}
+          >
+            {t('explore')}
+          </Button>
         </Box>
 
         {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}

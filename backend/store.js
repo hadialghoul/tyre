@@ -17,6 +17,47 @@ function fromParsed(parsed) {
   };
 }
 
+const categoryNamesAr = {
+  Restaurants: 'مطاعم',
+  'Coffee Shops': 'مقاهي',
+  Hotels: 'فنادق',
+  Pools: 'مسابح',
+  Hospitals: 'مستشفيات',
+  Pharmacies: 'صيدليات',
+  Supermarkets: 'سوبرماركت',
+  Services: 'خدمات',
+};
+
+const serviceTypesAr = {
+  Electricity: 'كهرباء',
+  'Washing machines': 'غسالات',
+  'Air conditioning': 'تكييف',
+  Plumbing: 'سباكة',
+  Laundry: 'غسيل ملابس',
+  Painting: 'دهان',
+  'Refrigerator repair': 'تصليح برادات',
+};
+
+function matchesSearch(item, category, search) {
+  if (!search) return true;
+  const q = String(search).trim().toLowerCase();
+  if (!q) return true;
+  const haystack = [
+    item.name,
+    item.description,
+    item.address,
+    item.serviceType,
+    item.phone,
+    category?.name,
+    categoryNamesAr[category?.name],
+    serviceTypesAr[item.serviceType],
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+  return q.split(/\s+/).every((word) => haystack.includes(word));
+}
+
 function load() {
   try {
     if (fs.existsSync(FILE)) {
@@ -146,11 +187,8 @@ const store = {
         .filter((item) => {
           if (category && item.category !== category) return false;
           if (featured === 'true' && !item.featured) return false;
-          if (search) {
-            const q = search.toLowerCase();
-            const haystack = `${item.name} ${item.description || ''} ${item.address || ''} ${item.serviceType || ''}`.toLowerCase();
-            if (!haystack.includes(q)) return false;
-          }
+          const cat = db.categories.find((entry) => entry._id === item.category);
+          if (!matchesSearch(item, cat, search)) return false;
           return true;
         })
         .sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)))

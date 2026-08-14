@@ -1,5 +1,6 @@
 import catalog from '../data/catalog.json';
 import { businessAPI, categoryAPI, isApiConfigured } from './api';
+import { categoryNamesAr, serviceTypesAr } from '../i18n/translations';
 
 export const SAMPLE_CATEGORIES = catalog.categories.map((category) => ({
   _id: `cat-${category.key}`,
@@ -55,27 +56,34 @@ export const mapsLink = (business) => {
 const isSampleId = (id = '') =>
   String(id).startsWith('cat-') || String(id).startsWith('sample-');
 
+const matchesSearch = (business, search) => {
+  if (!search) return true;
+  const q = String(search).trim().toLowerCase();
+  if (!q) return true;
+  const catName = business.category?.name || '';
+  const haystack = [
+    business.name,
+    business.description,
+    business.address,
+    business.serviceType,
+    business.phone,
+    catName,
+    categoryNamesAr[catName],
+    serviceTypesAr[business.serviceType],
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+  return q.split(/\s+/).every((word) => haystack.includes(word));
+};
+
 export const filterSampleBusinesses = ({ category, search, featured } = {}) => {
   return SAMPLE_BUSINESSES.filter((business) => {
     if (category && business.category?._id !== category && business.categoryKey !== category) {
       return false;
     }
     if (featured === 'true' && !business.featured) return false;
-    if (search) {
-      const q = search.toLowerCase();
-      const haystack = [
-        business.name,
-        business.description,
-        business.address,
-        business.serviceType,
-        business.category?.name,
-      ]
-        .filter(Boolean)
-        .join(' ')
-        .toLowerCase();
-      if (!haystack.includes(q)) return false;
-    }
-    return true;
+    return matchesSearch(business, search);
   });
 };
 
@@ -101,10 +109,13 @@ export const loadBusinesses = async (filters = {}) => {
 
   try {
     const { data } = await businessAPI.getAll(filters);
-    if (Array.isArray(data) && data.length >= 8) return data;
-    if (Array.isArray(data) && data.length && filters.category && !isSampleId(filters.category)) {
+    if (!Array.isArray(data)) {
+      return filterSampleBusinesses(filters);
+    }
+    if (filters.search || filters.category || filters.featured) {
       return data;
     }
+    if (data.length) return data;
   } catch (err) {
     console.warn('Using local Tyre catalog for businesses.');
   }

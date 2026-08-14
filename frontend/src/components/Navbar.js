@@ -72,7 +72,11 @@ const Navbar = () => {
             width: '100%',
           }}
         >
-          <Box sx={{ justifySelf: 'start', minWidth: { xs: 40, md: 72 } }} />
+          <Box sx={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ display: { xs: 'flex', lg: 'none' } }}>
+              <LanguageSwitch />
+            </Box>
+          </Box>
 
           <Box
             component={Link}
@@ -172,8 +176,7 @@ const Navbar = () => {
               )}
             </Box>
 
-            <Box sx={{ display: { xs: 'flex', lg: 'none' }, alignItems: 'center', gap: 1 }}>
-              <LanguageSwitch />
+            <Box sx={{ display: { xs: 'flex', lg: 'none' }, alignItems: 'center' }}>
               <IconButton
                 onClick={() => setOpen(true)}
                 sx={{ color: '#f6f0e6' }}
