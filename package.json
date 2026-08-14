@@ -1,0 +1,10 @@
+{
+  "name": "tyre-tourism",
+  "version": "1.0.0",
+  "description": "Tourism website for Tyre, Lebanon",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ]
+}

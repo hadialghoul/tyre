@@ -1,0 +1,16 @@
+.git
+.cursor
+agent-transcripts
+npm-debug.log*
+.env
+.env.local
+backend/.env
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+frontend/build
+backend/data/mongo
+backend/node_modules
+frontend/node_modules
+**/node_modules
+*.md

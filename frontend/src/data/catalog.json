@@ -1,0 +1,380 @@
+{
+  "categories": [
+    {
+      "key": "restaurants",
+      "name": "Restaurants",
+      "description": "Seafood, grills, and Lebanese tables across Tyre — with location, logo, menu, and QR.",
+      "icon": "🍽️",
+      "cover": "/img/port.jpg"
+    },
+    {
+      "key": "coffee-shops",
+      "name": "Coffee Shops",
+      "description": "Cafes on the corniche and in the old streets, with menus you can open or scan.",
+      "icon": "☕",
+      "cover": "/img/hero.jpg"
+    },
+    {
+      "key": "hotels",
+      "name": "Hotels",
+      "description": "Places to stay by the sea, with star rating and exact location.",
+      "icon": "🏨",
+      "cover": "/img/coast.jpg"
+    },
+    {
+      "key": "pools",
+      "name": "Pools",
+      "description": "Hotel pools and beach clubs on the Tyre coast.",
+      "icon": "🏊",
+      "cover": "/img/beach.jpg"
+    },
+    {
+      "key": "hospitals",
+      "name": "Hospitals",
+      "description": "Emergency and medical care in Tyre, with address and phone.",
+      "icon": "🏥",
+      "cover": "/img/coast.jpg"
+    },
+    {
+      "key": "pharmacies",
+      "name": "Pharmacies",
+      "description": "Pharmacies near the old city, Rest House, and main roads.",
+      "icon": "💊",
+      "cover": "/img/hero.jpg"
+    },
+    {
+      "key": "supermarkets",
+      "name": "Supermarkets",
+      "description": "Grocery stores in Tyre that offer delivery to your door.",
+      "icon": "🛒",
+      "cover": "/img/port.jpg"
+    },
+    {
+      "key": "services",
+      "name": "Services",
+      "description": "Electricity, washing machines, AC, plumbing, laundry, and more.",
+      "icon": "🔧",
+      "cover": "/img/hippodrome.jpg"
+    }
+  ],
+  "businesses": [
+    {
+      "key": "mina-fish-house",
+      "categoryKey": "restaurants",
+      "name": "Mina Fish House",
+      "description": "Grilled catch of the day beside the old fishing harbour. Ask for the sea bass and a table facing the boats.",
+      "phone": "+961 7 740 110",
+      "address": "Old Fishing Port, Tyre",
+      "openingHours": "12:00 PM – 11:30 PM",
+      "hasDelivery": true,
+      "deliveryPhone": "+961 70 110 110",
+      "featured": true,
+      "rating": 4.8,
+      "latitude": 33.2736,
+      "longitude": 35.1937,
+      "coverImage": "/img/port.jpg",
+      "menus": [
+        {
+          "name": "Main Menu",
+          "description": "Scan the QR for today’s fish, mezze, and grills.",
+          "type": "image",
+          "image": "/img/qr-mina.svg"
+        }
+      ]
+    },
+    {
+      "key": "rest-house-grill",
+      "categoryKey": "restaurants",
+      "name": "Rest House Grill",
+      "description": "A long-table Lebanese grill by the public beach — family lunches, charcoal, and the sound of the sea.",
+      "phone": "+961 7 741 200",
+      "address": "Rest House, South Corniche, Tyre",
+      "openingHours": "11:00 AM – 12:00 AM",
+      "hasDelivery": false,
+      "featured": true,
+      "rating": 4.6,
+      "latitude": 33.2648,
+      "longitude": 35.2035,
+      "coverImage": "/img/hero.jpg",
+      "menus": [
+        {
+          "name": "Grill Menu",
+          "description": "Open the seasonal grill and seafood menu.",
+          "type": "link",
+          "link": "https://tyretourism.local/menu/rest-house-grill"
+        }
+      ]
+    },
+    {
+      "key": "corniche-cafe",
+      "categoryKey": "coffee-shops",
+      "name": "Corniche Café",
+      "description": "Coffee, argileh, and sunset views along Jal Al Bahr. A meeting place more than a cafe.",
+      "phone": "+961 7 742 330",
+      "address": "Jal Al Bahr Corniche, Tyre",
+      "openingHours": "8:00 AM – 1:00 AM",
+      "hasDelivery": false,
+      "featured": true,
+      "rating": 4.5,
+      "latitude": 33.2712,
+      "longitude": 35.1964,
+      "coverImage": "/img/hero.jpg",
+      "menus": [
+        {
+          "name": "Drinks & Sweets",
+          "description": "Scan for coffee, juices, and desserts.",
+          "type": "image",
+          "image": "/img/qr-cafe.svg"
+        }
+      ]
+    },
+    {
+      "key": "old-souk-coffee",
+      "categoryKey": "coffee-shops",
+      "name": "Old Souk Coffee House",
+      "description": "A small house in the Christian quarter. Cardamom coffee, old stone, and the call of the street.",
+      "phone": "+961 70 442 880",
+      "address": "Christian Quarter, Old Tyre",
+      "openingHours": "7:30 AM – 10:00 PM",
+      "hasDelivery": false,
+      "rating": 4.7,
+      "latitude": 33.2705,
+      "longitude": 35.1952,
+      "coverImage": "/img/port.jpg",
+      "menus": [
+        {
+          "name": "Cafe Menu",
+          "description": "Coffee, tea, and manakish.",
+          "type": "link",
+          "link": "https://tyretourism.local/menu/old-souk-coffee"
+        }
+      ]
+    },
+    {
+      "key": "rest-house-hotel",
+      "categoryKey": "hotels",
+      "name": "Rest House Hotel Tyre",
+      "description": "The classic seaside stay in Tyre — rooms facing the Mediterranean, steps from the sand.",
+      "phone": "+961 7 741 000",
+      "address": "Rest House Complex, Tyre",
+      "openingHours": "24 hours",
+      "starRating": 4,
+      "featured": true,
+      "rating": 4.4,
+      "latitude": 33.2649,
+      "longitude": 35.2038,
+      "coverImage": "/img/coast.jpg"
+    },
+    {
+      "key": "dar-al-mina",
+      "categoryKey": "hotels",
+      "name": "Dar Al Mina",
+      "description": "A quiet boutique house near the old port. Stone rooms, a small courtyard, and morning boats.",
+      "phone": "+961 71 555 201",
+      "address": "Near the Old Port, Tyre",
+      "openingHours": "24 hours",
+      "starRating": 3,
+      "rating": 4.6,
+      "latitude": 33.2731,
+      "longitude": 35.1944,
+      "coverImage": "/img/port.jpg"
+    },
+    {
+      "key": "el-fanar-hotel",
+      "categoryKey": "hotels",
+      "name": "El Fanar Hotel",
+      "description": "Sea-view rooms on the western shore, close to the lighthouse and evening walk.",
+      "phone": "+961 7 741 111",
+      "address": "Al Fanar, Western Shore, Tyre",
+      "openingHours": "24 hours",
+      "starRating": 4,
+      "rating": 4.3,
+      "latitude": 33.272,
+      "longitude": 35.1918,
+      "coverImage": "/img/beach.jpg"
+    },
+    {
+      "key": "rest-house-pool",
+      "categoryKey": "pools",
+      "name": "Rest House Swimming Pool",
+      "description": "An open pool beside the hotel lawns, with the public beach a short walk away.",
+      "phone": "+961 7 741 000",
+      "address": "Rest House Complex, Tyre",
+      "openingHours": "8:00 AM – 6:00 PM",
+      "rating": 4.2,
+      "latitude": 33.265,
+      "longitude": 35.2036,
+      "coverImage": "/img/beach.jpg"
+    },
+    {
+      "key": "tyre-beach-club",
+      "categoryKey": "pools",
+      "name": "Tyre Beach Club",
+      "description": "Daybeds, a seawater pool, and the long sandy public beach of Tyre.",
+      "phone": "+961 76 220 440",
+      "address": "Public Beach, South Tyre",
+      "openingHours": "9:00 AM – 7:00 PM",
+      "featured": true,
+      "rating": 4.5,
+      "latitude": 33.262,
+      "longitude": 35.205,
+      "coverImage": "/img/coast.jpg"
+    },
+    {
+      "key": "jabal-amel-hospital",
+      "categoryKey": "hospitals",
+      "name": "Jabal Amel Hospital",
+      "description": "The main private hospital in Tyre for emergencies, surgery, and specialist clinics.",
+      "phone": "+961 7 741 900",
+      "address": "Maarakeh Road, Tyre",
+      "openingHours": "Emergency 24/7",
+      "rating": 4.1,
+      "latitude": 33.2784,
+      "longitude": 35.2112,
+      "coverImage": "/img/coast.jpg"
+    },
+    {
+      "key": "tyre-governmental-hospital",
+      "categoryKey": "hospitals",
+      "name": "Tyre Governmental Hospital",
+      "description": "Public hospital serving Tyre and the surrounding villages.",
+      "phone": "+961 7 740 200",
+      "address": "Abbasiyeh Road, Tyre",
+      "openingHours": "Emergency 24/7",
+      "rating": 3.9,
+      "latitude": 33.2801,
+      "longitude": 35.214,
+      "coverImage": "/img/hippodrome.jpg"
+    },
+    {
+      "key": "pharmacy-al-baher",
+      "categoryKey": "pharmacies",
+      "name": "Pharmacy Al Baher",
+      "description": "A neighbourhood pharmacy near the corniche — medicines, baby care, and late hours.",
+      "phone": "+961 7 742 015",
+      "address": "Jal Al Bahr, Tyre",
+      "openingHours": "8:00 AM – 11:00 PM",
+      "rating": 4.4,
+      "latitude": 33.271,
+      "longitude": 35.1968,
+      "coverImage": "/img/hero.jpg"
+    },
+    {
+      "key": "pharmacy-al-nour",
+      "categoryKey": "pharmacies",
+      "name": "Pharmacy Al Nour",
+      "description": "Central pharmacy by the old souk, with a night window for urgent prescriptions.",
+      "phone": "+961 7 740 808",
+      "address": "Old Souk, Tyre",
+      "openingHours": "8:00 AM – 12:00 AM",
+      "rating": 4.3,
+      "latitude": 33.2708,
+      "longitude": 35.1955,
+      "coverImage": "/img/port.jpg"
+    },
+    {
+      "key": "city-mart-tyre",
+      "categoryKey": "supermarkets",
+      "name": "City Mart Tyre",
+      "description": "Full supermarket with fruit, meat, and household goods. Delivery across Tyre the same day.",
+      "phone": "+961 7 743 300",
+      "address": "Main Road, Tyre",
+      "openingHours": "8:00 AM – 11:00 PM",
+      "hasDelivery": true,
+      "deliveryPhone": "+961 76 300 300",
+      "featured": true,
+      "rating": 4.4,
+      "latitude": 33.2738,
+      "longitude": 35.2088,
+      "coverImage": "/img/hero.jpg"
+    },
+    {
+      "key": "co-op-tyre",
+      "categoryKey": "supermarkets",
+      "name": "Consumer Co-op Tyre",
+      "description": "Everyday groceries at local prices, with motorbike delivery to homes and hotels.",
+      "phone": "+961 7 740 450",
+      "address": "Al Bass area, Tyre",
+      "openingHours": "8:00 AM – 10:00 PM",
+      "hasDelivery": true,
+      "deliveryPhone": "+961 70 450 450",
+      "rating": 4.2,
+      "latitude": 33.2765,
+      "longitude": 35.2104,
+      "coverImage": "/img/port.jpg"
+    },
+    {
+      "key": "abu-ali-electricity",
+      "categoryKey": "services",
+      "name": "Abu Ali Electricity",
+      "description": "House wiring, fuse boxes, lighting, and urgent electrical repair anywhere in Tyre.",
+      "phone": "+961 70 111 240",
+      "address": "Serves all Tyre — based in Al Bass",
+      "openingHours": "8:00 AM – 8:00 PM",
+      "serviceType": "Electricity",
+      "rating": 4.7,
+      "latitude": 33.276,
+      "longitude": 35.209,
+      "coverImage": "/img/hippodrome.jpg"
+    },
+    {
+      "key": "washfix-tyre",
+      "categoryKey": "services",
+      "name": "WashFix Tyre",
+      "description": "Washing machine repair at your home — Samsung, LG, Beko, and local brands.",
+      "phone": "+961 71 880 221",
+      "address": "Mobile service across Tyre",
+      "openingHours": "9:00 AM – 7:00 PM",
+      "serviceType": "Washing machines",
+      "featured": true,
+      "rating": 4.6,
+      "latitude": 33.272,
+      "longitude": 35.2,
+      "coverImage": "/img/coast.jpg"
+    },
+    {
+      "key": "cool-air-tyre",
+      "categoryKey": "services",
+      "name": "Cool Air Tyre",
+      "description": "AC installation, gas refill, and refrigerator repair for homes, shops, and hotels.",
+      "phone": "+961 76 414 414",
+      "address": "Abbasiyeh Road, Tyre",
+      "openingHours": "8:30 AM – 6:30 PM",
+      "serviceType": "Air conditioning",
+      "rating": 4.5,
+      "latitude": 33.279,
+      "longitude": 35.213,
+      "coverImage": "/img/hero.jpg"
+    },
+    {
+      "key": "al-safa-plumbing",
+      "categoryKey": "services",
+      "name": "Al Safa Plumbing",
+      "description": "Burst pipes, water heaters, bathrooms, and kitchen leaks — same-day calls.",
+      "phone": "+961 70 909 330",
+      "address": "Old City & Rest House area, Tyre",
+      "openingHours": "8:00 AM – 8:00 PM",
+      "serviceType": "Plumbing",
+      "rating": 4.4,
+      "latitude": 33.2706,
+      "longitude": 35.1958,
+      "coverImage": "/img/port.jpg"
+    },
+    {
+      "key": "tyre-express-laundry",
+      "categoryKey": "services",
+      "name": "Tyre Express Laundry",
+      "description": "Wash, iron, and hotel pickup. Same-day shirts if you drop before 11:00 AM.",
+      "phone": "+961 7 742 770",
+      "address": "Near City Mart, Tyre",
+      "openingHours": "8:00 AM – 7:00 PM",
+      "serviceType": "Laundry",
+      "hasDelivery": true,
+      "deliveryPhone": "+961 7 742 770",
+      "rating": 4.3,
+      "latitude": 33.2735,
+      "longitude": 35.2082,
+      "coverImage": "/img/coast.jpg"
+    }
+  ]
+}
