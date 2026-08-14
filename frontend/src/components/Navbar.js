@@ -66,7 +66,7 @@ const Navbar = () => {
             display: 'grid',
             gridTemplateColumns: '1fr auto 1fr',
             alignItems: 'center',
-            minHeight: { xs: 112, md: 140 },
+            minHeight: { xs: 224, md: 280 },
             px: { xs: 2, md: 5 },
             width: '100%',
           }}
@@ -89,9 +89,9 @@ const Navbar = () => {
               src="/images/tyre/wen%20b%20sour%20logo.png"
               alt={t('tyre')}
               sx={{
-                height: { xs: 110, sm: 130, md: 150 },
+                height: { xs: 220, sm: 260, md: 300 },
                 width: 'auto',
-                maxWidth: { xs: 360, sm: 520, md: 680 },
+                maxWidth: { xs: 720, sm: 1040, md: 1360 },
                 objectFit: 'contain',
                 display: 'block',
               }}
@@ -184,7 +184,7 @@ const Navbar = () => {
             component="img"
             src="/images/tyre/wen%20b%20sour%20logo.png"
             alt={t('tyre')}
-            sx={{ height: 72, width: 'auto', maxWidth: 280, objectFit: 'contain' }}
+            sx={{ height: 144, width: 'auto', maxWidth: 560, objectFit: 'contain' }}
           />
           <IconButton onClick={() => setOpen(false)} sx={{ color: '#f6f0e6' }}>
             <CloseIcon />
