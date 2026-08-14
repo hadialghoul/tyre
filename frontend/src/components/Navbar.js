@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
-  Typography,
   Button,
   Box,
   IconButton,
@@ -20,7 +19,7 @@ import LanguageSwitch from './LanguageSwitch';
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { t, isAr } = useLanguage();
+  const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const token = localStorage.getItem('token');
@@ -79,35 +78,24 @@ const Navbar = () => {
             to="/"
             sx={{
               textDecoration: 'none',
-              color: '#fff',
-              lineHeight: 1,
-              textAlign: 'center',
               justifySelf: 'center',
+              display: 'flex',
+              alignItems: 'center',
+              lineHeight: 0,
             }}
           >
-            <Typography
+            <Box
+              component="img"
+              src="/images/tyre/wen%20b%20sour%20logo.png"
+              alt={t('tyre')}
               sx={{
-                fontWeight: 600,
-                letterSpacing: isAr ? 0 : '0.14em',
-                fontSize: { xs: '0.92rem', md: '1.05rem' },
-                color: '#f6f0e6',
-                whiteSpace: 'nowrap',
-                textAlign: 'center',
+                height: { xs: 48, md: 62 },
+                width: 'auto',
+                maxWidth: { xs: 180, sm: 240, md: 280 },
+                objectFit: 'contain',
+                display: 'block',
               }}
-            >
-              {t('tyre')}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: '0.62rem',
-                letterSpacing: isAr ? 0 : '0.34em',
-                color: '#c8a36a',
-                mt: 0.4,
-                textAlign: 'center',
-              }}
-            >
-              {t('lebanon')}
-            </Typography>
+            />
           </Box>
 
           <Box
@@ -192,9 +180,12 @@ const Navbar = () => {
         PaperProps={{ sx: { width: 280, bgcolor: '#07141a', color: '#f6f0e6', px: 1 } }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-          <Typography sx={{ letterSpacing: isAr ? 0 : '0.12em', textAlign: 'center', width: '100%' }}>
-            {t('tyre')}
-          </Typography>
+          <Box
+            component="img"
+            src="/images/tyre/wen%20b%20sour%20logo.png"
+            alt={t('tyre')}
+            sx={{ height: 40, width: 'auto', maxWidth: 180, objectFit: 'contain' }}
+          />
           <IconButton onClick={() => setOpen(false)} sx={{ color: '#f6f0e6' }}>
             <CloseIcon />
           </IconButton>
