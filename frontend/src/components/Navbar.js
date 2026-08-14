@@ -72,11 +72,7 @@ const Navbar = () => {
             width: '100%',
           }}
         >
-          <Box sx={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
-            <Box sx={{ display: { xs: 'flex', lg: 'none' } }}>
-              <LanguageSwitch />
-            </Box>
-          </Box>
+          <Box sx={{ justifySelf: 'start' }} />
 
           <Box
             component={Link}
