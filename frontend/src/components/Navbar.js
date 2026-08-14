@@ -155,25 +155,20 @@ const Navbar = () => {
                   </Button>
                 </>
               ) : (
-                <>
-                  <Button component={Link} to="/admin/login" sx={{ color: '#f6f0e6', opacity: 0.78 }}>
-                    {t('login')}
-                  </Button>
-                  <Button
-                    component={Link}
-                    to="/businesses"
-                    sx={{
-                      ml: 0.5,
-                      px: 2.2,
-                      py: 1,
-                      color: '#0b1c22',
-                      bgcolor: '#c8a36a',
-                      '&:hover': { bgcolor: '#d4b37d' },
-                    }}
-                  >
-                    {t('planVisit')}
-                  </Button>
-                </>
+                <Button
+                  component={Link}
+                  to="/businesses"
+                  sx={{
+                    ml: 0.5,
+                    px: 2.2,
+                    py: 1,
+                    color: '#0b1c22',
+                    bgcolor: '#c8a36a',
+                    '&:hover': { bgcolor: '#d4b37d' },
+                  }}
+                >
+                  {t('planVisit')}
+                </Button>
               )}
             </Box>
 
@@ -229,11 +224,7 @@ const Navbar = () => {
                 <ListItemText primary={t('logout')} sx={{ textAlign: 'center' }} />
               </ListItemButton>
             </>
-          ) : (
-            <ListItemButton component={Link} to="/admin/login" onClick={() => setOpen(false)}>
-              <ListItemText primary={t('login')} sx={{ textAlign: 'center' }} />
-            </ListItemButton>
-          )}
+          ) : null}
         </List>
       </Drawer>
     </>

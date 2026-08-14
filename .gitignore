@@ -55,3 +55,4 @@ backend/data/mongo
 # Uploaded files
 backend/uploads/*
 !backend/uploads/.gitkeep
+.env*
