@@ -30,7 +30,7 @@ api.interceptors.request.use((config) => {
 
 export const businessAPI = {
   getAll: (filters) => api.get('/businesses', { params: filters }),
-  getById: (id) => api.get(`/businesses/${id}`),
+  getById: (id) => api.get(`/businesses/${encodeURIComponent(id)}`),
   create: (data) => api.post(
     '/businesses',
     data,
@@ -39,22 +39,22 @@ export const businessAPI = {
       : undefined
   ),
   update: (id, data) => api.put(
-    `/businesses/${id}`,
+    `/businesses/${encodeURIComponent(id)}`,
     data,
     data instanceof FormData
       ? { headers: { 'Content-Type': 'multipart/form-data' } }
       : undefined
   ),
-  delete: (id) => api.delete(`/businesses/${id}`),
-  addMenu: (id, data) => api.post(`/businesses/${id}/menus`, data),
+  delete: (id) => api.delete(`/businesses/${encodeURIComponent(id)}`),
+  addMenu: (id, data) => api.post(`/businesses/${encodeURIComponent(id)}/menus`, data),
 };
 
 export const categoryAPI = {
   getAll: () => api.get('/categories'),
-  getById: (id) => api.get(`/categories/${id}`),
+  getById: (id) => api.get(`/categories/${encodeURIComponent(id)}`),
   create: (data) => api.post('/categories', data),
-  update: (id, data) => api.put(`/categories/${id}`, data),
-  delete: (id) => api.delete(`/categories/${id}`),
+  update: (id, data) => api.put(`/categories/${encodeURIComponent(id)}`, data),
+  delete: (id) => api.delete(`/categories/${encodeURIComponent(id)}`),
 };
 
 export const authAPI = {

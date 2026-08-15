@@ -33,6 +33,10 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -183,6 +187,8 @@ const Navbar = () => {
         anchor="right"
         open={open}
         onClose={() => setOpen(false)}
+        ModalProps={{ keepMounted: false }}
+        sx={{ display: { lg: 'none' } }}
         PaperProps={{ sx: { width: 280, bgcolor: '#07141a', color: '#f6f0e6', px: 1 } }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>

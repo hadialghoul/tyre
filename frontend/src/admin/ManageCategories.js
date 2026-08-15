@@ -24,6 +24,8 @@ const ManageCategories = () => {
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({ name: '', description: '', icon: '' });
   const [error, setError] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     fetchCategories();
@@ -57,28 +59,43 @@ const ManageCategories = () => {
     setEditingId(null);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.name.trim()) {
+      setError('Name is required');
+      return;
+    }
     try {
+      setSaving(true);
+      setError('');
       if (editingId) {
-        await categoryAPI.update(editingId, formData);
+        const { data } = await categoryAPI.update(editingId, formData);
+        setCategories((prev) =>
+          prev.map((item) => (String(item._id) === String(editingId) ? data : item))
+        );
       } else {
-        await categoryAPI.create(formData);
+        const { data } = await categoryAPI.create(formData);
+        setCategories((prev) => [...prev, data]);
       }
-      fetchCategories();
       handleCloseDialog();
     } catch (err) {
-      setError('Failed to save category');
+      setError(err.response?.data?.message || 'Failed to save category');
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure?')) {
-      try {
-        await categoryAPI.delete(id);
-        fetchCategories();
-      } catch (err) {
-        setError('Failed to delete category');
-      }
+    if (!window.confirm('Are you sure you want to delete this category?')) return;
+    try {
+      setDeletingId(id);
+      setError('');
+      await categoryAPI.delete(id);
+      setCategories((prev) => prev.filter((item) => String(item._id) !== String(id)));
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to delete category');
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -88,7 +105,7 @@ const ManageCategories = () => {
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <h2>Manage Categories</h2>
-        <Button variant="contained" onClick={() => handleOpenDialog()}>
+        <Button type="button" variant="contained" onClick={() => handleOpenDialog()}>
           + Add Category
         </Button>
       </Box>
@@ -113,6 +130,7 @@ const ManageCategories = () => {
                 <TableCell>{category.icon}</TableCell>
                 <TableCell>
                   <Button
+                    type="button"
                     size="small"
                     onClick={() => handleOpenDialog(category)}
                     startIcon={<Edit />}
@@ -120,12 +138,14 @@ const ManageCategories = () => {
                     Edit
                   </Button>
                   <Button
+                    type="button"
                     size="small"
                     color="error"
+                    disabled={deletingId === category._id}
                     onClick={() => handleDelete(category._id)}
                     startIcon={<Delete />}
                   >
-                    Delete
+                    {deletingId === category._id ? 'Deleting...' : 'Delete'}
                   </Button>
                 </TableCell>
               </TableRow>
@@ -135,7 +155,7 @@ const ManageCategories = () => {
       </TableContainer>
 
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
-        <Box sx={{ p: 2 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ p: 2 }}>
           <h3>{editingId ? 'Edit Category' : 'Add Category'}</h3>
           <TextField
             fullWidth
@@ -161,10 +181,12 @@ const ManageCategories = () => {
             placeholder="e.g., 🍽️, 🏨, etc."
           />
           <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
-            <Button variant="contained" onClick={handleSubmit}>
-              Save
+            <Button type="submit" variant="contained" disabled={saving}>
+              {saving ? 'Saving...' : 'Save'}
             </Button>
-            <Button onClick={handleCloseDialog}>Cancel</Button>
+            <Button type="button" onClick={handleCloseDialog} disabled={saving}>
+              Cancel
+            </Button>
           </Box>
         </Box>
       </Dialog>

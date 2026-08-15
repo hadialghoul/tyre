@@ -81,9 +81,13 @@ function makeId(prefix = 'id') {
   return `${prefix}_${Date.now().toString(16)}${Math.random().toString(16).slice(2, 8)}`;
 }
 
+function sameId(a, b) {
+  return String(a || '') === String(b || '');
+}
+
 function populateBusiness(db, business) {
   if (!business) return null;
-  const category = db.categories.find((item) => item._id === business.category) || null;
+  const category = db.categories.find((item) => sameId(item._id, business.category)) || null;
   return { ...business, category };
 }
 
@@ -127,7 +131,7 @@ const store = {
     },
     async update(id, data) {
       const db = load();
-      const index = db.users.findIndex((user) => user._id === id);
+      const index = db.users.findIndex((user) => sameId(user._id, id));
       if (index === -1) return null;
       const next = { ...db.users[index], ...data };
       if (data.password && data.password !== db.users[index].password) {
@@ -147,7 +151,7 @@ const store = {
       return load().categories;
     },
     findById(id) {
-      return load().categories.find((item) => item._id === id) || null;
+      return load().categories.find((item) => sameId(item._id, id)) || null;
     },
     findByName(name) {
       return load().categories.find((item) => item.name === name) || null;
@@ -168,7 +172,7 @@ const store = {
     },
     update(id, data) {
       const db = load();
-      const index = db.categories.findIndex((item) => item._id === id);
+      const index = db.categories.findIndex((item) => sameId(item._id, id));
       if (index === -1) return null;
       db.categories[index] = { ...db.categories[index], ...data };
       save(db);
@@ -181,9 +185,9 @@ const store = {
     },
     remove(id) {
       const db = load();
-      const category = db.categories.find((item) => item._id === id);
+      const category = db.categories.find((item) => sameId(item._id, id));
       if (!category) return null;
-      db.categories = db.categories.filter((item) => item._id !== id);
+      db.categories = db.categories.filter((item) => !sameId(item._id, id));
       save(db);
       return category;
     },
@@ -194,9 +198,9 @@ const store = {
       const db = load();
       return db.businesses
         .filter((item) => {
-          if (category && item.category !== category) return false;
+          if (category && !sameId(item.category, category)) return false;
           if (featured === 'true' && !item.featured) return false;
-          const cat = db.categories.find((entry) => entry._id === item.category);
+          const cat = db.categories.find((entry) => sameId(entry._id, item.category));
           if (!matchesSearch(item, cat, search)) return false;
           return true;
         })
@@ -205,7 +209,7 @@ const store = {
     },
     findById(id) {
       const db = load();
-      return populateBusiness(db, db.businesses.find((item) => item._id === id));
+      return populateBusiness(db, db.businesses.find((item) => sameId(item._id, id)));
     },
     findByName(name) {
       const db = load();
@@ -225,7 +229,7 @@ const store = {
     },
     update(id, data) {
       const db = load();
-      const index = db.businesses.findIndex((item) => item._id === id);
+      const index = db.businesses.findIndex((item) => sameId(item._id, id));
       if (index === -1) return null;
       db.businesses[index] = {
         ...db.businesses[index],
@@ -242,9 +246,9 @@ const store = {
     },
     remove(id) {
       const db = load();
-      const business = db.businesses.find((item) => item._id === id);
+      const business = db.businesses.find((item) => sameId(item._id, id));
       if (!business) return null;
-      db.businesses = db.businesses.filter((item) => item._id !== id);
+      db.businesses = db.businesses.filter((item) => !sameId(item._id, id));
       save(db);
       return business;
     },

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Box, Grid, Card, CardContent, Typography, CircularProgress } from '@mui/material';
 import { businessAPI, categoryAPI } from '../utils/api';
 
@@ -67,7 +68,9 @@ const AdminDashboardHome = () => {
                 Quick Links
               </Typography>
               <Typography variant="body2">
-                <a href="/admin/businesses">Manage Businesses</a> | <a href="/admin/categories">Manage Categories</a>
+                <Link to="/admin/businesses">Manage Businesses</Link>
+                {' | '}
+                <Link to="/admin/categories">Manage Categories</Link>
               </Typography>
             </CardContent>
           </Card>

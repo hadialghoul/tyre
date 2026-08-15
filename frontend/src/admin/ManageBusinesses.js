@@ -52,6 +52,8 @@ const ManageBusinesses = () => {
   const [coverFile, setCoverFile] = useState(null);
   const [menuQrFile, setMenuQrFile] = useState(null);
   const [error, setError] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -64,8 +66,8 @@ const ManageBusinesses = () => {
         businessAPI.getAll({}),
         categoryAPI.getAll(),
       ]);
-      setBusinesses(bizRes.data);
-      setCategories(catRes.data);
+      setBusinesses(Array.isArray(bizRes.data) ? bizRes.data : []);
+      setCategories(Array.isArray(catRes.data) ? catRes.data : []);
     } catch (err) {
       setError('Failed to load data');
     } finally {
@@ -114,12 +116,19 @@ const ManageBusinesses = () => {
     setEditingId(null);
   };
 
-  const selectedCategory = categories.find((cat) => cat._id === formData.category);
+  const selectedCategory = categories.find((cat) => String(cat._id) === String(formData.category));
   const categoryKind = getCategoryKind(selectedCategory?.name);
   const showMenuFields = isDiningCategory(selectedCategory?.name);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.name.trim() || !formData.category) {
+      setError('Name and category are required');
+      return;
+    }
     try {
+      setSaving(true);
+      setError('');
       const payload = new FormData();
       payload.append('name', formData.name);
       payload.append('category', formData.category);
@@ -156,25 +165,33 @@ const ManageBusinesses = () => {
       }
 
       if (editingId) {
-        await businessAPI.update(editingId, payload);
+        const { data } = await businessAPI.update(editingId, payload);
+        setBusinesses((prev) =>
+          prev.map((item) => (String(item._id) === String(editingId) ? data : item))
+        );
       } else {
-        await businessAPI.create(payload);
+        const { data } = await businessAPI.create(payload);
+        setBusinesses((prev) => [data, ...prev]);
       }
-      fetchData();
       handleCloseDialog();
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to save business');
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Are you sure?')) {
-      try {
-        await businessAPI.delete(id);
-        fetchData();
-      } catch (err) {
-        setError('Failed to delete business');
-      }
+    if (!window.confirm('Are you sure you want to delete this business?')) return;
+    try {
+      setDeletingId(id);
+      setError('');
+      await businessAPI.delete(id);
+      setBusinesses((prev) => prev.filter((item) => String(item._id) !== String(id)));
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to delete business');
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -184,7 +201,7 @@ const ManageBusinesses = () => {
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <h2>Manage Businesses</h2>
-        <Button variant="contained" onClick={() => handleOpenDialog()}>
+        <Button type="button" variant="contained" onClick={() => handleOpenDialog()}>
           + Add Business
         </Button>
       </Box>
@@ -211,6 +228,7 @@ const ManageBusinesses = () => {
                 <TableCell>{business.address}</TableCell>
                 <TableCell>
                   <Button
+                    type="button"
                     size="small"
                     onClick={() => handleOpenDialog(business)}
                     startIcon={<Edit />}
@@ -218,12 +236,14 @@ const ManageBusinesses = () => {
                     Edit
                   </Button>
                   <Button
+                    type="button"
                     size="small"
                     color="error"
+                    disabled={deletingId === business._id}
                     onClick={() => handleDelete(business._id)}
                     startIcon={<Delete />}
                   >
-                    Delete
+                    {deletingId === business._id ? 'Deleting...' : 'Delete'}
                   </Button>
                 </TableCell>
               </TableRow>
@@ -233,7 +253,7 @@ const ManageBusinesses = () => {
       </TableContainer>
 
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth scroll="paper">
-        <Box sx={{ p: 2 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ p: 2 }}>
           <h3>{editingId ? 'Edit Business' : 'Add Business'}</h3>
           {error && <Alert severity="error" sx={{ mb: 1 }}>{error}</Alert>}
           <TextField
@@ -429,10 +449,12 @@ const ManageBusinesses = () => {
           )}
 
           <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
-            <Button variant="contained" onClick={handleSubmit}>
-              Save
+            <Button type="submit" variant="contained" disabled={saving}>
+              {saving ? 'Saving...' : 'Save'}
             </Button>
-            <Button onClick={handleCloseDialog}>Cancel</Button>
+            <Button type="button" onClick={handleCloseDialog} disabled={saving}>
+              Cancel
+            </Button>
           </Box>
         </Box>
       </Dialog>
