@@ -64,11 +64,12 @@ const Navbar = () => {
           dir="ltr"
           sx={{
             display: 'grid',
-            gridTemplateColumns: '1fr auto 1fr',
+            gridTemplateColumns: 'minmax(0, 1fr) auto minmax(max-content, 1fr)',
             alignItems: 'center',
             minHeight: { xs: 76, md: 96 },
-            px: { xs: 2, md: 5 },
+            px: { xs: 2, md: 3, xl: 5 },
             width: '100%',
+            columnGap: { xs: 1, md: 2 },
           }}
         >
           <Box sx={{ justifySelf: 'start' }} />
@@ -91,7 +92,7 @@ const Navbar = () => {
               sx={{
                 height: { xs: 52, md: 70 },
                 width: 'auto',
-                maxWidth: { xs: 280, sm: 380, md: 460 },
+                maxWidth: { xs: 280, sm: 340, md: 380, lg: 420, xl: 460 },
                 objectFit: 'contain',
                 display: 'block',
               }}
@@ -104,15 +105,17 @@ const Navbar = () => {
               display: 'flex',
               alignItems: 'center',
               gap: 1,
-              minWidth: 0,
+              minWidth: 'max-content',
+              flexShrink: 0,
             }}
           >
             <Box
               sx={{
                 display: { xs: 'none', lg: 'flex' },
                 alignItems: 'center',
-                gap: 1,
+                gap: { lg: 0.5, xl: 1 },
                 flexWrap: 'nowrap',
+                whiteSpace: 'nowrap',
               }}
             >
               {links.map((link) => (
@@ -122,8 +125,9 @@ const Navbar = () => {
                   to={link.to}
                   sx={{
                     color: '#f6f0e6',
-                    px: 1.5,
+                    px: { lg: 1, xl: 1.5 },
                     minWidth: 0,
+                    whiteSpace: 'nowrap',
                     fontWeight: 500,
                     opacity: location.pathname === link.to ? 1 : 0.78,
                     '&:hover': { opacity: 1, background: 'transparent' },
@@ -148,10 +152,12 @@ const Navbar = () => {
                   to="/businesses"
                   sx={{
                     ml: 0.5,
-                    px: 2.2,
+                    px: { lg: 1.6, xl: 2.2 },
                     py: 1,
                     color: '#0b1c22',
                     bgcolor: '#c8a36a',
+                    whiteSpace: 'nowrap',
+                    flexShrink: 0,
                     '&:hover': { bgcolor: '#d4b37d' },
                   }}
                 >
