@@ -3,7 +3,7 @@ const catalog = require('../frontend/src/data/catalog.json');
 
 const sampleAdmin = {
   username: 'admin',
-  email: 'wenbesour@gmail.com',
+  email: 'wenbsour@gmail.com',
   password: 'wenbsour123',
   role: 'admin',
 };

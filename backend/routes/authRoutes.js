@@ -48,6 +48,9 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   try {
+    const { ensureAdmin } = require('../seed');
+    await ensureAdmin();
+
     const { email, password } = req.body;
     const user = store.users.findByEmail(email);
     if (!user) {

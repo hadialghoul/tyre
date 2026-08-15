@@ -3,7 +3,7 @@
     {
       "_id": "user_19ffb4b92e4fdca32",
       "username": "admin",
-      "email": "wenbesour@gmail.com",
+      "email": "wenbsour@gmail.com",
       "password": "$2a$10$1PZSz6tV1/TE2aTcmiS6l.Ny4y1i4dqEjzL1CWw1wtqa/ULdNLT96",
       "role": "admin",
       "isActive": true,
