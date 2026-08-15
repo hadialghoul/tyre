@@ -3,8 +3,8 @@
     {
       "_id": "user_19ffb4b92e4fdca32",
       "username": "admin",
-      "email": "admin@example.com",
-      "password": "$2a$10$zxKjkeTDgk.6kKhzB9uTT.NCjYeRAi9gynt6u6ebFk4PHbLUGOTem",
+      "email": "wenbesour@gmail.com",
+      "password": "$2a$10$1PZSz6tV1/TE2aTcmiS6l.Ny4y1i4dqEjzL1CWw1wtqa/ULdNLT96",
       "role": "admin",
       "isActive": true,
       "createdAt": "2026-08-13T13:24:21.860Z"

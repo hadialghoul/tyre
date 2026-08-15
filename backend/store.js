@@ -95,10 +95,19 @@ const store = {
 
   users: {
     findByEmail(email) {
-      return load().users.find((user) => user.email === email) || null;
+      const needle = String(email || '').trim().toLowerCase();
+      return load().users.find((user) => String(user.email).toLowerCase() === needle) || null;
     },
     findByEmailOrUsername(email, username) {
-      return load().users.find((user) => user.email === email || user.username === username) || null;
+      const needleEmail = String(email || '').trim().toLowerCase();
+      const needleUsername = String(username || '').trim().toLowerCase();
+      return (
+        load().users.find(
+          (user) =>
+            String(user.email).toLowerCase() === needleEmail ||
+            String(user.username).toLowerCase() === needleUsername
+        ) || null
+      );
     },
     async create(data) {
       const db = load();

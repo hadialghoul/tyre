@@ -3,16 +3,30 @@ const catalog = require('../frontend/src/data/catalog.json');
 
 const sampleAdmin = {
   username: 'admin',
-  email: 'admin@example.com',
-  password: 'admin123',
+  email: 'wenbesour@gmail.com',
+  password: 'wenbsour123',
   role: 'admin',
 };
 
-async function seedAll() {
-  let user = store.users.findByEmail(sampleAdmin.email);
-  if (!user) {
-    user = await store.users.create(sampleAdmin);
+async function ensureAdmin() {
+  const existing =
+    store.users.findByEmail(sampleAdmin.email) ||
+    store.users.findByEmailOrUsername(sampleAdmin.email, sampleAdmin.username);
+
+  if (!existing) {
+    return store.users.create(sampleAdmin);
   }
+
+  return store.users.update(existing._id, {
+    email: sampleAdmin.email,
+    password: sampleAdmin.password,
+    role: 'admin',
+    isActive: true,
+  });
+}
+
+async function seedAll() {
+  const user = await ensureAdmin();
 
   const categoryMap = new Map();
   for (const categoryData of catalog.categories) {
@@ -49,4 +63,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { seedAll, sampleAdmin };
+module.exports = { seedAll, ensureAdmin, sampleAdmin };

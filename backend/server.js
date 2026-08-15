@@ -38,16 +38,18 @@ app.get('/api/health', (req, res) => {
 });
 
 async function start() {
+  const { seedAll, ensureAdmin } = require('./seed');
   if (store.isEmpty()) {
-    const { seedAll } = require('./seed');
     await seedAll();
+  } else {
+    await ensureAdmin();
   }
 
   if (!process.env.VERCEL) {
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
-      console.log('Admin login: admin@example.com / admin123');
+      console.log('Admin login: wenbesour@gmail.com / wenbsour123');
     });
   }
 }
