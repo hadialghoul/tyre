@@ -86,7 +86,7 @@ const Navbar = () => {
           >
             <Box
               component="img"
-              src="/images/tyre/wen%20b%20sour%20logo.png"
+              src="/images/tyre/logo.png"
               alt={t('tyre')}
               sx={{
                 height: { xs: 48, md: 62 },
@@ -182,7 +182,7 @@ const Navbar = () => {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
           <Box
             component="img"
-            src="/images/tyre/wen%20b%20sour%20logo.png"
+            src="/images/tyre/logo.png"
             alt={t('tyre')}
             sx={{ height: 40, width: 'auto', maxWidth: 180, objectFit: 'contain' }}
           />
