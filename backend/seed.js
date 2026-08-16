@@ -17,6 +17,14 @@ async function ensureAdmin() {
     return store.users.create(sampleAdmin);
   }
 
+  if (
+    String(existing.email).toLowerCase() === sampleAdmin.email &&
+    existing.role === 'admin' &&
+    existing.isActive !== false
+  ) {
+    return existing;
+  }
+
   return store.users.update(existing._id, {
     email: sampleAdmin.email,
     password: sampleAdmin.password,
@@ -30,7 +38,7 @@ async function seedAll() {
 
   const categoryMap = new Map();
   for (const categoryData of catalog.categories) {
-    const category = store.categories.upsertByName({
+    const category = await store.categories.upsertByName({
       name: categoryData.name,
       description: categoryData.description,
       icon: categoryData.icon,
@@ -46,7 +54,7 @@ async function seedAll() {
     }
     if (store.businesses.findByName(item.name)) continue;
     const { key, categoryKey, ...rest } = item;
-    store.businesses.create({
+    await store.businesses.create({
       ...rest,
       category: category._id,
     });

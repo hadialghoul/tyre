@@ -83,7 +83,7 @@ router.post('/', auth, adminOnly, businessFilesUpload, async (req, res) => {
     const logo2File = req.files?.logo2?.[0];
     const coverFile = req.files?.coverImage?.[0];
 
-    const business = store.businesses.create({
+    const business = await store.businesses.create({
       name,
       secondName: secondName || '',
       category,
@@ -166,7 +166,7 @@ router.put('/:id', auth, adminOnly, businessFilesUpload, async (req, res) => {
       updates.menus = [];
     }
 
-    const business = store.businesses.update(req.params.id, updates);
+    const business = await store.businesses.update(req.params.id, updates);
     res.json(business);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
@@ -187,7 +187,7 @@ router.post('/:id/menus', auth, adminOnly, upload.single('image'), async (req, r
       items: [],
     }];
 
-    res.status(201).json(store.businesses.update(req.params.id, { menus }));
+    res.status(201).json(await store.businesses.update(req.params.id, { menus }));
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
@@ -195,7 +195,7 @@ router.post('/:id/menus', auth, adminOnly, upload.single('image'), async (req, r
 
 router.delete('/:id', auth, adminOnly, async (req, res) => {
   try {
-    const business = store.businesses.remove(req.params.id);
+    const business = await store.businesses.remove(req.params.id);
     if (!business) {
       return res.status(404).json({ message: 'Business not found' });
     }

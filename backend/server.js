@@ -27,6 +27,20 @@ fs.mkdirSync(uploadDir, { recursive: true });
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use('/api', (req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  next();
+});
+app.use(async (req, res, next) => {
+  try {
+    await store.ready;
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
 app.use('/uploads', express.static(uploadDir));
 
 app.use('/api/businesses', require('./routes/businessRoutes'));
@@ -39,6 +53,7 @@ app.get('/api/health', (req, res) => {
 
 async function start() {
   const { seedAll, ensureAdmin } = require('./seed');
+  await store.ready;
   if (store.isEmpty()) {
     await seedAll();
   } else {

@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const bundled = require('./data/store.json');
+const persist = require('./persist');
 
 const emptyDb = () => ({ users: [], categories: [], businesses: [] });
 const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
@@ -15,6 +16,70 @@ function fromParsed(parsed) {
     categories: parsed.categories || [],
     businesses: parsed.businesses || [],
   };
+}
+
+let cache = null;
+
+function loadFromDiskOrBundled() {
+  try {
+    if (fs.existsSync(FILE)) {
+      return fromParsed(JSON.parse(fs.readFileSync(FILE, 'utf8')));
+    }
+  } catch (err) {
+    // Fall through to bundled catalog.
+  }
+  if (bundled && (bundled.users?.length || bundled.categories?.length)) {
+    return fromParsed(bundled);
+  }
+  return emptyDb();
+}
+
+function writeDisk(db) {
+  try {
+    fs.mkdirSync(path.dirname(FILE), { recursive: true });
+    fs.writeFileSync(FILE, JSON.stringify(db, null, 2));
+  } catch (err) {
+    if (!isServerless) {
+      console.error('Failed to write store file:', err.message);
+    }
+  }
+}
+
+async function hydrate() {
+  try {
+    const remote = await persist.read();
+    if (remote && (remote.users.length || remote.categories.length || remote.businesses.length)) {
+      cache = remote;
+      writeDisk(remote);
+      return;
+    }
+  } catch (err) {
+    console.error('Remote store read failed:', err.message);
+  }
+  cache = loadFromDiskOrBundled();
+  if (isServerless && !persist.hasRemoteStore()) {
+    console.warn(
+      'No persistent store configured (Vercel KV, Blob, or MongoDB). Admin add/edit/delete will reset after restart.'
+    );
+  }
+}
+
+function load() {
+  if (!cache) {
+    cache = loadFromDiskOrBundled();
+  }
+  return cache;
+}
+
+async function save(db) {
+  cache = db;
+  writeDisk(db);
+  try {
+    await persist.write(db);
+  } catch (err) {
+    console.error('Remote store persist failed:', err.message);
+  }
+  return db;
 }
 
 const categoryNamesAr = {
@@ -56,25 +121,6 @@ function matchesSearch(item, category, search) {
     .join(' ')
     .toLowerCase();
   return q.split(/\s+/).every((word) => haystack.includes(word));
-}
-
-function load() {
-  try {
-    if (fs.existsSync(FILE)) {
-      return fromParsed(JSON.parse(fs.readFileSync(FILE, 'utf8')));
-    }
-  } catch (err) {
-    // Fall through to bundled catalog.
-  }
-  if (bundled && (bundled.users?.length || bundled.categories?.length)) {
-    return fromParsed(bundled);
-  }
-  return emptyDb();
-}
-
-function save(db) {
-  fs.mkdirSync(path.dirname(FILE), { recursive: true });
-  fs.writeFileSync(FILE, JSON.stringify(db, null, 2));
 }
 
 function makeId(prefix = 'id') {
@@ -126,7 +172,7 @@ const store = {
         createdAt: new Date().toISOString(),
       };
       db.users.push(user);
-      save(db);
+      await save(db);
       return user;
     },
     async update(id, data) {
@@ -138,7 +184,7 @@ const store = {
         next.password = await bcrypt.hash(data.password, 10);
       }
       db.users[index] = next;
-      save(db);
+      await save(db);
       return next;
     },
     async comparePassword(user, password) {
@@ -156,7 +202,7 @@ const store = {
     findByName(name) {
       return load().categories.find((item) => item.name === name) || null;
     },
-    create(data) {
+    async create(data) {
       const db = load();
       const category = {
         _id: makeId('cat'),
@@ -167,28 +213,28 @@ const store = {
         createdAt: new Date().toISOString(),
       };
       db.categories.push(category);
-      save(db);
+      await save(db);
       return category;
     },
-    update(id, data) {
+    async update(id, data) {
       const db = load();
       const index = db.categories.findIndex((item) => sameId(item._id, id));
       if (index === -1) return null;
       db.categories[index] = { ...db.categories[index], ...data };
-      save(db);
+      await save(db);
       return db.categories[index];
     },
-    upsertByName(data) {
+    async upsertByName(data) {
       const existing = store.categories.findByName(data.name);
       if (existing) return store.categories.update(existing._id, data);
       return store.categories.create(data);
     },
-    remove(id) {
+    async remove(id) {
       const db = load();
       const category = db.categories.find((item) => sameId(item._id, id));
       if (!category) return null;
       db.categories = db.categories.filter((item) => !sameId(item._id, id));
-      save(db);
+      await save(db);
       return category;
     },
   },
@@ -215,7 +261,7 @@ const store = {
       const db = load();
       return db.businesses.find((item) => item.name === name) || null;
     },
-    create(data) {
+    async create(data) {
       const db = load();
       const business = {
         _id: makeId('biz'),
@@ -224,10 +270,10 @@ const store = {
         updatedAt: new Date().toISOString(),
       };
       db.businesses.push(business);
-      save(db);
+      await save(db);
       return populateBusiness(db, business);
     },
-    update(id, data) {
+    async update(id, data) {
       const db = load();
       const index = db.businesses.findIndex((item) => sameId(item._id, id));
       if (index === -1) return null;
@@ -236,23 +282,25 @@ const store = {
         ...data,
         updatedAt: new Date().toISOString(),
       };
-      save(db);
+      await save(db);
       return populateBusiness(db, db.businesses[index]);
     },
-    upsertByName(data) {
+    async upsertByName(data) {
       const existing = store.businesses.findByName(data.name);
       if (existing) return store.businesses.update(existing._id, data);
       return store.businesses.create(data);
     },
-    remove(id) {
+    async remove(id) {
       const db = load();
       const business = db.businesses.find((item) => sameId(item._id, id));
       if (!business) return null;
       db.businesses = db.businesses.filter((item) => !sameId(item._id, id));
-      save(db);
+      await save(db);
       return business;
     },
   },
 };
+
+store.ready = hydrate();
 
 module.exports = store;

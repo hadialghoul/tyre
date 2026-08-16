@@ -30,7 +30,7 @@ router.post('/', auth, adminOnly, async (req, res) => {
     if (store.categories.findByName(name)) {
       return res.status(400).json({ message: 'Category already exists' });
     }
-    const category = store.categories.create({ name, description, icon, cover });
+    const category = await store.categories.create({ name, description, icon, cover });
     res.status(201).json(category);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
@@ -45,7 +45,7 @@ router.put('/:id', auth, adminOnly, async (req, res) => {
     if (description) updates.description = description;
     if (icon) updates.icon = icon;
     if (cover) updates.cover = cover;
-    const category = store.categories.update(req.params.id, updates);
+    const category = await store.categories.update(req.params.id, updates);
     if (!category) {
       return res.status(404).json({ message: 'Category not found' });
     }
@@ -57,7 +57,7 @@ router.put('/:id', auth, adminOnly, async (req, res) => {
 
 router.delete('/:id', auth, adminOnly, async (req, res) => {
   try {
-    const category = store.categories.remove(req.params.id);
+    const category = await store.categories.remove(req.params.id);
     if (!category) {
       return res.status(404).json({ message: 'Category not found' });
     }

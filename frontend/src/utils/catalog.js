@@ -98,7 +98,7 @@ export const loadCategories = async () => {
 
   try {
     const { data } = await categoryAPI.getAll();
-    if (Array.isArray(data) && data.length >= 8) return data;
+    if (Array.isArray(data)) return data;
   } catch (err) {
     console.warn('Using local Tyre catalog for categories.');
   }
@@ -112,13 +112,7 @@ export const loadBusinesses = async (filters = {}) => {
 
   try {
     const { data } = await businessAPI.getAll(filters);
-    if (!Array.isArray(data)) {
-      return filterSampleBusinesses(filters);
-    }
-    if (filters.search || filters.category || filters.featured) {
-      return data;
-    }
-    if (data.length) return data;
+    if (Array.isArray(data)) return data;
   } catch (err) {
     console.warn('Using local Tyre catalog for businesses.');
   }
