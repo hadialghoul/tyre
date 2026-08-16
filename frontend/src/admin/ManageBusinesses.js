@@ -19,7 +19,7 @@ import {
   RadioGroup,
   Checkbox,
 } from '@mui/material';
-import { businessAPI, categoryAPI } from '../utils/api';
+import { businessAPI, categoryAPI, resolveMediaUrl } from '../utils/api';
 import { Edit, Delete } from '@mui/icons-material';
 import { isDiningCategory, getCategoryKind } from '../utils/catalog';
 
@@ -35,6 +35,7 @@ const emptyForm = {
   starRating: '',
   serviceType: '',
   featured: false,
+  secondName: '',
   menuName: 'Main Menu',
   menuDescription: '',
   menuType: 'image',
@@ -49,6 +50,7 @@ const ManageBusinesses = () => {
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(emptyForm);
   const [logoFile, setLogoFile] = useState(null);
+  const [logo2File, setLogo2File] = useState(null);
   const [coverFile, setCoverFile] = useState(null);
   const [menuQrFile, setMenuQrFile] = useState(null);
   const [error, setError] = useState('');
@@ -91,18 +93,21 @@ const ManageBusinesses = () => {
         starRating: business.starRating || '',
         serviceType: business.serviceType || '',
         featured: Boolean(business.featured),
+        secondName: business.secondName || '',
         menuName: firstMenu.name || 'Main Menu',
         menuDescription: firstMenu.description || '',
         menuType: firstMenu.type || (firstMenu.link ? 'link' : 'image'),
         menuLink: firstMenu.link || '',
       });
       setLogoFile(null);
+      setLogo2File(null);
       setCoverFile(null);
       setMenuQrFile(null);
       setEditingId(business._id);
     } else {
       setFormData(emptyForm);
       setLogoFile(null);
+      setLogo2File(null);
       setCoverFile(null);
       setMenuQrFile(null);
       setEditingId(null);
@@ -119,6 +124,7 @@ const ManageBusinesses = () => {
   const selectedCategory = categories.find((cat) => String(cat._id) === String(formData.category));
   const categoryKind = getCategoryKind(selectedCategory?.name);
   const showMenuFields = isDiningCategory(selectedCategory?.name);
+  const editingBusiness = businesses.find((item) => String(item._id) === String(editingId));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -142,9 +148,13 @@ const ManageBusinesses = () => {
       payload.append('featured', formData.featured ? 'true' : 'false');
       payload.append('starRating', formData.starRating);
       payload.append('serviceType', formData.serviceType);
+      payload.append('secondName', showMenuFields ? formData.secondName : '');
 
       if (logoFile) {
         payload.append('logo', logoFile);
+      }
+      if (showMenuFields && logo2File) {
+        payload.append('logo2', logo2File);
       }
       if (coverFile) {
         payload.append('coverImage', coverFile);
@@ -374,14 +384,56 @@ const ManageBusinesses = () => {
 
           <Box sx={{ mt: 2 }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
-              Logo (optional)
+              {showMenuFields ? 'Logo 1 — first restaurant / cafe (optional)' : 'Logo (optional)'}
             </Typography>
+            {editingBusiness?.logo ? (
+              <Box
+                component="img"
+                src={resolveMediaUrl(editingBusiness.logo)}
+                alt=""
+                sx={{ width: 56, height: 56, objectFit: 'cover', display: 'block', mb: 1, bgcolor: '#fff' }}
+              />
+            ) : null}
             <input
               type="file"
               accept="image/*"
               onChange={(e) => setLogoFile(e.target.files?.[0] || null)}
             />
           </Box>
+          {showMenuFields && (
+            <Box sx={{ mt: 2, border: '1px solid #ddd', borderRadius: 1, p: 2 }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+                Second restaurant / cafe in this place
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
+                Use this when two restaurants or cafes share the same location.
+              </Typography>
+              <TextField
+                fullWidth
+                label="Second name (optional)"
+                value={formData.secondName}
+                onChange={(e) => setFormData({ ...formData, secondName: e.target.value })}
+                margin="normal"
+                placeholder="Name of the second restaurant or cafe"
+              />
+              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+                Logo 2 (optional)
+              </Typography>
+              {editingBusiness?.logo2 ? (
+                <Box
+                  component="img"
+                  src={resolveMediaUrl(editingBusiness.logo2)}
+                  alt=""
+                  sx={{ width: 56, height: 56, objectFit: 'cover', display: 'block', mb: 1, bgcolor: '#fff' }}
+                />
+              ) : null}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setLogo2File(e.target.files?.[0] || null)}
+              />
+            </Box>
+          )}
           <Box sx={{ mt: 2 }}>
             <Typography variant="subtitle2" sx={{ mb: 1 }}>
               Cover photo of Tyre / the place (optional)

@@ -7,6 +7,7 @@ const router = express.Router();
 
 const businessFilesUpload = upload.fields([
   { name: 'logo', maxCount: 1 },
+  { name: 'logo2', maxCount: 1 },
   { name: 'coverImage', maxCount: 1 },
   { name: 'menuQrImage', maxCount: 1 },
 ]);
@@ -67,7 +68,7 @@ router.get('/:id', async (req, res) => {
 router.post('/', auth, adminOnly, businessFilesUpload, async (req, res) => {
   try {
     const {
-      name, category, description, phone, alternatePhone, email, address, website,
+      name, secondName, category, description, phone, alternatePhone, email, address, website,
       openingHours, hasDelivery, deliveryPhone, latitude, longitude, featured,
       starRating, serviceType, mapsUrl,
     } = req.body;
@@ -79,10 +80,12 @@ router.post('/', auth, adminOnly, businessFilesUpload, async (req, res) => {
 
     const menu = isRestaurantOrCafe(categoryDoc.name) ? buildMenuFromRequest(req) : null;
     const logoFile = req.files?.logo?.[0];
+    const logo2File = req.files?.logo2?.[0];
     const coverFile = req.files?.coverImage?.[0];
 
     const business = store.businesses.create({
       name,
+      secondName: secondName || '',
       category,
       description,
       phone,
@@ -91,6 +94,7 @@ router.post('/', auth, adminOnly, businessFilesUpload, async (req, res) => {
       address,
       website,
       logo: logoFile ? `/uploads/${logoFile.filename}` : '',
+      logo2: logo2File ? `/uploads/${logo2File.filename}` : '',
       coverImage: coverFile ? `/uploads/${coverFile.filename}` : '',
       openingHours,
       hasDelivery: toBool(hasDelivery),
@@ -118,7 +122,7 @@ router.put('/:id', auth, adminOnly, businessFilesUpload, async (req, res) => {
     }
 
     const {
-      name, category, description, phone, alternatePhone, email, address, website,
+      name, secondName, category, description, phone, alternatePhone, email, address, website,
       openingHours, hasDelivery, deliveryPhone, latitude, longitude, featured,
       starRating, serviceType, mapsUrl,
     } = req.body;
@@ -131,10 +135,12 @@ router.put('/:id', auth, adminOnly, businessFilesUpload, async (req, res) => {
 
     const menu = isRestaurantOrCafe(categoryDoc.name) ? buildMenuFromRequest(req) : null;
     const logoFile = req.files?.logo?.[0];
+    const logo2File = req.files?.logo2?.[0];
     const coverFile = req.files?.coverImage?.[0];
     const updates = { category: categoryId };
 
     if (name) updates.name = name;
+    if (secondName !== undefined) updates.secondName = secondName;
     if (description) updates.description = description;
     if (phone) updates.phone = phone;
     if (alternatePhone) updates.alternatePhone = alternatePhone;
@@ -151,6 +157,7 @@ router.put('/:id', auth, adminOnly, businessFilesUpload, async (req, res) => {
     if (serviceType !== undefined) updates.serviceType = serviceType;
     if (mapsUrl !== undefined) updates.mapsUrl = mapsUrl;
     if (logoFile) updates.logo = `/uploads/${logoFile.filename}`;
+    if (logo2File) updates.logo2 = `/uploads/${logo2File.filename}`;
     if (coverFile) updates.coverImage = `/uploads/${coverFile.filename}`;
 
     if (isRestaurantOrCafe(categoryDoc.name)) {

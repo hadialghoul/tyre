@@ -42,6 +42,9 @@ export const isDiningCategory = (name = '') => {
   return kind === 'restaurant' || kind === 'cafe';
 };
 
+export const businessLogos = (business) =>
+  [business?.logo, business?.logo2].filter(Boolean);
+
 export const mapsLink = (business) => {
   if (business?.mapsUrl) return business.mapsUrl;
   if (business?.latitude && business?.longitude) {

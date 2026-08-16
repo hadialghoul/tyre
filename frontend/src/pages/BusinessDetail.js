@@ -15,7 +15,7 @@ import {
 import { Phone, LocationOn, Language, AccessTime, LocalShipping, MenuBook } from '@mui/icons-material';
 import { resolveMediaUrl } from '../utils/api';
 import { categoryCover, IMAGES } from '../utils/visuals';
-import { getCategoryKind, loadBusinessById, mapsLink } from '../utils/catalog';
+import { getCategoryKind, loadBusinessById, mapsLink, businessLogos } from '../utils/catalog';
 import { useLanguage } from '../i18n/LanguageContext';
 
 const BusinessDetail = () => {
@@ -60,9 +60,10 @@ const BusinessDetail = () => {
 
   const kind = getCategoryKind(business.category?.name);
   const locationUrl = mapsLink(business);
+  const logos = businessLogos(business);
   const heroImage =
     resolveMediaUrl(business.coverImage) ||
-    resolveMediaUrl(business.logo) ||
+    resolveMediaUrl(logos[0]) ||
     categoryCover(business.category?.name) ||
     IMAGES.fallback;
 
@@ -121,6 +122,11 @@ const BusinessDetail = () => {
             >
               {business.name}
             </Typography>
+            {business.secondName ? (
+              <Typography sx={{ mt: 1.2, color: 'rgba(246,240,230,0.86)', fontSize: { xs: 18, md: 22 } }}>
+                {t('secondPlace')} · {business.secondName}
+              </Typography>
+            ) : null}
             {kind === 'hotel' && business.starRating ? (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, mt: 2 }}>
                 <Rating value={Number(business.starRating)} readOnly sx={{ color: '#c8a36a' }} />
@@ -174,13 +180,24 @@ const BusinessDetail = () => {
 
           <Grid item xs={12} md={5}>
             <Box sx={{ bgcolor: '#0b1c22', color: '#f6f0e6', p: { xs: 3, md: 4 } }}>
-              {business.logo && (
-                <Box
-                  component="img"
-                  src={resolveMediaUrl(business.logo)}
-                  alt={`${business.name} logo`}
-                  sx={{ width: 72, height: 72, objectFit: 'cover', bgcolor: '#fff', mb: 3 }}
-                />
+              {logos.length > 0 && (
+                <Stack direction="row" spacing={1.5} sx={{ mb: 3 }}>
+                  {logos.map((src, index) => (
+                    <Box key={src} sx={{ textAlign: 'center' }}>
+                      <Box
+                        component="img"
+                        src={resolveMediaUrl(src)}
+                        alt={index === 0 ? `${business.name} logo` : `${business.secondName || business.name} logo`}
+                        sx={{ width: 72, height: 72, objectFit: 'cover', bgcolor: '#fff' }}
+                      />
+                      {(index === 0 ? business.name : business.secondName) ? (
+                        <Typography sx={{ mt: 0.8, fontSize: 11, color: 'rgba(246,240,230,0.7)', maxWidth: 72 }}>
+                          {index === 0 ? business.name : business.secondName}
+                        </Typography>
+                      ) : null}
+                    </Box>
+                  ))}
+                </Stack>
               )}
               <Typography sx={{ letterSpacing: '0.22em', fontSize: 12, color: '#c8a36a', mb: 3 }}>
                 {t('arriveCall')}

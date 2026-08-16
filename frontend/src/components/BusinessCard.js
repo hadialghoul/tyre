@@ -4,15 +4,16 @@ import { LocalShipping, MenuBook, LocationOn } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { resolveMediaUrl } from '../utils/api';
 import { categoryCover, IMAGES } from '../utils/visuals';
-import { getCategoryKind } from '../utils/catalog';
+import { getCategoryKind, businessLogos } from '../utils/catalog';
 import { useLanguage } from '../i18n/LanguageContext';
 
 const BusinessCard = ({ business }) => {
   const { t, categoryName, serviceName, isAr } = useLanguage();
   const kind = getCategoryKind(business.category?.name);
+  const logos = businessLogos(business);
   const image =
     resolveMediaUrl(business.coverImage) ||
-    resolveMediaUrl(business.logo) ||
+    resolveMediaUrl(logos[0]) ||
     categoryCover(business.category?.name) ||
     IMAGES.fallback;
   const hasMenu = business.menus?.length > 0;
@@ -61,22 +62,28 @@ const BusinessCard = ({ business }) => {
             background: 'linear-gradient(180deg, rgba(7,20,26,0.05) 30%, rgba(7,20,26,0.72) 100%)',
           }}
         />
-        {business.logo && (
-          <Box
-            component="img"
-            src={resolveMediaUrl(business.logo)}
-            alt=""
-            sx={{
-              position: 'absolute',
-              top: 14,
-              insetInlineEnd: 14,
-              width: 48,
-              height: 48,
-              objectFit: 'cover',
-              bgcolor: '#fff',
-              border: '2px solid #f6f0e6',
-            }}
-          />
+        {logos.length > 0 && (
+          <Stack
+            direction="row"
+            spacing={0.6}
+            sx={{ position: 'absolute', top: 14, insetInlineEnd: 14 }}
+          >
+            {logos.map((src) => (
+              <Box
+                key={src}
+                component="img"
+                src={resolveMediaUrl(src)}
+                alt=""
+                sx={{
+                  width: 48,
+                  height: 48,
+                  objectFit: 'cover',
+                  bgcolor: '#fff',
+                  border: '2px solid #f6f0e6',
+                }}
+              />
+            ))}
+          </Stack>
         )}
         <Stack direction="row" spacing={1} sx={{ position: 'absolute', top: 16, insetInlineStart: 16 }}>
           {business.featured && (
@@ -95,6 +102,11 @@ const BusinessCard = ({ business }) => {
           <Typography variant="h5" sx={{ fontWeight: 600, lineHeight: 1.15, color: '#f6f0e6' }}>
             {business.name}
           </Typography>
+          {business.secondName ? (
+            <Typography sx={{ mt: 0.4, fontSize: 13, color: 'rgba(246,240,230,0.82)' }}>
+              {t('secondPlace')} · {business.secondName}
+            </Typography>
+          ) : null}
         </Box>
       </Box>
 

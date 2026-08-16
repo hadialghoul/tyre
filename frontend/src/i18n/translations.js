@@ -105,6 +105,7 @@ export const translations = {
     tyreSouth: 'Tyre, South Lebanon',
     medCoast: 'Mediterranean coast',
     supportedBy: 'Supported by Sawt Al Farah',
+    secondPlace: 'Also here',
   },
   ar: {
     home: 'الرئيسية',
@@ -204,6 +205,7 @@ export const translations = {
     tyreSouth: 'صور، جنوب لبنان',
     medCoast: 'ساحل المتوسط',
     supportedBy: 'بدعم من صوت الفرح',
+    secondPlace: 'أيضاً هنا',
   },
 };
 

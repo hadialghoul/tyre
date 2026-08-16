@@ -20,6 +20,8 @@ const businessSchema = new mongoose.Schema({
   address: String,
   website: String,
   logo: String,
+  logo2: String,
+  secondName: String,
   images: [String],
   openingHours: String,
   coverImage: String,
