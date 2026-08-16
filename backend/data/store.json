@@ -12,14 +12,6 @@
   ],
   "categories": [
     {
-      "_id": "cat_19ffb4b92eb49f83f",
-      "name": "Restaurants",
-      "description": "Seafood, grills, and Lebanese tables across Tyre — with location, logo, menu, and QR.",
-      "icon": "🍽️",
-      "cover": "/api/media/1a00bfebc89579828d3.jpeg",
-      "createdAt": "2026-08-13T13:24:21.867Z"
-    },
-    {
       "_id": "cat_19ffb4b92eedcc224",
       "name": "Coffee Shops",
       "description": "Cafes on the corniche and in the old streets, with menus you can open or scan.",
