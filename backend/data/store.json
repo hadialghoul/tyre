@@ -66,6 +66,14 @@
       "icon": "🔧",
       "cover": "/img/hippodrome.jpg",
       "createdAt": "2026-08-13T13:24:21.895Z"
+    },
+    {
+      "_id": "cat_1a00c31951f95a08d",
+      "name": "Restaurants",
+      "description": "Best food options, including delicious cusines",
+      "icon": "🍽️",
+      "cover": "/api/media/1a00c31909fbd32f078.jpeg",
+      "createdAt": "2026-08-16T20:09:31.167Z"
     }
   ],
   "businesses": [
