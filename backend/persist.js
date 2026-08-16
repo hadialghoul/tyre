@@ -27,28 +27,15 @@ function hasMongo() {
   return Boolean(mongoUri());
 }
 
-let defaultBranchCache = '';
+const DATA_BRANCH = 'tyre-data';
 
-async function resolveBranch() {
-  const explicit = String(process.env.GITHUB_BRANCH || '').trim();
-  if (explicit) return explicit;
-  if (defaultBranchCache) return defaultBranchCache;
-  try {
-    const { ok, json } = await githubRequest('');
-    if (ok && json?.default_branch) {
-      defaultBranchCache = json.default_branch;
-      return defaultBranchCache;
-    }
-  } catch (err) {
-    // Fall through to env / main.
-  }
-  const fromVercel = String(process.env.VERCEL_GIT_COMMIT_REF || '').trim();
-  if (fromVercel && !/^[0-9a-f]{40}$/i.test(fromVercel)) return fromVercel;
-  return 'main';
-}
+let dataBranchCache = '';
+let lastGithubError = '';
 
 function githubToken() {
-  return String(process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '').trim();
+  return String(process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '')
+    .trim()
+    .replace(/^["']|["']$/g, '');
 }
 
 function githubRepo() {
@@ -102,35 +89,81 @@ async function githubRequest(pathname, { method = 'GET', body } = {}) {
   return { ok: res.ok, status: res.status, json };
 }
 
+function githubWriteError(result) {
+  const detail = result?.json?.message || `GitHub write failed (${result?.status || '?'})`;
+  lastGithubError = detail;
+  if (result?.status === 401) {
+    return 'GitHub token is invalid. Create a new classic token with the repo box checked, replace GITHUB_TOKEN in Vercel, then redeploy.';
+  }
+  if (result?.status === 403) {
+    return 'GitHub token cannot write to the repo. Create a classic token at github.com/settings/tokens, check the repo box, replace GITHUB_TOKEN in Vercel, then redeploy.';
+  }
+  if (result?.status === 404) {
+    return 'GitHub repo not found. Add GITHUB_REPO as hadialghoul/tyre in Vercel, then redeploy.';
+  }
+  return detail;
+}
+
+async function ensureDataBranch() {
+  const wanted = String(process.env.GITHUB_BRANCH || DATA_BRANCH).trim() || DATA_BRANCH;
+  if (dataBranchCache === wanted) return wanted;
+  const existing = await githubRequest(`/git/ref/heads/${encodeURIComponent(wanted)}`);
+  if (existing.ok) {
+    dataBranchCache = wanted;
+    return wanted;
+  }
+  const repoInfo = await githubRequest('');
+  const base = repoInfo.json?.default_branch || 'main';
+  const baseRef = await githubRequest(`/git/ref/heads/${encodeURIComponent(base)}`);
+  if (!baseRef.ok) {
+    throw new Error(githubWriteError(baseRef));
+  }
+  const created = await githubRequest('/git/refs', {
+    method: 'POST',
+    body: { ref: `refs/heads/${wanted}`, sha: baseRef.json.object.sha },
+  });
+  if (!created.ok && created.status !== 422) {
+    throw new Error(githubWriteError(created));
+  }
+  dataBranchCache = wanted;
+  return wanted;
+}
+
+async function githubGetFileOnBranch(filePath, branch) {
+  const { ok, status, json } = await githubRequest(
+    `/contents/${encodeGithubPath(filePath)}?ref=${encodeURIComponent(branch)}`
+  );
+  if (status === 404) return null;
+  if (!ok) throw new Error(json?.message || 'GitHub read failed');
+  if (json.encoding === 'base64' && json.content) {
+    return {
+      sha: json.sha,
+      buffer: Buffer.from(String(json.content).replace(/\n/g, ''), 'base64'),
+      branch,
+    };
+  }
+  if (json.download_url) {
+    const res = await fetch(json.download_url, {
+      headers: {
+        Authorization: `Bearer ${githubToken()}`,
+        'User-Agent': 'tyre-site',
+      },
+    });
+    if (!res.ok) throw new Error('GitHub download failed');
+    return { sha: json.sha, buffer: Buffer.from(await res.arrayBuffer()), branch };
+  }
+  return null;
+}
+
 async function githubGetFile(filePath) {
-  const branches = [...new Set([await resolveBranch(), 'main', 'master'])];
+  const branches = [...new Set([process.env.GITHUB_BRANCH || DATA_BRANCH, 'main', 'master'])];
   let lastError = null;
   for (const branch of branches) {
-    const { ok, status, json } = await githubRequest(
-      `/contents/${encodeGithubPath(filePath)}?ref=${encodeURIComponent(branch)}`
-    );
-    if (status === 404) continue;
-    if (!ok) {
-      lastError = new Error(json?.message || 'GitHub read failed');
-      continue;
-    }
-    defaultBranchCache = defaultBranchCache || branch;
-    if (json.encoding === 'base64' && json.content) {
-      return {
-        sha: json.sha,
-        buffer: Buffer.from(String(json.content).replace(/\n/g, ''), 'base64'),
-        branch,
-      };
-    }
-    if (json.download_url) {
-      const res = await fetch(json.download_url, {
-        headers: {
-          Authorization: `Bearer ${githubToken()}`,
-          'User-Agent': 'tyre-site',
-        },
-      });
-      if (!res.ok) throw new Error('GitHub download failed');
-      return { sha: json.sha, buffer: Buffer.from(await res.arrayBuffer()), branch };
+    try {
+      const file = await githubGetFileOnBranch(filePath, branch);
+      if (file) return file;
+    } catch (err) {
+      lastError = err;
     }
   }
   if (lastError) throw lastError;
@@ -138,10 +171,10 @@ async function githubGetFile(filePath) {
 }
 
 async function githubPutFile(filePath, buffer, message) {
-  const branch = await resolveBranch();
+  const branch = await ensureDataBranch();
   let sha;
   try {
-    sha = (await githubGetFile(filePath))?.sha;
+    sha = (await githubGetFileOnBranch(filePath, branch))?.sha;
   } catch (err) {
     sha = undefined;
   }
@@ -149,6 +182,7 @@ async function githubPutFile(filePath, buffer, message) {
     message,
     content: Buffer.from(buffer).toString('base64'),
     branch,
+    committer: { name: 'tyre-site', email: 'noreply@github.com' },
     ...(sha ? { sha } : {}),
   };
   let result = await githubRequest(`/contents/${encodeGithubPath(filePath)}`, {
@@ -156,16 +190,16 @@ async function githubPutFile(filePath, buffer, message) {
     body,
   });
   if (!result.ok && (result.status === 409 || result.status === 422)) {
-    const latest = await githubGetFile(filePath);
+    const latest = await githubGetFileOnBranch(filePath, branch);
     result = await githubRequest(`/contents/${encodeGithubPath(filePath)}`, {
       method: 'PUT',
       body: { ...body, ...(latest?.sha ? { sha: latest.sha } : {}) },
     });
   }
   if (!result.ok) {
-    throw new Error(result.json?.message || `GitHub write failed (${result.status})`);
+    throw new Error(githubWriteError(result));
   }
-  defaultBranchCache = branch;
+  lastGithubError = '';
   return true;
 }
 
@@ -176,6 +210,7 @@ async function readGithub() {
     if (!file) return null;
     return fromParsed(JSON.parse(file.buffer.toString('utf8')));
   } catch (err) {
+    lastGithubError = err.message;
     console.error('GitHub store read failed:', err.message);
     return null;
   }
@@ -447,6 +482,7 @@ function status() {
     persistent: hasRemoteStore(),
     github: hasGitHub(),
     repo: githubRepo() || null,
+    lastError: lastGithubError || null,
   };
 }
 
