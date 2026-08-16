@@ -113,6 +113,29 @@ async function hydrate() {
   globalThis.__tyreStore = cache;
 }
 
+let lastRefresh = 0;
+
+async function refresh() {
+  if (!isServerless || !persist.hasGitHub()) {
+    return load();
+  }
+  if (cache && Date.now() - lastRefresh < 2000) {
+    return cache;
+  }
+  try {
+    const remote = await persist.read();
+    if (remote && (remote.users.length || remote.categories.length || Array.isArray(remote.businesses))) {
+      cache = applyTombstones(remote);
+      globalThis.__tyreStore = cache;
+      writeDisk(cache);
+    }
+  } catch (err) {
+    console.error('Store refresh failed:', err.message);
+  }
+  lastRefresh = Date.now();
+  return load();
+}
+
 function load() {
   if (globalThis.__tyreStore) {
     cache = globalThis.__tyreStore;
@@ -131,15 +154,25 @@ async function save(db) {
   globalThis.__tyreStore = next;
   writeDisk(next);
   writeDeletedFile(next);
+  if (isServerless && !persist.hasRemoteStore()) {
+    const info = persist.status();
+    const hint = info.repo
+      ? 'Add GITHUB_TOKEN in Vercel (GitHub → Settings → Developer settings → Personal access tokens, repo scope), then redeploy.'
+      : 'Add GITHUB_TOKEN and GITHUB_REPO (like owner/repo-name) in Vercel, then redeploy.';
+    const err = new Error(`Changes are not saving on the live site. ${hint}`);
+    err.code = 'NO_PERSISTENCE';
+    throw err;
+  }
   try {
     const saved = await persist.write(next);
-    if (isServerless && persist.hasRemoteStore() && !saved) {
-      throw new Error('Could not save changes. Try again.');
+    if (isServerless && !saved) {
+      throw new Error('Could not save changes. Check GITHUB_TOKEN in Vercel.');
     }
   } catch (err) {
     console.error('Remote store persist failed:', err.message);
     if (isServerless) throw err;
   }
+  lastRefresh = Date.now();
   return next;
 }
 
@@ -389,6 +422,8 @@ const store = {
 };
 
 store.ready = hydrate();
+store.refresh = refresh;
 store.persistenceEnabled = () => persist.hasRemoteStore();
+store.persistInfo = () => persist.status();
 
 module.exports = store;

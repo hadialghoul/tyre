@@ -27,6 +27,26 @@ function hasMongo() {
   return Boolean(mongoUri());
 }
 
+let defaultBranchCache = '';
+
+async function resolveBranch() {
+  const explicit = String(process.env.GITHUB_BRANCH || '').trim();
+  if (explicit) return explicit;
+  if (defaultBranchCache) return defaultBranchCache;
+  try {
+    const { ok, json } = await githubRequest('');
+    if (ok && json?.default_branch) {
+      defaultBranchCache = json.default_branch;
+      return defaultBranchCache;
+    }
+  } catch (err) {
+    // Fall through to env / main.
+  }
+  const fromVercel = String(process.env.VERCEL_GIT_COMMIT_REF || '').trim();
+  if (fromVercel && !/^[0-9a-f]{40}$/i.test(fromVercel)) return fromVercel;
+  return 'main';
+}
+
 function githubToken() {
   return String(process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '').trim();
 }
@@ -38,10 +58,6 @@ function githubRepo() {
   const name = process.env.VERCEL_GIT_REPO_SLUG;
   if (owner && name) return `${owner}/${name}`;
   return '';
-}
-
-function githubBranch() {
-  return String(process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || 'main').trim() || 'main';
 }
 
 function hasGitHub() {
@@ -87,31 +103,42 @@ async function githubRequest(pathname, { method = 'GET', body } = {}) {
 }
 
 async function githubGetFile(filePath) {
-  const { ok, status, json } = await githubRequest(
-    `/contents/${encodeGithubPath(filePath)}?ref=${encodeURIComponent(githubBranch())}`
-  );
-  if (status === 404) return null;
-  if (!ok) throw new Error(json?.message || 'GitHub read failed');
-  if (json.encoding === 'base64' && json.content) {
-    return {
-      sha: json.sha,
-      buffer: Buffer.from(String(json.content).replace(/\n/g, ''), 'base64'),
-    };
+  const branches = [...new Set([await resolveBranch(), 'main', 'master'])];
+  let lastError = null;
+  for (const branch of branches) {
+    const { ok, status, json } = await githubRequest(
+      `/contents/${encodeGithubPath(filePath)}?ref=${encodeURIComponent(branch)}`
+    );
+    if (status === 404) continue;
+    if (!ok) {
+      lastError = new Error(json?.message || 'GitHub read failed');
+      continue;
+    }
+    defaultBranchCache = defaultBranchCache || branch;
+    if (json.encoding === 'base64' && json.content) {
+      return {
+        sha: json.sha,
+        buffer: Buffer.from(String(json.content).replace(/\n/g, ''), 'base64'),
+        branch,
+      };
+    }
+    if (json.download_url) {
+      const res = await fetch(json.download_url, {
+        headers: {
+          Authorization: `Bearer ${githubToken()}`,
+          'User-Agent': 'tyre-site',
+        },
+      });
+      if (!res.ok) throw new Error('GitHub download failed');
+      return { sha: json.sha, buffer: Buffer.from(await res.arrayBuffer()), branch };
+    }
   }
-  if (json.download_url) {
-    const res = await fetch(json.download_url, {
-      headers: {
-        Authorization: `Bearer ${githubToken()}`,
-        'User-Agent': 'tyre-site',
-      },
-    });
-    if (!res.ok) throw new Error('GitHub download failed');
-    return { sha: json.sha, buffer: Buffer.from(await res.arrayBuffer()) };
-  }
+  if (lastError) throw lastError;
   return null;
 }
 
 async function githubPutFile(filePath, buffer, message) {
+  const branch = await resolveBranch();
   let sha;
   try {
     sha = (await githubGetFile(filePath))?.sha;
@@ -121,7 +148,7 @@ async function githubPutFile(filePath, buffer, message) {
   const body = {
     message,
     content: Buffer.from(buffer).toString('base64'),
-    branch: githubBranch(),
+    branch,
     ...(sha ? { sha } : {}),
   };
   let result = await githubRequest(`/contents/${encodeGithubPath(filePath)}`, {
@@ -138,6 +165,7 @@ async function githubPutFile(filePath, buffer, message) {
   if (!result.ok) {
     throw new Error(result.json?.message || `GitHub write failed (${result.status})`);
   }
+  defaultBranchCache = branch;
   return true;
 }
 
@@ -156,7 +184,11 @@ async function readGithub() {
 async function writeGithub(db) {
   if (!hasGitHub()) return false;
   const payload = `${JSON.stringify(db, null, 2)}\n`;
-  await githubPutFile(GITHUB_STORE_PATH, Buffer.from(payload), 'Update businesses and categories');
+  await githubPutFile(
+    GITHUB_STORE_PATH,
+    Buffer.from(payload),
+    '[skip vercel] Update businesses and categories'
+  );
   return true;
 }
 
@@ -350,7 +382,7 @@ async function saveFile({ mime, name, data }) {
     await githubPutFile(
       `${GITHUB_MEDIA_DIR}/${id}`,
       Buffer.from(data),
-      `Add uploaded image ${id}`
+      `[skip vercel] Add uploaded image ${id}`
     );
     return id;
   }
@@ -410,6 +442,14 @@ async function write(db) {
   return results.some((item) => item.status === 'fulfilled' && item.value);
 }
 
+function status() {
+  return {
+    persistent: hasRemoteStore(),
+    github: hasGitHub(),
+    repo: githubRepo() || null,
+  };
+}
+
 module.exports = {
   read,
   write,
@@ -419,4 +459,5 @@ module.exports = {
   hasGitHub,
   saveFile,
   readFile,
+  status,
 };

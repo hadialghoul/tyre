@@ -36,6 +36,7 @@ app.use('/api', (req, res, next) => {
 app.use(async (req, res, next) => {
   try {
     await store.ready;
+    await store.refresh();
     next();
   } catch (err) {
     next(err);
@@ -65,7 +66,7 @@ app.use('/api/categories', require('./routes/categoryRoutes'));
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'Backend server is running',
-    persistent: store.persistenceEnabled(),
+    ...store.persistInfo(),
   });
 });
 
