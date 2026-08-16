@@ -87,7 +87,7 @@
       "address": "Tyre, Sea Side Road",
       "logo": "/api/media/1a00b0d540155cfe6ed.jpg",
       "logo2": "/api/media/1a00b0d58641d2e391d.jpg",
-      "coverImage": "",
+      "coverImage": "/api/media/1a00b18524b00cb7504.jpg",
       "openingHours": "8:00 am till 2:00 am",
       "hasDelivery": false,
       "deliveryPhone": "",
@@ -104,7 +104,7 @@
         }
       ],
       "createdAt": "2026-08-16T14:35:55.643Z",
-      "updatedAt": "2026-08-16T14:50:19.807Z"
+      "updatedAt": "2026-08-16T15:02:20.374Z"
     }
   ],
   "deletedIds": [
