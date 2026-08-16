@@ -14,7 +14,7 @@ import {
   CircularProgress,
   Alert,
 } from '@mui/material';
-import { categoryAPI } from '../utils/api';
+import { categoryAPI, resolveMediaUrl } from '../utils/api';
 import { Edit, Delete } from '@mui/icons-material';
 
 const ManageCategories = () => {
@@ -22,7 +22,8 @@ const ManageCategories = () => {
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [formData, setFormData] = useState({ name: '', description: '', icon: '' });
+  const [formData, setFormData] = useState({ name: '', description: '', icon: '', cover: '' });
+  const [coverFile, setCoverFile] = useState(null);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
@@ -44,11 +45,17 @@ const ManageCategories = () => {
   };
 
   const handleOpenDialog = (category = null) => {
+    setCoverFile(null);
     if (category) {
-      setFormData(category);
+      setFormData({
+        name: category.name || '',
+        description: category.description || '',
+        icon: category.icon || '',
+        cover: category.cover || '',
+      });
       setEditingId(category._id);
     } else {
-      setFormData({ name: '', description: '', icon: '' });
+      setFormData({ name: '', description: '', icon: '', cover: '' });
       setEditingId(null);
     }
     setOpenDialog(true);
@@ -57,6 +64,7 @@ const ManageCategories = () => {
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setEditingId(null);
+    setCoverFile(null);
   };
 
   const handleSubmit = async (e) => {
@@ -68,13 +76,18 @@ const ManageCategories = () => {
     try {
       setSaving(true);
       setError('');
+      const payload = new FormData();
+      payload.append('name', formData.name);
+      payload.append('description', formData.description);
+      payload.append('icon', formData.icon);
+      if (coverFile) payload.append('cover', coverFile);
       if (editingId) {
-        const { data } = await categoryAPI.update(editingId, formData);
+        const { data } = await categoryAPI.update(editingId, payload);
         setCategories((prev) =>
           prev.map((item) => (String(item._id) === String(editingId) ? data : item))
         );
       } else {
-        const { data } = await categoryAPI.create(formData);
+        const { data } = await categoryAPI.create(payload);
         setCategories((prev) => [...prev, data]);
       }
       handleCloseDialog();
@@ -116,6 +129,7 @@ const ManageCategories = () => {
         <Table>
           <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
             <TableRow>
+              <TableCell>Image</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Description</TableCell>
               <TableCell>Icon</TableCell>
@@ -125,6 +139,18 @@ const ManageCategories = () => {
           <TableBody>
             {categories.map((category) => (
               <TableRow key={category._id}>
+                <TableCell>
+                  {category.cover ? (
+                    <Box
+                      component="img"
+                      src={resolveMediaUrl(category.cover)}
+                      alt=""
+                      sx={{ width: 72, height: 48, objectFit: 'cover', borderRadius: 1, display: 'block' }}
+                    />
+                  ) : (
+                    '—'
+                  )}
+                </TableCell>
                 <TableCell>{category.name}</TableCell>
                 <TableCell>{category.description}</TableCell>
                 <TableCell>{category.icon}</TableCell>
@@ -180,6 +206,22 @@ const ManageCategories = () => {
             margin="normal"
             placeholder="e.g., 🍽️, 🏨, etc."
           />
+          <Box sx={{ mt: 2 }}>
+            <Box sx={{ fontSize: 14, fontWeight: 600, mb: 1 }}>Category image</Box>
+            {(coverFile || formData.cover) && (
+              <Box
+                component="img"
+                src={coverFile ? URL.createObjectURL(coverFile) : resolveMediaUrl(formData.cover)}
+                alt=""
+                sx={{ width: '100%', maxHeight: 180, objectFit: 'cover', borderRadius: 1, display: 'block', mb: 1 }}
+              />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setCoverFile(e.target.files?.[0] || null)}
+            />
+          </Box>
           <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
             <Button type="submit" variant="contained" disabled={saving}>
               {saving ? 'Saving...' : 'Save'}

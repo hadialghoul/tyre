@@ -16,6 +16,7 @@ import Reveal from '../components/Reveal';
 import ContactSection from '../components/ContactSection';
 import { IMAGES, categoryCover } from '../utils/visuals';
 import { loadCategories, loadBusinesses } from '../utils/catalog';
+import { resolveMediaUrl } from '../utils/api';
 import { useLanguage } from '../i18n/LanguageContext';
 
 const Home = () => {
@@ -391,7 +392,7 @@ const Home = () => {
                   >
                     <Box
                       component="img"
-                      src={cat.cover || categoryCover(cat.name)}
+                      src={resolveMediaUrl(cat.cover) || categoryCover(cat.name)}
                       alt={categoryName(cat.name)}
                       sx={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 700ms ease' }}
                     />

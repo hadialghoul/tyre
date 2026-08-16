@@ -57,8 +57,20 @@ export const businessAPI = {
 export const categoryAPI = {
   getAll: () => api.get('/categories'),
   getById: (id) => api.get(`/categories/${encodeURIComponent(id)}`),
-  create: (data) => api.post('/categories', data),
-  update: (id, data) => api.put(`/categories/${encodeURIComponent(id)}`, data),
+  create: (data) => api.post(
+    '/categories',
+    data,
+    data instanceof FormData
+      ? { headers: { 'Content-Type': 'multipart/form-data' } }
+      : undefined
+  ),
+  update: (id, data) => api.put(
+    `/categories/${encodeURIComponent(id)}`,
+    data,
+    data instanceof FormData
+      ? { headers: { 'Content-Type': 'multipart/form-data' } }
+      : undefined
+  ),
   delete: (id) => api.delete(`/categories/${encodeURIComponent(id)}`),
 };
 
