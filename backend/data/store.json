@@ -74,6 +74,14 @@
       "icon": "🔧",
       "cover": "/img/hippodrome.jpg",
       "createdAt": "2026-08-13T13:24:21.895Z"
+    },
+    {
+      "_id": "cat_1a00af2515926224d",
+      "name": "hadi",
+      "description": "",
+      "icon": "",
+      "cover": "",
+      "createdAt": "2026-08-16T14:20:47.833Z"
     }
   ],
   "businesses": [],
