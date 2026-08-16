@@ -122,7 +122,7 @@ router.post('/', auth, adminOnly, businessFilesUpload, async (req, res) => {
 
     res.status(201).json(business);
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: err.message || 'Server error' });
   }
 });
 
@@ -181,7 +181,7 @@ router.put('/:id', auth, adminOnly, businessFilesUpload, async (req, res) => {
     const business = await store.businesses.update(req.params.id, updates);
     res.json(business);
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: err.message || 'Server error' });
   }
 });
 
@@ -201,7 +201,7 @@ router.post('/:id/menus', auth, adminOnly, upload.single('image'), async (req, r
 
     res.status(201).json(await store.businesses.update(req.params.id, { menus }));
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: err.message || 'Server error' });
   }
 });
 
@@ -213,7 +213,7 @@ router.delete('/:id', auth, adminOnly, async (req, res) => {
     }
     res.json({ message: 'Business deleted' });
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: err.message || 'Server error' });
   }
 });
 

@@ -33,7 +33,7 @@ router.post('/', auth, adminOnly, async (req, res) => {
     const category = await store.categories.create({ name, description, icon, cover });
     res.status(201).json(category);
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: err.message || 'Server error' });
   }
 });
 
@@ -51,7 +51,7 @@ router.put('/:id', auth, adminOnly, async (req, res) => {
     }
     res.json(category);
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: err.message || 'Server error' });
   }
 });
 
@@ -63,7 +63,7 @@ router.delete('/:id', auth, adminOnly, async (req, res) => {
     }
     res.json({ message: 'Category deleted' });
   } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
+    res.status(500).json({ message: err.message || 'Server error' });
   }
 });
 
