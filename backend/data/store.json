@@ -85,8 +85,8 @@
       "description": "Lebanese, International, Chinese, Italian cuisines",
       "phone": "81 000 098 ",
       "address": "Tyre, Sea Side Road",
-      "logo": "/api/media/1a00b0023bf1fc45857.png",
-      "logo2": "/api/media/1a00b00276495b23b38.png",
+      "logo": "/api/media/1a00b0d540155cfe6ed.jpg",
+      "logo2": "/api/media/1a00b0d58641d2e391d.jpg",
       "coverImage": "",
       "openingHours": "8:00 am till 2:00 am",
       "hasDelivery": false,
@@ -104,7 +104,7 @@
         }
       ],
       "createdAt": "2026-08-16T14:35:55.643Z",
-      "updatedAt": "2026-08-16T14:35:55.643Z"
+      "updatedAt": "2026-08-16T14:50:19.807Z"
     }
   ],
   "deletedIds": [
