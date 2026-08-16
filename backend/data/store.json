@@ -76,7 +76,37 @@
       "createdAt": "2026-08-13T13:24:21.895Z"
     }
   ],
-  "businesses": [],
+  "businesses": [
+    {
+      "_id": "biz_1a00b1da758e5fe69",
+      "name": "Ugarit | Al Marsah International Restaurant ",
+      "secondName": "",
+      "category": "cat_19ffb4b92eb49f83f",
+      "description": "Lebanese, International, Chinese, Italian cuisines",
+      "phone": "81 000 098 ",
+      "address": "Tyre, Sea Side Road",
+      "logo": "/api/media/1a00b1d9e87bde9162b.png",
+      "logo2": "",
+      "coverImage": "/api/media/1a00b1da2e6adb97b06.jpg",
+      "openingHours": "8:00 am till 2:00 am",
+      "hasDelivery": false,
+      "deliveryPhone": "",
+      "featured": true,
+      "serviceType": "",
+      "menus": [
+        {
+          "name": "Main Menu",
+          "description": "Lebanese, International, Chinese, Italian cuisines",
+          "type": "link",
+          "link": "https://linktr.ee/ugaritmarsa?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZnRzaAS2CH5leHRuA2FlbQIxMQBzcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAafWs9LPgN4WPfTnD9rAgGYz0me1NXmjO1IQnRku7tA84pHcrB8Nrn9jMt2CfQ_aem_h5wT7HrHOBNO4NzUWEP8tg",
+          "image": "",
+          "items": []
+        }
+      ],
+      "createdAt": "2026-08-16T15:08:07.896Z",
+      "updatedAt": "2026-08-16T15:08:07.896Z"
+    }
+  ],
   "deletedIds": [
     "biz_1a00af3234516eb6b",
     "biz_19ffb4b930c513954",
