@@ -84,7 +84,37 @@
       "createdAt": "2026-08-16T14:20:47.833Z"
     }
   ],
-  "businesses": [],
+  "businesses": [
+    {
+      "_id": "biz_1a00af3234516eb6b",
+      "name": "aljawad",
+      "secondName": "",
+      "category": "cat_19ffb4b92eb49f83f",
+      "description": "waww",
+      "phone": "1617",
+      "address": "",
+      "logo": "/api/media/1a00af31a42bec746e9.jpg",
+      "logo2": "/api/media/1a00af31d2c575d2d8f.jpg",
+      "coverImage": "/api/media/1a00af3200cfed0f42e.jpeg",
+      "openingHours": "8-2",
+      "hasDelivery": true,
+      "deliveryPhone": "1617",
+      "featured": true,
+      "serviceType": "",
+      "menus": [
+        {
+          "name": "Main Menu",
+          "description": "",
+          "type": "image",
+          "link": "",
+          "image": "/api/media/1a00af317392e22662d.jpeg",
+          "items": []
+        }
+      ],
+      "createdAt": "2026-08-16T14:21:41.573Z",
+      "updatedAt": "2026-08-16T14:21:41.573Z"
+    }
+  ],
   "deletedIds": [],
   "deletedNames": []
 }
