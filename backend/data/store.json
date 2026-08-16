@@ -76,37 +76,7 @@
       "createdAt": "2026-08-13T13:24:21.895Z"
     }
   ],
-  "businesses": [
-    {
-      "_id": "biz_1a00b002b7b047d81",
-      "name": "Ugarit International Restaurant ",
-      "secondName": "",
-      "category": "cat_19ffb4b92eb49f83f",
-      "description": "Lebanese, International, Chinese, Italian cuisines",
-      "phone": "81 000 098 ",
-      "address": "Tyre, Sea Side Road",
-      "logo": "/api/media/1a00b19b59da561471c.png",
-      "logo2": "/api/media/1a00b1bd5a111dfa3a3.png",
-      "coverImage": "/api/media/1a00b1bd9eb065b2b7f.jpg",
-      "openingHours": "8:00 am till 2:00 am",
-      "hasDelivery": false,
-      "deliveryPhone": "",
-      "featured": true,
-      "serviceType": "",
-      "menus": [
-        {
-          "name": "Main Menu",
-          "description": "Lebanese, International, Chinese, Italian cuisines",
-          "type": "link",
-          "link": "https://linktr.ee/ugaritmarsa?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZnRzaAS2CH5leHRuA2FlbQIxMQBzcnRjBmFwcF9pZA8xMjQwMjQ1NzQyODc0MTQAAafWs9LPgN4WPfTnD9rAgGYz0me1NXmjO1IQnRku7tA84pHcrB8Nrn9jMt2CfQ_aem_h5wT7HrHOBNO4NzUWEP8tg",
-          "image": "",
-          "items": []
-        }
-      ],
-      "createdAt": "2026-08-16T14:35:55.643Z",
-      "updatedAt": "2026-08-16T15:06:10.726Z"
-    }
-  ],
+  "businesses": [],
   "deletedIds": [
     "biz_1a00af3234516eb6b",
     "biz_19ffb4b930c513954",
@@ -129,7 +99,8 @@
     "biz_19ffb4b935cbe0f54",
     "biz_19ffb4b9361b23df7",
     "biz_19ffb4b9365b15be3",
-    "biz_19ffb4fad96509216"
+    "biz_19ffb4fad96509216",
+    "biz_1a00b002b7b047d81"
   ],
   "deletedNames": [
     "aljawad",
@@ -153,6 +124,7 @@
     "Cool Air Tyre",
     "Al Safa Plumbing",
     "Tyre Express Laundry",
-    "Aljawad"
+    "Aljawad",
+    "Ugarit International Restaurant"
   ]
 }
