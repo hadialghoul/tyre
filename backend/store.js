@@ -3,8 +3,9 @@ const path = require('path');
 const bcrypt = require('bcryptjs');
 const bundled = require('./data/store.json');
 const persist = require('./persist');
+const bundledDeleted = require('./data/deleted.json');
 
-const emptyDb = () => ({ users: [], categories: [], businesses: [] });
+const emptyDb = () => ({ users: [], categories: [], businesses: [], deletedIds: [], deletedNames: [] });
 const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 const FILE = isServerless
   ? path.join('/tmp', 'tyre-store.json')
@@ -15,7 +16,58 @@ function fromParsed(parsed) {
     users: parsed.users || [],
     categories: parsed.categories || [],
     businesses: parsed.businesses || [],
+    deletedIds: parsed.deletedIds || [],
+    deletedNames: parsed.deletedNames || [],
   };
+}
+
+const DELETED_FILE = path.join(__dirname, 'data', 'deleted.json');
+
+function readDeletedFile() {
+  try {
+    if (fs.existsSync(DELETED_FILE)) {
+      return JSON.parse(fs.readFileSync(DELETED_FILE, 'utf8'));
+    }
+  } catch (err) {
+    // Use bundled tombstones.
+  }
+  return bundledDeleted || { ids: [], names: [] };
+}
+
+function writeDeletedFile(db) {
+  try {
+    fs.writeFileSync(
+      DELETED_FILE,
+      JSON.stringify(
+        { ids: db.deletedIds || [], names: db.deletedNames || [] },
+        null,
+        2
+      )
+    );
+  } catch (err) {
+    // Read-only on Vercel; remote persist still saves tombstones.
+  }
+}
+
+function applyTombstones(db) {
+  const file = readDeletedFile();
+  const ids = new Set(
+    [...(db.deletedIds || []), ...(file.ids || [])].map(String).filter(Boolean)
+  );
+  const names = new Set(
+    [...(db.deletedNames || []), ...(file.names || [])]
+      .map((item) => String(item).trim())
+      .filter(Boolean)
+  );
+  const namesLower = new Set([...names].map((item) => item.toLowerCase()));
+  db.deletedIds = [...ids];
+  db.deletedNames = [...names];
+  db.businesses = (db.businesses || []).filter(
+    (item) =>
+      !ids.has(String(item._id)) &&
+      !namesLower.has(String(item.name || '').toLowerCase())
+  );
+  return db;
 }
 
 let cache = null;
@@ -23,13 +75,13 @@ let cache = null;
 function loadFromDiskOrBundled() {
   try {
     if (fs.existsSync(FILE)) {
-      return fromParsed(JSON.parse(fs.readFileSync(FILE, 'utf8')));
+      return applyTombstones(fromParsed(JSON.parse(fs.readFileSync(FILE, 'utf8'))));
     }
   } catch (err) {
     // Fall through to bundled catalog.
   }
   if (bundled && (bundled.users?.length || bundled.categories?.length)) {
-    return fromParsed(bundled);
+    return applyTombstones(fromParsed(bundled));
   }
   return emptyDb();
 }
@@ -48,15 +100,17 @@ function writeDisk(db) {
 async function hydrate() {
   try {
     const remote = await persist.read();
-    if (remote && (remote.users.length || remote.categories.length || remote.businesses.length)) {
-      cache = remote;
-      writeDisk(remote);
+    if (remote && (remote.users.length || remote.categories.length || remote.businesses.length || remote.deletedIds?.length)) {
+      cache = applyTombstones(remote);
+      globalThis.__tyreStore = cache;
+      writeDisk(cache);
       return;
     }
   } catch (err) {
     console.error('Remote store read failed:', err.message);
   }
   cache = loadFromDiskOrBundled();
+  globalThis.__tyreStore = cache;
   if (isServerless && !persist.hasRemoteStore()) {
     console.warn(
       'No persistent store configured (Vercel KV, Blob, or MongoDB). Admin add/edit/delete will reset after restart.'
@@ -65,21 +119,29 @@ async function hydrate() {
 }
 
 function load() {
+  if (globalThis.__tyreStore) {
+    cache = globalThis.__tyreStore;
+    return cache;
+  }
   if (!cache) {
     cache = loadFromDiskOrBundled();
+    globalThis.__tyreStore = cache;
   }
   return cache;
 }
 
 async function save(db) {
-  cache = db;
-  writeDisk(db);
+  const next = applyTombstones(db);
+  cache = next;
+  globalThis.__tyreStore = next;
+  writeDisk(next);
+  writeDeletedFile(next);
   try {
-    await persist.write(db);
+    await persist.write(next);
   } catch (err) {
     console.error('Remote store persist failed:', err.message);
   }
-  return db;
+  return next;
 }
 
 const categoryNamesAr = {
@@ -261,6 +323,11 @@ const store = {
       const db = load();
       return db.businesses.find((item) => item.name === name) || null;
     },
+    wasDeleted(name) {
+      const db = load();
+      const needle = String(name || '').toLowerCase();
+      return (db.deletedNames || []).some((item) => String(item).toLowerCase() === needle);
+    },
     async create(data) {
       const db = load();
       const business = {
@@ -270,6 +337,9 @@ const store = {
         updatedAt: new Date().toISOString(),
       };
       db.businesses.push(business);
+      const name = String(business.name || '').toLowerCase();
+      db.deletedNames = (db.deletedNames || []).filter((item) => String(item).toLowerCase() !== name);
+      db.deletedIds = (db.deletedIds || []).filter((item) => !sameId(item, business._id));
       await save(db);
       return populateBusiness(db, business);
     },
@@ -293,10 +363,28 @@ const store = {
     async remove(id) {
       const db = load();
       const business = db.businesses.find((item) => sameId(item._id, id));
-      if (!business) return null;
+      if (!business) {
+        db.deletedIds = [...new Set([...(db.deletedIds || []), String(id)])];
+        await save(db);
+        return null;
+      }
       db.businesses = db.businesses.filter((item) => !sameId(item._id, id));
+      db.deletedIds = [...new Set([...(db.deletedIds || []), String(business._id)])];
+      if (business.name) {
+        db.deletedNames = [...new Set([...(db.deletedNames || []), business.name])];
+      }
       await save(db);
       return business;
+    },
+    async rememberDeleted(ids = [], names = []) {
+      const db = load();
+      db.deletedIds = [...new Set([...(db.deletedIds || []), ...ids.map(String)])];
+      db.deletedNames = [...new Set([...(db.deletedNames || []), ...names.map(String).filter(Boolean)])];
+      await save(db);
+      return {
+        deletedIds: db.deletedIds,
+        remaining: db.businesses.length,
+      };
     },
   },
 };

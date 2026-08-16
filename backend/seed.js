@@ -53,6 +53,7 @@ async function seedAll() {
       throw new Error(`Missing category for ${item.name}`);
     }
     if (store.businesses.findByName(item.name)) continue;
+    if (store.businesses.wasDeleted(item.name)) continue;
     const { key, categoryKey, ...rest } = item;
     await store.businesses.create({
       ...rest,

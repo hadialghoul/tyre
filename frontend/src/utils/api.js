@@ -50,6 +50,7 @@ export const businessAPI = {
       : undefined
   ),
   delete: (id) => api.delete(`/businesses/${encodeURIComponent(id)}`),
+  rememberDeleted: (ids, names) => api.post('/businesses/tombstones', { ids, names }),
   addMenu: (id, data) => api.post(`/businesses/${encodeURIComponent(id)}/menus`, data),
 };
 

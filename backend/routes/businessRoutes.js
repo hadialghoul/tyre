@@ -53,6 +53,17 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.post('/tombstones', auth, adminOnly, async (req, res) => {
+  try {
+    const ids = Array.isArray(req.body?.ids) ? req.body.ids : [];
+    const names = Array.isArray(req.body?.names) ? req.body.names : [];
+    const result = await store.businesses.rememberDeleted(ids, names);
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
     const business = store.businesses.findById(req.params.id);

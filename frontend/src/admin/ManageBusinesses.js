@@ -22,6 +22,7 @@ import {
 import { businessAPI, categoryAPI, resolveMediaUrl } from '../utils/api';
 import { Edit, Delete } from '@mui/icons-material';
 import { isDiningCategory, getCategoryKind } from '../utils/catalog';
+import { filterDeleted, rememberDeleted, getDeletedIds, getDeletedNames } from '../utils/deleted';
 
 const emptyForm = {
   name: '',
@@ -58,7 +59,19 @@ const ManageBusinesses = () => {
   const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
-    fetchData();
+    const syncDeleted = async () => {
+      const ids = getDeletedIds();
+      const names = getDeletedNames();
+      if (ids.length || names.length) {
+        try {
+          await businessAPI.rememberDeleted(ids, names);
+        } catch (err) {
+          // Keep local list even if the server sync fails.
+        }
+      }
+      fetchData();
+    };
+    syncDeleted();
   }, []);
 
   const fetchData = async () => {
@@ -68,7 +81,7 @@ const ManageBusinesses = () => {
         businessAPI.getAll({}),
         categoryAPI.getAll(),
       ]);
-      setBusinesses(Array.isArray(bizRes.data) ? bizRes.data : []);
+      setBusinesses(filterDeleted(Array.isArray(bizRes.data) ? bizRes.data : []));
       setCategories(Array.isArray(catRes.data) ? catRes.data : []);
     } catch (err) {
       setError('Failed to load data');
@@ -197,6 +210,8 @@ const ManageBusinesses = () => {
       setDeletingId(id);
       setError('');
       await businessAPI.delete(id);
+      const removed = businesses.find((item) => String(item._id) === String(id));
+      rememberDeleted(id, removed?.name);
       setBusinesses((prev) => prev.filter((item) => String(item._id) !== String(id)));
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to delete business');

@@ -1,6 +1,7 @@
 import catalog from '../data/catalog.json';
 import { businessAPI, categoryAPI, isApiConfigured } from './api';
 import { categoryNamesAr, serviceTypesAr } from '../i18n/translations';
+import { filterDeleted } from './deleted';
 
 export const SAMPLE_CATEGORIES = catalog.categories.map((category) => ({
   _id: `cat-${category.key}`,
@@ -100,31 +101,47 @@ export const loadCategories = async () => {
     const { data } = await categoryAPI.getAll();
     if (Array.isArray(data)) return data;
   } catch (err) {
-    console.warn('Using local Tyre catalog for categories.');
+    console.warn('Failed to load categories from API.');
   }
   return SAMPLE_CATEGORIES;
 };
 
 export const loadBusinesses = async (filters = {}) => {
-  if (!isApiConfigured || isSampleId(filters.category)) {
-    return filterSampleBusinesses(filters);
+  if (!isApiConfigured) {
+    return filterDeleted(filterSampleBusinesses(filters));
   }
 
   try {
-    const { data } = await businessAPI.getAll(filters);
-    if (Array.isArray(data)) return data;
+    const apiFilters = { ...filters };
+    if (isSampleId(apiFilters.category)) {
+      const sampleCat = SAMPLE_CATEGORIES.find((item) => item._id === apiFilters.category);
+      delete apiFilters.category;
+      const { data } = await businessAPI.getAll(apiFilters);
+      if (Array.isArray(data)) {
+        const list = sampleCat
+          ? data.filter((item) => item.category?.name === sampleCat.name)
+          : data;
+        return filterDeleted(list);
+      }
+    } else {
+      const { data } = await businessAPI.getAll(filters);
+      if (Array.isArray(data)) return filterDeleted(data);
+    }
   } catch (err) {
-    console.warn('Using local Tyre catalog for businesses.');
+    console.warn('Failed to load businesses from API.');
   }
 
-  return filterSampleBusinesses(filters);
+  return [];
 };
 
 export const loadBusinessById = async (id) => {
-  const sample = getSampleBusiness(id);
-  if (sample) return sample;
-  if (!isApiConfigured) return null;
-
-  const { data } = await businessAPI.getById(id);
-  return data;
+  if (isApiConfigured) {
+    try {
+      const { data } = await businessAPI.getById(id);
+      return data || null;
+    } catch (err) {
+      return null;
+    }
+  }
+  return getSampleBusiness(id) || null;
 };

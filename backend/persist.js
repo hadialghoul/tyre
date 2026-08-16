@@ -7,6 +7,8 @@ function fromParsed(parsed) {
     users: parsed.users || [],
     categories: parsed.categories || [],
     businesses: parsed.businesses || [],
+    deletedIds: parsed.deletedIds || [],
+    deletedNames: parsed.deletedNames || [],
   };
 }
 
@@ -167,6 +169,8 @@ async function write(db) {
     users: db.users || [],
     categories: db.categories || [],
     businesses: db.businesses || [],
+    deletedIds: db.deletedIds || [],
+    deletedNames: db.deletedNames || [],
   };
   const results = await Promise.allSettled([
     writeKv(payload),
