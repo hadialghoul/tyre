@@ -80,12 +80,12 @@
     {
       "_id": "biz_1a00b002b7b047d81",
       "name": "Ugarit International Restaurant ",
-      "secondName": "Al Marsah",
+      "secondName": "",
       "category": "cat_19ffb4b92eb49f83f",
       "description": "Lebanese, International, Chinese, Italian cuisines",
       "phone": "81 000 098 ",
       "address": "Tyre, Sea Side Road",
-      "logo": "/api/media/1a00b0d540155cfe6ed.jpg",
+      "logo": "/api/media/1a00b19b59da561471c.png",
       "logo2": "/api/media/1a00b0d58641d2e391d.jpg",
       "coverImage": "/api/media/1a00b18524b00cb7504.jpg",
       "openingHours": "8:00 am till 2:00 am",
@@ -104,7 +104,7 @@
         }
       ],
       "createdAt": "2026-08-16T14:35:55.643Z",
-      "updatedAt": "2026-08-16T15:02:20.374Z"
+      "updatedAt": "2026-08-16T15:03:50.496Z"
     }
   ],
   "deletedIds": [
