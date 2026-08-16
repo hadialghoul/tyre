@@ -1,5 +1,9 @@
+const path = require('path');
+
 const STORE_KEY = 'tyre-store';
 const BLOB_PATH = 'tyre-store.json';
+const GITHUB_STORE_PATH = 'backend/data/store.json';
+const GITHUB_MEDIA_DIR = 'backend/data/media';
 
 function fromParsed(parsed) {
   if (!parsed || typeof parsed !== 'object') return null;
@@ -19,12 +23,141 @@ function mongoUri() {
   return uri;
 }
 
+function hasMongo() {
+  return Boolean(mongoUri());
+}
+
+function githubToken() {
+  return String(process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '').trim();
+}
+
+function githubRepo() {
+  const explicit = String(process.env.GITHUB_REPO || '').trim();
+  if (explicit) return explicit.replace(/^https?:\/\/github\.com\//i, '').replace(/\.git$/i, '');
+  const owner = process.env.VERCEL_GIT_REPO_OWNER;
+  const name = process.env.VERCEL_GIT_REPO_SLUG;
+  if (owner && name) return `${owner}/${name}`;
+  return '';
+}
+
+function githubBranch() {
+  return String(process.env.GITHUB_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || 'main').trim() || 'main';
+}
+
+function hasGitHub() {
+  return Boolean(githubToken() && githubRepo());
+}
+
 function hasRemoteStore() {
   return Boolean(
-    (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) ||
+    hasGitHub() ||
+      (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) ||
       process.env.BLOB_READ_WRITE_TOKEN ||
-      mongoUri()
+      hasMongo()
   );
+}
+
+function encodeGithubPath(filePath) {
+  return String(filePath)
+    .split('/')
+    .map(encodeURIComponent)
+    .join('/');
+}
+
+async function githubRequest(pathname, { method = 'GET', body } = {}) {
+  const res = await fetch(`https://api.github.com/repos/${githubRepo()}${pathname}`, {
+    method,
+    headers: {
+      Authorization: `Bearer ${githubToken()}`,
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'User-Agent': 'tyre-site',
+      ...(body ? { 'Content-Type': 'application/json' } : {}),
+    },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const text = await res.text();
+  let json = null;
+  try {
+    json = text ? JSON.parse(text) : null;
+  } catch (err) {
+    json = null;
+  }
+  return { ok: res.ok, status: res.status, json };
+}
+
+async function githubGetFile(filePath) {
+  const { ok, status, json } = await githubRequest(
+    `/contents/${encodeGithubPath(filePath)}?ref=${encodeURIComponent(githubBranch())}`
+  );
+  if (status === 404) return null;
+  if (!ok) throw new Error(json?.message || 'GitHub read failed');
+  if (json.encoding === 'base64' && json.content) {
+    return {
+      sha: json.sha,
+      buffer: Buffer.from(String(json.content).replace(/\n/g, ''), 'base64'),
+    };
+  }
+  if (json.download_url) {
+    const res = await fetch(json.download_url, {
+      headers: {
+        Authorization: `Bearer ${githubToken()}`,
+        'User-Agent': 'tyre-site',
+      },
+    });
+    if (!res.ok) throw new Error('GitHub download failed');
+    return { sha: json.sha, buffer: Buffer.from(await res.arrayBuffer()) };
+  }
+  return null;
+}
+
+async function githubPutFile(filePath, buffer, message) {
+  let sha;
+  try {
+    sha = (await githubGetFile(filePath))?.sha;
+  } catch (err) {
+    sha = undefined;
+  }
+  const body = {
+    message,
+    content: Buffer.from(buffer).toString('base64'),
+    branch: githubBranch(),
+    ...(sha ? { sha } : {}),
+  };
+  let result = await githubRequest(`/contents/${encodeGithubPath(filePath)}`, {
+    method: 'PUT',
+    body,
+  });
+  if (!result.ok && (result.status === 409 || result.status === 422)) {
+    const latest = await githubGetFile(filePath);
+    result = await githubRequest(`/contents/${encodeGithubPath(filePath)}`, {
+      method: 'PUT',
+      body: { ...body, ...(latest?.sha ? { sha: latest.sha } : {}) },
+    });
+  }
+  if (!result.ok) {
+    throw new Error(result.json?.message || `GitHub write failed (${result.status})`);
+  }
+  return true;
+}
+
+async function readGithub() {
+  if (!hasGitHub()) return null;
+  try {
+    const file = await githubGetFile(GITHUB_STORE_PATH);
+    if (!file) return null;
+    return fromParsed(JSON.parse(file.buffer.toString('utf8')));
+  } catch (err) {
+    console.error('GitHub store read failed:', err.message);
+    return null;
+  }
+}
+
+async function writeGithub(db) {
+  if (!hasGitHub()) return false;
+  const payload = `${JSON.stringify(db, null, 2)}\n`;
+  await githubPutFile(GITHUB_STORE_PATH, Buffer.from(payload), 'Update businesses and categories');
+  return true;
 }
 
 async function readKv() {
@@ -112,7 +245,7 @@ async function getMongoModel() {
   if (mongoModel) return mongoModel;
   const mongoose = require('mongoose');
   if (mongoose.connection.readyState === 0) {
-    await mongoose.connect(uri);
+    await mongoose.connect(uri, { serverSelectionTimeoutMS: 8000 });
   }
   mongoModel =
     mongoose.models.TyreStore ||
@@ -124,9 +257,11 @@ async function getMongoModel() {
           users: Array,
           categories: Array,
           businesses: Array,
+          deletedIds: Array,
+          deletedNames: Array,
           updatedAt: Date,
         },
-        { collection: 'tyre_store' }
+        { collection: 'tyre_store', strict: false }
       )
     );
   return mongoModel;
@@ -160,8 +295,99 @@ async function writeMongo(db) {
   }
 }
 
+let fileModel = null;
+
+async function getFileModel() {
+  if (!hasMongo()) return null;
+  await getMongoModel();
+  if (fileModel) return fileModel;
+  const mongoose = require('mongoose');
+  fileModel =
+    mongoose.models.TyreFile ||
+    mongoose.model(
+      'TyreFile',
+      new mongoose.Schema(
+        {
+          mime: String,
+          name: String,
+          data: Buffer,
+        },
+        { collection: 'tyre_files' }
+      )
+    );
+  return fileModel;
+}
+
+function mediaExt(mime, name) {
+  const fromName = name ? path.extname(name).toLowerCase() : '';
+  if (fromName) return fromName;
+  return (
+    {
+      'image/jpeg': '.jpg',
+      'image/png': '.png',
+      'image/webp': '.webp',
+      'image/gif': '.gif',
+    }[mime] || '.bin'
+  );
+}
+
+function mediaMime(id) {
+  return (
+    {
+      '.jpg': 'image/jpeg',
+      '.jpeg': 'image/jpeg',
+      '.png': 'image/png',
+      '.webp': 'image/webp',
+      '.gif': 'image/gif',
+    }[path.extname(String(id)).toLowerCase()] || 'application/octet-stream'
+  );
+}
+
+async function saveFile({ mime, name, data }) {
+  if (!data) return null;
+  if (hasGitHub()) {
+    const id = `${Date.now().toString(16)}${Math.random().toString(16).slice(2, 10)}${mediaExt(mime, name)}`;
+    await githubPutFile(
+      `${GITHUB_MEDIA_DIR}/${id}`,
+      Buffer.from(data),
+      `Add uploaded image ${id}`
+    );
+    return id;
+  }
+  const Model = await getFileModel();
+  if (!Model) return null;
+  const doc = await Model.create({ mime, name, data });
+  return String(doc._id);
+}
+
+async function readFile(id) {
+  if (!id) return null;
+  if (hasGitHub()) {
+    try {
+      const file = await githubGetFile(`${GITHUB_MEDIA_DIR}/${id}`);
+      if (file) return { mime: mediaMime(id), data: file.buffer };
+    } catch (err) {
+      console.error('GitHub file read failed:', err.message);
+    }
+  }
+  try {
+    const Model = await getFileModel();
+    if (!Model) return null;
+    const doc = await Model.findById(id).lean();
+    if (!doc) return null;
+    const raw = doc.data;
+    const data = Buffer.isBuffer(raw)
+      ? raw
+      : Buffer.from(raw?.buffer || raw || []);
+    return { mime: doc.mime || 'application/octet-stream', data };
+  } catch (err) {
+    console.error('Mongo file read failed:', err.message);
+    return null;
+  }
+}
+
 async function read() {
-  return (await readKv()) || (await readBlob()) || (await readMongo()) || null;
+  return (await readGithub()) || (await readKv()) || (await readBlob()) || (await readMongo()) || null;
 }
 
 async function write(db) {
@@ -172,6 +398,10 @@ async function write(db) {
     deletedIds: db.deletedIds || [],
     deletedNames: db.deletedNames || [],
   };
+  if (hasGitHub()) {
+    await writeGithub(payload);
+    return true;
+  }
   const results = await Promise.allSettled([
     writeKv(payload),
     writeBlob(payload),
@@ -180,4 +410,13 @@ async function write(db) {
   return results.some((item) => item.status === 'fulfilled' && item.value);
 }
 
-module.exports = { read, write, fromParsed, hasRemoteStore };
+module.exports = {
+  read,
+  write,
+  fromParsed,
+  hasRemoteStore,
+  hasMongo,
+  hasGitHub,
+  saveFile,
+  readFile,
+};

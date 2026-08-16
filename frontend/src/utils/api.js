@@ -67,9 +67,13 @@ export const authAPI = {
   login: (data) => api.post('/auth/login', data),
 };
 
+export const healthAPI = {
+  get: () => api.get('/health'),
+};
+
 export const resolveMediaUrl = (mediaPath) => {
   if (!mediaPath) return '';
-  if (/^https?:\/\//i.test(mediaPath)) return mediaPath;
+  if (/^https?:\/\//i.test(mediaPath) || mediaPath.startsWith('data:')) return mediaPath;
   if (mediaPath.startsWith('/images/') || mediaPath.startsWith('/img/')) return mediaPath;
   return `${API_ORIGIN}${mediaPath.startsWith('/') ? mediaPath : `/${mediaPath}`}`;
 };

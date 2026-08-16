@@ -100,7 +100,7 @@ function writeDisk(db) {
 async function hydrate() {
   try {
     const remote = await persist.read();
-    if (remote && (remote.users.length || remote.categories.length || remote.businesses.length || remote.deletedIds?.length)) {
+    if (remote && (remote.users.length || remote.categories.length || Array.isArray(remote.businesses))) {
       cache = applyTombstones(remote);
       globalThis.__tyreStore = cache;
       writeDisk(cache);
@@ -111,11 +111,6 @@ async function hydrate() {
   }
   cache = loadFromDiskOrBundled();
   globalThis.__tyreStore = cache;
-  if (isServerless && !persist.hasRemoteStore()) {
-    console.warn(
-      'No persistent store configured (Vercel KV, Blob, or MongoDB). Admin add/edit/delete will reset after restart.'
-    );
-  }
 }
 
 function load() {
@@ -137,9 +132,13 @@ async function save(db) {
   writeDisk(next);
   writeDeletedFile(next);
   try {
-    await persist.write(next);
+    const saved = await persist.write(next);
+    if (isServerless && persist.hasRemoteStore() && !saved) {
+      throw new Error('Could not save changes. Try again.');
+    }
   } catch (err) {
     console.error('Remote store persist failed:', err.message);
+    if (isServerless) throw err;
   }
   return next;
 }
@@ -390,5 +389,6 @@ const store = {
 };
 
 store.ready = hydrate();
+store.persistenceEnabled = () => persist.hasRemoteStore();
 
 module.exports = store;

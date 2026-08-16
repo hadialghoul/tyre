@@ -2,6 +2,7 @@ const express = require('express');
 const store = require('../store');
 const { auth, adminOnly } = require('../middleware/auth');
 const upload = require('../middleware/upload');
+const { storedPath } = require('../media');
 
 const router = express.Router();
 
@@ -19,7 +20,7 @@ const isRestaurantOrCafe = (categoryName = '') => {
 
 const toBool = (value) => value === true || value === 'true';
 
-const buildMenuFromRequest = (req) => {
+const buildMenuFromRequest = async (req) => {
   const menuType = req.body.menuType;
   const menuLink = req.body.menuLink;
   const menuName = req.body.menuName || 'Main Menu';
@@ -35,7 +36,7 @@ const buildMenuFromRequest = (req) => {
     description: menuDescription,
     type: menuType === 'link' ? 'link' : 'image',
     link: menuType === 'link' ? menuLink : '',
-    image: menuType === 'image' && menuQrImageFile ? `/uploads/${menuQrImageFile.filename}` : '',
+    image: menuType === 'image' && menuQrImageFile ? await storedPath(menuQrImageFile) : '',
     items: [],
   };
 
@@ -89,7 +90,7 @@ router.post('/', auth, adminOnly, businessFilesUpload, async (req, res) => {
       return res.status(400).json({ message: 'Invalid category selected' });
     }
 
-    const menu = isRestaurantOrCafe(categoryDoc.name) ? buildMenuFromRequest(req) : null;
+    const menu = isRestaurantOrCafe(categoryDoc.name) ? await buildMenuFromRequest(req) : null;
     const logoFile = req.files?.logo?.[0];
     const logo2File = req.files?.logo2?.[0];
     const coverFile = req.files?.coverImage?.[0];
@@ -104,9 +105,9 @@ router.post('/', auth, adminOnly, businessFilesUpload, async (req, res) => {
       email,
       address,
       website,
-      logo: logoFile ? `/uploads/${logoFile.filename}` : '',
-      logo2: logo2File ? `/uploads/${logo2File.filename}` : '',
-      coverImage: coverFile ? `/uploads/${coverFile.filename}` : '',
+      logo: await storedPath(logoFile),
+      logo2: await storedPath(logo2File),
+      coverImage: await storedPath(coverFile),
       openingHours,
       hasDelivery: toBool(hasDelivery),
       deliveryPhone,
@@ -144,7 +145,7 @@ router.put('/:id', auth, adminOnly, businessFilesUpload, async (req, res) => {
       return res.status(400).json({ message: 'Invalid category selected' });
     }
 
-    const menu = isRestaurantOrCafe(categoryDoc.name) ? buildMenuFromRequest(req) : null;
+    const menu = isRestaurantOrCafe(categoryDoc.name) ? await buildMenuFromRequest(req) : null;
     const logoFile = req.files?.logo?.[0];
     const logo2File = req.files?.logo2?.[0];
     const coverFile = req.files?.coverImage?.[0];
@@ -167,9 +168,9 @@ router.put('/:id', auth, adminOnly, businessFilesUpload, async (req, res) => {
     if (starRating !== undefined) updates.starRating = starRating === '' ? undefined : Number(starRating);
     if (serviceType !== undefined) updates.serviceType = serviceType;
     if (mapsUrl !== undefined) updates.mapsUrl = mapsUrl;
-    if (logoFile) updates.logo = `/uploads/${logoFile.filename}`;
-    if (logo2File) updates.logo2 = `/uploads/${logo2File.filename}`;
-    if (coverFile) updates.coverImage = `/uploads/${coverFile.filename}`;
+    if (logoFile) updates.logo = await storedPath(logoFile);
+    if (logo2File) updates.logo2 = await storedPath(logo2File);
+    if (coverFile) updates.coverImage = await storedPath(coverFile);
 
     if (isRestaurantOrCafe(categoryDoc.name)) {
       if (menu) updates.menus = [menu];
@@ -194,7 +195,7 @@ router.post('/:id/menus', auth, adminOnly, upload.single('image'), async (req, r
     const menus = [...(business.menus || []), {
       name: req.body.name,
       description: req.body.description,
-      image: req.file ? `/uploads/${req.file.filename}` : '',
+      image: req.file ? await storedPath(req.file) : '',
       items: [],
     }];
 

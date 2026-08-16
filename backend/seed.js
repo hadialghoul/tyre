@@ -47,6 +47,11 @@ async function seedAll() {
     categoryMap.set(categoryData.key, category);
   }
 
+  if (process.env.VERCEL) {
+    console.log(`Admin ready: ${user.email}. Sample businesses are not auto-loaded on the live site.`);
+    return user;
+  }
+
   for (const item of catalog.businesses) {
     const category = categoryMap.get(item.categoryKey);
     if (!category) {

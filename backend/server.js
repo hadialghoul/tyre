@@ -43,12 +43,30 @@ app.use(async (req, res, next) => {
 });
 app.use('/uploads', express.static(uploadDir));
 
+app.get('/api/media/:id', async (req, res) => {
+  try {
+    const persist = require('./persist');
+    const file = await persist.readFile(req.params.id);
+    if (!file) {
+      return res.status(404).json({ message: 'File not found' });
+    }
+    res.set('Content-Type', file.mime || 'application/octet-stream');
+    res.set('Cache-Control', 'public, max-age=31536000, immutable');
+    return res.send(file.data);
+  } catch (err) {
+    return res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
 app.use('/api/businesses', require('./routes/businessRoutes'));
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/categories', require('./routes/categoryRoutes'));
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'Backend server is running' });
+  res.json({
+    status: 'Backend server is running',
+    persistent: store.persistenceEnabled(),
+  });
 });
 
 async function start() {
