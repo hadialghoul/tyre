@@ -105,6 +105,26 @@
       ],
       "createdAt": "2026-08-16T15:08:07.896Z",
       "updatedAt": "2026-08-17T12:43:16.375Z"
+    },
+    {
+      "_id": "biz_1a00fc301d4d46e4a",
+      "name": "Ali Salem",
+      "secondName": "",
+      "category": "cat_19ffb4b930795d677",
+      "description": "washer repair",
+      "phone": "03 170 634",
+      "address": "",
+      "logo": "",
+      "logo2": "",
+      "coverImage": "",
+      "openingHours": "",
+      "hasDelivery": false,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [],
+      "createdAt": "2026-08-17T12:47:13.364Z",
+      "updatedAt": "2026-08-17T12:47:13.364Z"
     }
   ],
   "deletedIds": [
