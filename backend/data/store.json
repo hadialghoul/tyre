@@ -145,6 +145,26 @@
       "menus": [],
       "createdAt": "2026-08-17T12:49:35.033Z",
       "updatedAt": "2026-08-17T12:49:35.033Z"
+    },
+    {
+      "_id": "biz_1a00fc65c81804477",
+      "name": "Rasha Salem",
+      "secondName": "",
+      "category": "cat_19ffb4b930795d677",
+      "description": "Graphic Designer",
+      "phone": "76 811 157",
+      "address": "",
+      "logo": "",
+      "logo2": "",
+      "coverImage": "",
+      "openingHours": "",
+      "hasDelivery": false,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [],
+      "createdAt": "2026-08-17T12:50:53.185Z",
+      "updatedAt": "2026-08-17T12:50:53.185Z"
     }
   ],
   "deletedIds": [
