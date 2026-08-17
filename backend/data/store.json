@@ -125,6 +125,26 @@
       "menus": [],
       "createdAt": "2026-08-17T12:47:13.364Z",
       "updatedAt": "2026-08-17T12:47:13.364Z"
+    },
+    {
+      "_id": "biz_1a00fc52b39863d4a",
+      "name": "Said Salem",
+      "secondName": "",
+      "category": "cat_19ffb4b930795d677",
+      "description": "Electricity/Solar System",
+      "phone": "81 045 241",
+      "address": "",
+      "logo": "",
+      "logo2": "",
+      "coverImage": "",
+      "openingHours": "",
+      "hasDelivery": false,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [],
+      "createdAt": "2026-08-17T12:49:35.033Z",
+      "updatedAt": "2026-08-17T12:49:35.033Z"
     }
   ],
   "deletedIds": [
