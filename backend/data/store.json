@@ -165,6 +165,26 @@
       "menus": [],
       "createdAt": "2026-08-17T12:50:53.185Z",
       "updatedAt": "2026-08-17T12:50:53.185Z"
+    },
+    {
+      "_id": "biz_1a00fca29395cf670",
+      "name": "Abed",
+      "secondName": "",
+      "category": "cat_19ffb4b930795d677",
+      "description": "Plumber",
+      "phone": "71 143 490",
+      "address": "",
+      "logo": "",
+      "logo2": "",
+      "coverImage": "",
+      "openingHours": "",
+      "hasDelivery": false,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [],
+      "createdAt": "2026-08-17T12:55:02.201Z",
+      "updatedAt": "2026-08-17T12:55:02.201Z"
     }
   ],
   "deletedIds": [
