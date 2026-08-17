@@ -206,7 +206,7 @@ const Home = () => {
           >
             {[
               { k: '2750 BC', v: t('founded') },
-              { k: t('unescoCity'), v: t('partner') },
+              { k: t('heritage'), v: t('tyre') },
               { k: t('coast') === 'Coast' ? 'Mediterranean' : 'المتوسط', v: t('coast') },
             ].map((item) => (
               <Box key={item.k} className="fade-up-delay-2" sx={{ textAlign: 'center' }}>

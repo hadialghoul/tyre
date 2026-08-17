@@ -95,42 +95,8 @@ const Footer = () => {
 
         <Box
           sx={{
-            borderTop: '1px solid rgba(200,163,106,0.18)',
-            mt: 7,
-            pt: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            textAlign: 'center',
-            gap: 1.2,
-          }}
-        >
-          <Box
-            component="img"
-            src="/images/tyre/logo2.PNG"
-            alt="Sawt Al Farah"
-            sx={{
-              width: { xs: 180, md: 220 },
-              height: 'auto',
-              objectFit: 'contain',
-            }}
-          />
-          <Typography
-            sx={{
-              color: '#c8a36a',
-              fontSize: 13,
-              letterSpacing: isAr ? 0 : '0.12em',
-              fontWeight: 500,
-            }}
-          >
-            {t('supportedBy')}
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
             borderTop: '1px solid rgba(200,163,106,0.12)',
-            mt: 4,
+            mt: 7,
             pt: 3,
             display: 'flex',
             justifyContent: 'space-between',
@@ -142,7 +108,7 @@ const Footer = () => {
             © {new Date().getFullYear()} {t('discoverTyre')}
           </Typography>
           <Typography variant="body2" sx={{ color: 'rgba(246,240,230,0.5)' }}>
-            {t('unescoCity')}
+            {t('lebanon')}
           </Typography>
         </Box>
       </Container>

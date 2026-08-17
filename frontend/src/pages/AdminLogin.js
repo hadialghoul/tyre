@@ -52,7 +52,7 @@ const AdminLogin = () => {
       <Container maxWidth="sm" sx={{ position: 'relative' }}>
         <Box sx={{ bgcolor: '#fbf7f0', p: { xs: 4, md: 5 } }}>
           <Typography sx={{ letterSpacing: '0.28em', fontSize: 12, color: '#c8a36a', mb: 1, textAlign: 'center' }}>
-            {t('partners')}
+            {t('admin')}
           </Typography>
           <Typography
             sx={{
