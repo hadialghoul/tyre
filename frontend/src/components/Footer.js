@@ -62,17 +62,16 @@ const Footer = () => {
               {t('medCoast')}
             </Typography>
             <Stack spacing={0.8}>
-              {CONTACT.phones.map((phone) => (
+              {CONTACT.phones[0] && (
                 <Link
-                  key={phone.tel}
-                  href={`tel:${phone.tel}`}
+                  href={`tel:${CONTACT.phones[0].tel}`}
                   underline="none"
                   className="gold-link"
                   sx={{ color: '#f6f0e6', width: 'fit-content' }}
                 >
-                  {phone.display}
+                  {CONTACT.phones[0].display}
                 </Link>
-              ))}
+              )}
               <Link
                 href={`mailto:${CONTACT.email}`}
                 underline="none"

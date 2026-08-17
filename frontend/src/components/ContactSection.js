@@ -55,8 +55,8 @@ const ContactSection = () => {
 
             <Grid item xs={12} md={7}>
               <Grid container spacing={2}>
-                {CONTACT.phones.map((phone) => (
-                  <Grid item xs={12} key={phone.tel}>
+                {CONTACT.phones[0] && (
+                  <Grid item xs={12}>
                     <Box
                       sx={{
                         height: '100%',
@@ -83,11 +83,11 @@ const ContactSection = () => {
                           unicodeBidi: 'plaintext',
                         }}
                       >
-                        {phone.display}
+                        {CONTACT.phones[0].display}
                       </Typography>
                       <Stack direction="row" spacing={1}>
                         <Button
-                          href={`tel:${phone.tel}`}
+                          href={`tel:${CONTACT.phones[0].tel}`}
                           startIcon={<Phone />}
                           sx={{
                             flex: 1,
@@ -100,7 +100,7 @@ const ContactSection = () => {
                           {t('callUs')}
                         </Button>
                         <Button
-                          href={`https://wa.me/${phone.whatsapp}`}
+                          href={`https://wa.me/${CONTACT.phones[0].whatsapp}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           startIcon={<WhatsApp />}
@@ -117,7 +117,7 @@ const ContactSection = () => {
                       </Stack>
                     </Box>
                   </Grid>
-                ))}
+                )}
                 <Grid item xs={12}>
                   <Box
                     sx={{
