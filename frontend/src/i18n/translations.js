@@ -2,7 +2,6 @@ export const CONTACT = {
   email: 'wenbesour@gmail.com',
   phones: [
     { display: '76 993 283', tel: '+96176993283', whatsapp: '96176993283' },
-    { display: '81 099 165', tel: '+96181099165', whatsapp: '96181099165' },
   ],
 };
 

@@ -55,8 +55,8 @@ const ContactSection = () => {
 
             <Grid item xs={12} md={7}>
               <Grid container spacing={2}>
-                {CONTACT.phones.map((phone, index) => (
-                  <Grid item xs={12} sm={6} key={phone.tel}>
+                {CONTACT.phones.map((phone) => (
+                  <Grid item xs={12} key={phone.tel}>
                     <Box
                       sx={{
                         height: '100%',
@@ -71,7 +71,7 @@ const ContactSection = () => {
                       }}
                     >
                       <Typography sx={{ fontSize: 12, color: '#c8a36a', letterSpacing: tracking, mb: 1.5 }}>
-                        {t('mobile')} 0{index + 1}
+                        {t('mobile')}
                       </Typography>
                       <Typography
                         sx={{
