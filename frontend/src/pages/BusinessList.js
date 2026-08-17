@@ -19,7 +19,7 @@ import { IMAGES } from '../utils/visuals';
 import { useLanguage } from '../i18n/LanguageContext';
 
 const BusinessList = () => {
-  const { t, categoryName, serviceName } = useLanguage();
+  const { t, categoryName, categoryDescription, serviceName } = useLanguage();
   const [searchParams, setSearchParams] = useSearchParams();
   const [businesses, setBusinesses] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -72,8 +72,12 @@ const BusinessList = () => {
     updateParams(draftSearch.trim(), selectedCategory);
   };
 
-  const selectedCategoryName = categories.find((cat) => cat._id === selectedCategory)?.name || '';
+  const selectedCategoryDoc = categories.find((cat) => cat._id === selectedCategory);
+  const selectedCategoryName = selectedCategoryDoc?.name || '';
   const isServices = getCategoryKind(selectedCategoryName) === 'service';
+  const pageDescription = isServices
+    ? categoryDescription(selectedCategoryName, selectedCategoryDoc?.description || '')
+    : '';
   const serviceTypes = [...new Set(businesses.map((item) => item.serviceType).filter(Boolean))];
   const visibleBusinesses = serviceType
     ? businesses.filter((item) => item.serviceType === serviceType)
@@ -112,6 +116,21 @@ const BusinessList = () => {
             >
               {categoryName(selectedCategoryName) || t('discoverTyre')}
             </Typography>
+            {pageDescription ? (
+              <Typography
+                sx={{
+                  mt: 1.5,
+                  mx: 'auto',
+                  maxWidth: 640,
+                  color: 'rgba(246,240,230,0.82)',
+                  fontSize: { xs: 14, md: 16 },
+                  lineHeight: 1.7,
+                  fontWeight: 300,
+                }}
+              >
+                {pageDescription}
+              </Typography>
+            ) : null}
           </Container>
         </Box>
       </Box>

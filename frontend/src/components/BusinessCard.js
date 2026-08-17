@@ -133,6 +133,22 @@ const BusinessCard = ({ business }) => {
           <Chip label={serviceName(business.serviceType)} size="small" sx={{ width: 'fit-content', bgcolor: 'rgba(200,163,106,0.16)' }} />
         ) : null}
 
+        {kind === 'service' && business.description ? (
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              lineHeight: 1.7,
+              display: '-webkit-box',
+              WebkitLineClamp: 4,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}
+          >
+            {business.description}
+          </Typography>
+        ) : null}
+
         <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
           {hasMenu && (
             <Chip icon={<MenuBook />} label={t('menuQr')} size="small" sx={{ bgcolor: 'rgba(11,28,34,0.06)' }} />
