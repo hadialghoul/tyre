@@ -17,7 +17,8 @@
       "description": "Cafes on the corniche and in the old streets, with menus you can open or scan.",
       "icon": "☕",
       "cover": "/api/media/1a00c3d470674b4df88.jpg",
-      "createdAt": "2026-08-13T13:24:21.871Z"
+      "createdAt": "2026-08-13T13:24:21.871Z",
+      "iconImage": "/img/categories/icons/coffee.svg"
     },
     {
       "_id": "cat_19ffb4b92f3e740ca",
