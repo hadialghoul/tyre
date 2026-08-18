@@ -82,6 +82,14 @@
       "icon": "",
       "cover": "",
       "createdAt": "2026-08-18T15:43:12.849Z"
+    },
+    {
+      "_id": "cat_1a0158b2182891e2c",
+      "name": "Tech Stores",
+      "description": "",
+      "icon": "",
+      "cover": "",
+      "createdAt": "2026-08-18T15:43:54.754Z"
     }
   ],
   "businesses": [
