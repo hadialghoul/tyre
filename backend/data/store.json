@@ -74,6 +74,14 @@
       "icon": "🍽️",
       "cover": "/api/media/1a00cd3f208fa0aa18e.jpg",
       "createdAt": "2026-08-16T20:09:31.167Z"
+    },
+    {
+      "_id": "cat_1a0158a7dd1cb7ab1",
+      "name": "Clothing Store",
+      "description": "",
+      "icon": "",
+      "cover": "",
+      "createdAt": "2026-08-18T15:43:12.849Z"
     }
   ],
   "businesses": [
