@@ -35,7 +35,8 @@
       "description": "Hotel pools and beach clubs on the Tyre coast.",
       "icon": "🏊",
       "cover": "/api/media/1a00c330b0eeb9e6277.jpg",
-      "createdAt": "2026-08-13T13:24:21.881Z"
+      "createdAt": "2026-08-13T13:24:21.881Z",
+      "iconImage": "/img/categories/icons/pools.svg"
     },
     {
       "_id": "cat_19ffb4b92fcba225f",
