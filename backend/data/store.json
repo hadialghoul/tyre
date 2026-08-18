@@ -87,9 +87,10 @@
       "_id": "cat_1a0158a7dd1cb7ab1",
       "name": "Clothing Store",
       "description": "",
-      "icon": "",
-      "cover": "",
-      "createdAt": "2026-08-18T15:43:12.849Z"
+      "icon": "👕",
+      "cover": "/img/categories/covers/clothing.svg",
+      "createdAt": "2026-08-18T15:43:12.849Z",
+      "iconImage": "/img/categories/icons/clothing.svg"
     },
     {
       "_id": "cat_1a0158b2182891e2c",
