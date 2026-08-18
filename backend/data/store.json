@@ -241,6 +241,26 @@
       "menus": [],
       "createdAt": "2026-08-18T15:48:00.976Z",
       "updatedAt": "2026-08-18T15:48:00.976Z"
+    },
+    {
+      "_id": "biz_1a01596f1b87c09a9",
+      "name": "Bawab Cell",
+      "secondName": "",
+      "category": "cat_1a0158b2182891e2c",
+      "description": "",
+      "phone": "71 903 800",
+      "address": "https://www.google.com/maps?q=33.2678910,35.2019920&entry=gps&shh=CAE&lucs=,94297699,100795625,94231188,94280568,47071704,94218641,94282134,100813469,94286869,100822504&g_ep=CAISEjI2LjMyLjUuOTU4MDQ3MzAzMBgAINeCAypdLDk0Mjk3Njk5LDEwMDc5NTYyNSw5NDIzMTE4OCw5NDI4MDU2OCw0NzA3MTcwNCw5NDIxODY0MSw5NDI4MjEzNCwxMDA4MTM0NjksOTQyODY4NjksMTAwODIyNTA0QgJMQg%3D%3D&skid=726e909a-4721-4dfc-a58e-b0f0aaf7d503&g_st=it",
+      "logo": "/api/media/1a01596e7b3596253d7.jpeg",
+      "logo2": "",
+      "coverImage": "/api/media/1a01596ec0dfd4ad739.jpeg",
+      "openingHours": "",
+      "hasDelivery": false,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [],
+      "createdAt": "2026-08-18T15:56:48.952Z",
+      "updatedAt": "2026-08-18T15:56:48.952Z"
     }
   ],
   "deletedIds": [
