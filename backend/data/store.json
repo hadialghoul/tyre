@@ -110,13 +110,13 @@
       "iconImage": "/img/categories/icons/barber.svg"
     },
     {
-      "_id": "cat_1a0162d47af6ae70f",
+      "_id": "cat_1a0162d47da934f30",
       "name": "Tech Store",
       "description": "Phones, electronics, and computer shops in Tyre.",
       "icon": "📱",
       "iconImage": "/img/categories/icons/tech.svg",
       "cover": "/img/categories/covers/tech.jpg",
-      "createdAt": "2026-08-18T18:41:01.359Z"
+      "createdAt": "2026-08-18T18:41:01.402Z"
     }
   ],
   "businesses": [
