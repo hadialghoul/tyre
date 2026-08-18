@@ -16,8 +16,8 @@ export const IMAGES = {
   barber: '/img/categories/covers/barber.jpg',
   night: '/img/beach.jpg',
   fallback: '/img/categories/covers/restaurants.svg',
-  beach: '/img/categories/covers/pools.svg',
-  port: '/img/categories/covers/restaurants.svg',
+  beach: '/img/beach.jpg',
+  port: '/img/port.jpg',
   hippodrome: '/img/hippodrome.jpg',
 };
 

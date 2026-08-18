@@ -56,7 +56,7 @@ const Home = () => {
   const stories = [
     { title: t('story1Title'), copy: t('story1Copy'), image: IMAGES.ruins },
     { title: t('story2Title'), copy: t('story2Copy'), image: IMAGES.coast },
-    { title: t('story3Title'), copy: t('story3Copy'), image: IMAGES.dining },
+    { title: t('story3Title'), copy: t('story3Copy'), image: IMAGES.port },
   ];
 
   const tracking = isAr ? 0 : '0.28em';
