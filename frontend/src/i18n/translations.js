@@ -105,6 +105,11 @@ export const translations = {
     medCoast: 'Mediterranean coast',
     supportedBy: 'WEN B SOUR',
     secondPlace: 'Also here',
+    logoHint: 'PNG, JPG, or PDF — PDFs are converted and shown as images.',
+    browseByCategory: 'Browse by category',
+    allCategories: 'All categories',
+    viewBusinesses: 'View businesses',
+    placesCount: '{n} places',
   },
   ar: {
     home: 'الرئيسية',
@@ -205,6 +210,11 @@ export const translations = {
     medCoast: 'ساحل المتوسط',
     supportedBy: 'وين بصور',
     secondPlace: 'أيضاً هنا',
+    logoHint: 'PNG أو JPG أو PDF — يتم تحويل ملف PDF وعرضه كصورة.',
+    browseByCategory: 'تصفّح حسب الفئة',
+    allCategories: 'كل الفئات',
+    viewBusinesses: 'عرض الأماكن',
+    placesCount: '{n} أماكن',
   },
 };
 

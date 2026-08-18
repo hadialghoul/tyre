@@ -18,6 +18,7 @@ import { IMAGES, categoryCover } from '../utils/visuals';
 import { loadCategories, loadBusinesses } from '../utils/catalog';
 import { resolveMediaUrl } from '../utils/api';
 import { useLanguage } from '../i18n/LanguageContext';
+import CategoryIcon from '../components/CategoryIcon';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -387,10 +388,11 @@ const Home = () => {
                       height: { xs: 240, md: 320 },
                       overflow: 'hidden',
                       textDecoration: 'none',
-                      '&:hover img': { transform: 'scale(1.06)' },
+                      '&:hover .category-cover': { transform: 'scale(1.06)' },
                     }}
                   >
                     <Box
+                      className="category-cover"
                       component="img"
                       src={resolveMediaUrl(cat.cover) || categoryCover(cat.name)}
                       alt={categoryName(cat.name)}
@@ -407,6 +409,7 @@ const Home = () => {
                         justifyContent: 'flex-end',
                       }}
                     >
+                      <CategoryIcon category={cat} size={48} sx={{ mb: 1.5, boxShadow: '0 8px 24px rgba(0,0,0,0.25)' }} />
                       <Typography sx={{ color: '#c8a36a', letterSpacing: tracking, fontSize: 12, mb: 0.8 }}>
                         {t('category')}
                       </Typography>

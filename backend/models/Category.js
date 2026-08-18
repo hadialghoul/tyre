@@ -8,6 +8,7 @@ const categorySchema = new mongoose.Schema({
   },
   description: String,
   icon: String,
+  iconImage: String,
   cover: String,
   createdAt: {
     type: Date,

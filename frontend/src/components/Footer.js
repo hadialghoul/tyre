@@ -46,9 +46,9 @@ const Footer = () => {
               {t('seek')}
             </Typography>
             <Stack spacing={1.2}>
-              <Link href="/businesses" underline="none" sx={{ color: 'rgba(246,240,230,0.82)' }}>{t('restaurants')}</Link>
-              <Link href="/businesses" underline="none" sx={{ color: 'rgba(246,240,230,0.82)' }}>{t('hotels')}</Link>
-              <Link href="/businesses" underline="none" sx={{ color: 'rgba(246,240,230,0.82)' }}>{t('services')}</Link>
+              <Link href="/businesses?category=Restaurants" underline="none" sx={{ color: 'rgba(246,240,230,0.82)' }}>{t('restaurants')}</Link>
+              <Link href="/businesses?category=Hotels" underline="none" sx={{ color: 'rgba(246,240,230,0.82)' }}>{t('hotels')}</Link>
+              <Link href="/businesses?category=Services" underline="none" sx={{ color: 'rgba(246,240,230,0.82)' }}>{t('services')}</Link>
             </Stack>
           </Grid>
 

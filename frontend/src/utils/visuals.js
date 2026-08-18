@@ -4,36 +4,83 @@ export const IMAGES = {
   hero: '/img/hero.jpg',
   ruins: '/img/hippodrome.jpg',
   coast: '/img/coast.jpg',
-  dining: '/img/port.jpg',
+  dining: '/img/categories/covers/restaurants.svg',
   streets: '/img/hero.jpg',
-  hotel: '/img/coast.jpg',
-  cafe: '/img/hero.jpg',
-  health: '/img/coast.jpg',
-  market: '/img/port.jpg',
-  service: '/img/hippodrome.jpg',
+  hotel: '/img/categories/covers/hotels.svg',
+  cafe: '/img/categories/covers/coffee.svg',
+  health: '/img/categories/covers/hospitals.svg',
+  market: '/img/categories/covers/supermarkets.svg',
+  service: '/img/categories/covers/services.svg',
   night: '/img/beach.jpg',
-  fallback: '/img/port.jpg',
-  beach: '/img/beach.jpg',
-  port: '/img/port.jpg',
+  fallback: '/img/categories/covers/restaurants.svg',
+  beach: '/img/categories/covers/pools.svg',
+  port: '/img/categories/covers/restaurants.svg',
   hippodrome: '/img/hippodrome.jpg',
+};
+
+export const CATEGORY_ASSETS = {
+  restaurants: {
+    cover: '/img/categories/covers/restaurants.svg',
+    icon: '/img/categories/icons/restaurants.svg',
+  },
+  'coffee shops': {
+    cover: '/img/categories/covers/coffee.svg',
+    icon: '/img/categories/icons/coffee.svg',
+  },
+  hotels: {
+    cover: '/img/categories/covers/hotels.svg',
+    icon: '/img/categories/icons/hotels.svg',
+  },
+  pools: {
+    cover: '/img/categories/covers/pools.svg',
+    icon: '/img/categories/icons/pools.svg',
+  },
+  hospitals: {
+    cover: '/img/categories/covers/hospitals.svg',
+    icon: '/img/categories/icons/hospitals.svg',
+  },
+  pharmacies: {
+    cover: '/img/categories/covers/pharmacies.svg',
+    icon: '/img/categories/icons/pharmacies.svg',
+  },
+  supermarkets: {
+    cover: '/img/categories/covers/supermarkets.svg',
+    icon: '/img/categories/icons/supermarkets.svg',
+  },
+  services: {
+    cover: '/img/categories/covers/services.svg',
+    icon: '/img/categories/icons/services.svg',
+  },
 };
 
 const coverByName = Object.fromEntries(
   catalog.categories.map((category) => [category.name.toLowerCase(), category.cover])
 );
 
+const assetsFor = (name = '') => {
+  const n = name.toLowerCase();
+  if (CATEGORY_ASSETS[n]) return CATEGORY_ASSETS[n];
+  const match = Object.entries(CATEGORY_ASSETS).find(([key]) => n.includes(key.split(' ')[0]));
+  return match ? match[1] : null;
+};
+
 export const categoryCover = (name = '') => {
   const n = name.toLowerCase();
   if (coverByName[n]) return coverByName[n];
+  const assets = assetsFor(name);
+  if (assets?.cover) return assets.cover;
   if (n.includes('hotel') || n.includes('stay')) return IMAGES.hotel;
   if (n.includes('restaurant') || n.includes('food') || n.includes('dining')) return IMAGES.dining;
   if (n.includes('cafe') || n.includes('coffee')) return IMAGES.cafe;
   if (n.includes('pool')) return IMAGES.beach;
-  if (n.includes('hospital') || n.includes('health') || n.includes('pharm')) return IMAGES.health;
+  if (n.includes('hospital') || n.includes('health')) return IMAGES.health;
+  if (n.includes('pharm')) return CATEGORY_ASSETS.pharmacies.cover;
   if (n.includes('super') || n.includes('market') || n.includes('shop')) return IMAGES.market;
   if (n.includes('service') || n.includes('repair') || n.includes('laundry')) return IMAGES.service;
-  return IMAGES.streets;
+  return IMAGES.fallback;
 };
+
+export const categoryIcon = (name = '') => assetsFor(name)?.icon || '';
 
 export const businessCover = (business) =>
   business?.coverImage || categoryCover(business?.category?.name || '');

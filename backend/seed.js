@@ -33,8 +33,34 @@ async function ensureAdmin() {
   });
 }
 
+async function ensureCategoryVisuals() {
+  for (const categoryData of catalog.categories) {
+    const existing = store.categories.findByName(categoryData.name);
+    if (!existing) {
+      await store.categories.create({
+        name: categoryData.name,
+        description: categoryData.description,
+        icon: categoryData.icon,
+        iconImage: categoryData.iconImage,
+        cover: categoryData.cover,
+      });
+      continue;
+    }
+    const updates = {};
+    const cover = String(existing.cover || '');
+    const usesSharedPhoto = !cover || /\/img\/(port|hero|coast|beach|hippodrome)\.jpg$/i.test(cover);
+    if (usesSharedPhoto && categoryData.cover) updates.cover = categoryData.cover;
+    if (!existing.iconImage && categoryData.iconImage) updates.iconImage = categoryData.iconImage;
+    if (categoryData.icon && !existing.icon) updates.icon = categoryData.icon;
+    if (Object.keys(updates).length) {
+      await store.categories.update(existing._id, updates);
+    }
+  }
+}
+
 async function seedAll() {
   const user = await ensureAdmin();
+  await ensureCategoryVisuals();
 
   const categoryMap = new Map();
   for (const categoryData of catalog.categories) {
@@ -42,6 +68,7 @@ async function seedAll() {
       name: categoryData.name,
       description: categoryData.description,
       icon: categoryData.icon,
+      iconImage: categoryData.iconImage,
       cover: categoryData.cover,
     });
     categoryMap.set(categoryData.key, category);
@@ -77,4 +104,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { seedAll, ensureAdmin, sampleAdmin };
+module.exports = { seedAll, ensureAdmin, ensureCategoryVisuals, sampleAdmin };

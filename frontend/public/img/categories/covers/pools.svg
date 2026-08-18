@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Pools">
+  <defs>
+    <linearGradient id="p-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7eb8c4"/>
+      <stop offset="45%" stop-color="#2a5a66"/>
+      <stop offset="100%" stop-color="#0b1c22"/>
+    </linearGradient>
+    <linearGradient id="p-water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4aa3b5"/>
+      <stop offset="100%" stop-color="#16343c"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#p-sky)"/>
+  <circle cx="660" cy="80" r="50" fill="#f6f0e6" opacity="0.9"/>
+  <rect x="80" y="210" width="640" height="230" rx="16" fill="url(#p-water)"/>
+  <path d="M110 270c50 0 50-28 100-28s50 28 100 28 50-28 100-28 50 28 100 28 50-28 100-28 50 28 100 28" fill="none" stroke="#f6f0e6" stroke-width="6" opacity="0.45"/>
+  <path d="M110 330c50 0 50-28 100-28s50 28 100 28 50-28 100-28 50 28 100 28 50-28 100-28 50 28 100 28" fill="none" stroke="#c8a36a" stroke-width="5" opacity="0.55"/>
+  <rect x="90" y="430" width="90" height="18" rx="4" fill="#c8a36a"/>
+  <rect x="200" y="430" width="90" height="18" rx="4" fill="#c8a36a"/>
+</svg>

@@ -18,11 +18,16 @@ import {
   Radio,
   RadioGroup,
   Checkbox,
+  Chip,
+  Stack,
 } from '@mui/material';
 import { businessAPI, categoryAPI, resolveMediaUrl } from '../utils/api';
-import { Edit, Delete } from '@mui/icons-material';
+import { Edit, Delete, OpenInNew } from '@mui/icons-material';
+import { Link, useSearchParams } from 'react-router-dom';
 import { isDiningCategory, getCategoryKind } from '../utils/catalog';
 import { filterDeleted, rememberDeleted, getDeletedIds, getDeletedNames } from '../utils/deleted';
+import { fileToLogoImage, isPdfFile } from '../utils/pdfLogo';
+import CategoryIcon from '../components/CategoryIcon';
 
 const emptyForm = {
   name: '',
@@ -43,7 +48,18 @@ const emptyForm = {
   menuLink: '',
 };
 
+const logoThumbSx = {
+  width: 56,
+  height: 56,
+  objectFit: 'contain',
+  display: 'block',
+  mb: 1,
+  bgcolor: '#fff',
+  border: '1px solid #eee',
+};
+
 const ManageBusinesses = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [businesses, setBusinesses] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,11 +68,15 @@ const ManageBusinesses = () => {
   const [formData, setFormData] = useState(emptyForm);
   const [logoFile, setLogoFile] = useState(null);
   const [logo2File, setLogo2File] = useState(null);
+  const [logoPreview, setLogoPreview] = useState('');
+  const [logo2Preview, setLogo2Preview] = useState('');
   const [coverFile, setCoverFile] = useState(null);
   const [menuQrFile, setMenuQrFile] = useState(null);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
+  const [convertingLogo, setConvertingLogo] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
+  const categoryFilter = searchParams.get('category') || '';
 
   useEffect(() => {
     const syncDeleted = async () => {
@@ -112,19 +132,22 @@ const ManageBusinesses = () => {
         menuType: firstMenu.type || (firstMenu.link ? 'link' : 'image'),
         menuLink: firstMenu.link || '',
       });
-      setLogoFile(null);
-      setLogo2File(null);
-      setCoverFile(null);
-      setMenuQrFile(null);
       setEditingId(business._id);
+      setLogoPreview(resolveMediaUrl(business.logo));
+      setLogo2Preview(resolveMediaUrl(business.logo2));
     } else {
-      setFormData(emptyForm);
-      setLogoFile(null);
-      setLogo2File(null);
-      setCoverFile(null);
-      setMenuQrFile(null);
+      setFormData({
+        ...emptyForm,
+        category: categoryFilter || '',
+      });
       setEditingId(null);
+      setLogoPreview('');
+      setLogo2Preview('');
     }
+    setLogoFile(null);
+    setLogo2File(null);
+    setCoverFile(null);
+    setMenuQrFile(null);
     setError('');
     setOpenDialog(true);
   };
@@ -137,7 +160,27 @@ const ManageBusinesses = () => {
   const selectedCategory = categories.find((cat) => String(cat._id) === String(formData.category));
   const categoryKind = getCategoryKind(selectedCategory?.name);
   const showMenuFields = isDiningCategory(selectedCategory?.name);
-  const editingBusiness = businesses.find((item) => String(item._id) === String(editingId));
+
+  const pickLogoFile = async (file, which) => {
+    const setFile = which === 'logo2' ? setLogo2File : setLogoFile;
+    const setPreview = which === 'logo2' ? setLogo2Preview : setLogoPreview;
+    if (!file) {
+      setFile(null);
+      return;
+    }
+    try {
+      setError('');
+      setConvertingLogo(Boolean(isPdfFile(file)));
+      const converted = await fileToLogoImage(file);
+      setFile(converted);
+      setPreview(URL.createObjectURL(converted));
+    } catch (err) {
+      setFile(null);
+      setError(err.message || 'Could not convert this PDF. Use a PNG or JPG instead.');
+    } finally {
+      setConvertingLogo(false);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -220,23 +263,72 @@ const ManageBusinesses = () => {
     }
   };
 
+  const setCategoryFilter = (id) => {
+    const next = {};
+    if (id) next.category = id;
+    setSearchParams(next);
+  };
+
+  const visibleBusinesses = categoryFilter
+    ? businesses.filter((item) => String(item.category?._id || item.category) === String(categoryFilter))
+    : businesses;
+
   if (loading) return <CircularProgress />;
 
   return (
     <Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, gap: 2, flexWrap: 'wrap' }}>
         <h2>Manage Businesses</h2>
         <Button type="button" variant="contained" onClick={() => handleOpenDialog()}>
           + Add Business
         </Button>
       </Box>
 
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {error && !openDialog && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+
+      <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" sx={{ mb: 2 }}>
+        <Chip
+          label={`All (${businesses.length})`}
+          onClick={() => setCategoryFilter('')}
+          color={!categoryFilter ? 'primary' : 'default'}
+          variant={!categoryFilter ? 'filled' : 'outlined'}
+        />
+        {categories.map((cat) => {
+          const count = businesses.filter(
+            (item) => String(item.category?._id || item.category) === String(cat._id)
+          ).length;
+          const selected = String(categoryFilter) === String(cat._id);
+          return (
+            <Chip
+              key={cat._id}
+              avatar={<CategoryIcon category={cat} size={22} sx={{ borderRadius: '50%' }} />}
+              label={`${cat.name} (${count})`}
+              onClick={() => setCategoryFilter(cat._id)}
+              color={selected ? 'primary' : 'default'}
+              variant={selected ? 'filled' : 'outlined'}
+            />
+          );
+        })}
+      </Stack>
+
+      {categoryFilter && (
+        <Box sx={{ mb: 2 }}>
+          <Button
+            component={Link}
+            to={`/businesses?category=${encodeURIComponent(categoryFilter)}`}
+            size="small"
+            startIcon={<OpenInNew />}
+          >
+            View this category on the site
+          </Button>
+        </Box>
+      )}
 
       <TableContainer component={Paper}>
         <Table>
           <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
             <TableRow>
+              <TableCell>Logo</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Category</TableCell>
               <TableCell>Phone</TableCell>
@@ -245,8 +337,20 @@ const ManageBusinesses = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {businesses.map((business) => (
+            {visibleBusinesses.map((business) => (
               <TableRow key={business._id}>
+                <TableCell>
+                  {business.logo ? (
+                    <Box
+                      component="img"
+                      src={resolveMediaUrl(business.logo)}
+                      alt=""
+                      sx={{ width: 44, height: 44, objectFit: 'contain', bgcolor: '#fff', border: '1px solid #eee' }}
+                    />
+                  ) : (
+                    '—'
+                  )}
+                </TableCell>
                 <TableCell>{business.name}</TableCell>
                 <TableCell>{business.category?.name}</TableCell>
                 <TableCell>{business.phone}</TableCell>
@@ -273,6 +377,15 @@ const ManageBusinesses = () => {
                 </TableCell>
               </TableRow>
             ))}
+            {visibleBusinesses.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={6}>
+                  <Typography sx={{ py: 2, color: 'text.secondary' }}>
+                    No businesses in this category yet.
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -398,21 +511,24 @@ const ManageBusinesses = () => {
           )}
 
           <Box sx={{ mt: 2 }}>
-            <Typography variant="subtitle2" sx={{ mb: 1 }}>
+            <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
               {showMenuFields ? 'Logo 1 — first restaurant / cafe (optional)' : 'Logo (optional)'}
             </Typography>
-            {editingBusiness?.logo ? (
-              <Box
-                component="img"
-                src={resolveMediaUrl(editingBusiness.logo)}
-                alt=""
-                sx={{ width: 56, height: 56, objectFit: 'cover', display: 'block', mb: 1, bgcolor: '#fff' }}
-              />
+            <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
+              PNG, JPG, or PDF. A PDF is converted and shown as an image.
+            </Typography>
+            {logoPreview ? (
+              <Box component="img" src={logoPreview} alt="" sx={logoThumbSx} />
             ) : null}
+            {convertingLogo && (
+              <Typography variant="body2" sx={{ mb: 1, color: 'text.secondary' }}>
+                Converting PDF to image…
+              </Typography>
+            )}
             <input
               type="file"
-              accept="image/*"
-              onChange={(e) => setLogoFile(e.target.files?.[0] || null)}
+              accept="image/*,.pdf,application/pdf"
+              onChange={(e) => pickLogoFile(e.target.files?.[0] || null, 'logo')}
             />
           </Box>
           {showMenuFields && (
@@ -431,21 +547,19 @@ const ManageBusinesses = () => {
                 margin="normal"
                 placeholder="Name of the second restaurant or cafe"
               />
-              <Typography variant="subtitle2" sx={{ mb: 1 }}>
+              <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
                 Logo 2 (optional)
               </Typography>
-              {editingBusiness?.logo2 ? (
-                <Box
-                  component="img"
-                  src={resolveMediaUrl(editingBusiness.logo2)}
-                  alt=""
-                  sx={{ width: 56, height: 56, objectFit: 'cover', display: 'block', mb: 1, bgcolor: '#fff' }}
-                />
+              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
+                PNG, JPG, or PDF. A PDF is converted and shown as an image.
+              </Typography>
+              {logo2Preview ? (
+                <Box component="img" src={logo2Preview} alt="" sx={logoThumbSx} />
               ) : null}
               <input
                 type="file"
-                accept="image/*"
-                onChange={(e) => setLogo2File(e.target.files?.[0] || null)}
+                accept="image/*,.pdf,application/pdf"
+                onChange={(e) => pickLogoFile(e.target.files?.[0] || null, 'logo2')}
               />
             </Box>
           )}
@@ -516,7 +630,7 @@ const ManageBusinesses = () => {
           )}
 
           <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
-            <Button type="submit" variant="contained" disabled={saving}>
+            <Button type="submit" variant="contained" disabled={saving || convertingLogo}>
               {saving ? 'Saving...' : 'Save'}
             </Button>
             <Button type="button" onClick={handleCloseDialog} disabled={saving}>

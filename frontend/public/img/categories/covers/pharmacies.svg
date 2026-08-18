@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Pharmacies">
+  <defs>
+    <linearGradient id="ph-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a3038"/>
+      <stop offset="100%" stop-color="#07141a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#ph-bg)"/>
+  <rect x="90" y="80" width="280" height="360" fill="#122026"/>
+  <rect x="430" y="140" width="280" height="300" fill="#16343c"/>
+  <rect x="120" y="120" width="220" height="90" fill="#0b1c22"/>
+  <path d="M230 138v54M203 165h54" stroke="#c8a36a" stroke-width="10" stroke-linecap="round"/>
+  <rect x="130" y="240" width="90" height="140" fill="#f6f0e6" opacity="0.12"/>
+  <rect x="240" y="240" width="90" height="140" fill="#f6f0e6" opacity="0.12"/>
+  <ellipse cx="570" cy="280" rx="70" ry="88" fill="none" stroke="#c8a36a" stroke-width="12"/>
+  <path d="M570 240v80M530 280h80" stroke="#c8a36a" stroke-width="10" stroke-linecap="round"/>
+  <rect y="440" width="800" height="60" fill="#0b1c22"/>
+  <circle cx="680" cy="90" r="18" fill="#c8a36a"/>
+</svg>

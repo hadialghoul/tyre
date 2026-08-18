@@ -8,6 +8,7 @@ export const SAMPLE_CATEGORIES = catalog.categories.map((category) => ({
   name: category.name,
   description: category.description,
   icon: category.icon,
+  iconImage: category.iconImage,
   cover: category.cover,
   key: category.key,
 }));
@@ -83,7 +84,12 @@ const matchesSearch = (business, search) => {
 
 export const filterSampleBusinesses = ({ category, search, featured } = {}) => {
   return SAMPLE_BUSINESSES.filter((business) => {
-    if (category && business.category?._id !== category && business.categoryKey !== category) {
+    if (
+      category &&
+      business.category?._id !== category &&
+      business.categoryKey !== category &&
+      business.category?.name !== category
+    ) {
       return false;
     }
     if (featured === 'true' && !business.featured) return false;

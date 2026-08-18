@@ -16,7 +16,8 @@
       "name": "Restaurants",
       "description": "Seafood, grills, and Lebanese tables across Tyre — with location, logo, menu, and QR.",
       "icon": "🍽️",
-      "cover": "/img/port.jpg",
+      "iconImage": "/img/categories/icons/restaurants.svg",
+      "cover": "/img/categories/covers/restaurants.svg",
       "createdAt": "2026-08-13T13:24:21.867Z"
     },
     {
@@ -24,7 +25,8 @@
       "name": "Coffee Shops",
       "description": "Cafes on the corniche and in the old streets, with menus you can open or scan.",
       "icon": "☕",
-      "cover": "/img/hero.jpg",
+      "iconImage": "/img/categories/icons/coffee.svg",
+      "cover": "/img/categories/covers/coffee.svg",
       "createdAt": "2026-08-13T13:24:21.871Z"
     },
     {
@@ -32,7 +34,8 @@
       "name": "Hotels",
       "description": "Places to stay by the sea, with star rating and exact location.",
       "icon": "🏨",
-      "cover": "/img/coast.jpg",
+      "iconImage": "/img/categories/icons/hotels.svg",
+      "cover": "/img/categories/covers/hotels.svg",
       "createdAt": "2026-08-13T13:24:21.875Z"
     },
     {
@@ -40,7 +43,8 @@
       "name": "Pools",
       "description": "Hotel pools and beach clubs on the Tyre coast.",
       "icon": "🏊",
-      "cover": "/img/beach.jpg",
+      "iconImage": "/img/categories/icons/pools.svg",
+      "cover": "/img/categories/covers/pools.svg",
       "createdAt": "2026-08-13T13:24:21.881Z"
     },
     {
@@ -48,7 +52,8 @@
       "name": "Hospitals",
       "description": "Emergency and medical care in Tyre, with address and phone.",
       "icon": "🏥",
-      "cover": "/img/coast.jpg",
+      "iconImage": "/img/categories/icons/hospitals.svg",
+      "cover": "/img/categories/covers/hospitals.svg",
       "createdAt": "2026-08-13T13:24:21.884Z"
     },
     {
@@ -56,7 +61,8 @@
       "name": "Pharmacies",
       "description": "Pharmacies near the old city, Rest House, and main roads.",
       "icon": "💊",
-      "cover": "/img/hero.jpg",
+      "iconImage": "/img/categories/icons/pharmacies.svg",
+      "cover": "/img/categories/covers/pharmacies.svg",
       "createdAt": "2026-08-13T13:24:21.887Z"
     },
     {
@@ -64,7 +70,8 @@
       "name": "Supermarkets",
       "description": "Grocery stores in Tyre that offer delivery to your door.",
       "icon": "🛒",
-      "cover": "/img/port.jpg",
+      "iconImage": "/img/categories/icons/supermarkets.svg",
+      "cover": "/img/categories/covers/supermarkets.svg",
       "createdAt": "2026-08-13T13:24:21.889Z"
     },
     {
@@ -72,7 +79,8 @@
       "name": "Services",
       "description": "Electricity, washing machines, AC, plumbing, laundry, and more.",
       "icon": "🔧",
-      "cover": "/img/hippodrome.jpg",
+      "iconImage": "/img/categories/icons/services.svg",
+      "cover": "/img/categories/covers/services.svg",
       "createdAt": "2026-08-13T13:24:21.895Z"
     }
   ],

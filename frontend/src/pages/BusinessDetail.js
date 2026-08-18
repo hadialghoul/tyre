@@ -188,7 +188,7 @@ const BusinessDetail = () => {
                         component="img"
                         src={resolveMediaUrl(src)}
                         alt={index === 0 ? `${business.name} logo` : `${business.secondName || business.name} logo`}
-                        sx={{ width: 72, height: 72, objectFit: 'cover', bgcolor: '#fff' }}
+                        sx={{ width: 72, height: 72, objectFit: 'contain', bgcolor: '#fff' }}
                       />
                       {(index === 0 ? business.name : business.secondName) ? (
                         <Typography sx={{ mt: 0.8, fontSize: 11, color: 'rgba(246,240,230,0.7)', maxWidth: 72 }}>

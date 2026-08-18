@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Services">
+  <defs>
+    <linearGradient id="se-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3a3228"/>
+      <stop offset="100%" stop-color="#0b1c22"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#se-bg)"/>
+  <rect x="60" y="70" width="300" height="360" fill="#122026"/>
+  <circle cx="210" cy="220" r="90" fill="none" stroke="#c8a36a" stroke-width="16"/>
+  <path d="M210 150v40M210 250v40M140 220h40M240 220h40" stroke="#c8a36a" stroke-width="10" stroke-linecap="round"/>
+  <path d="M430 140l180 180" stroke="#c8a36a" stroke-width="22" stroke-linecap="round"/>
+  <path d="M560 120l90 90-40 16-66-66z" fill="#d4b37d"/>
+  <path d="M410 340c40-40 104-40 144 0L410 484c-40-40-40-104 0-144z" fill="#16343c" stroke="#c8a36a" stroke-width="10"/>
+  <rect y="430" width="800" height="70" fill="#07141a"/>
+</svg>

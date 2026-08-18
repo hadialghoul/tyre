@@ -13,17 +13,22 @@ import {
   TextField,
   CircularProgress,
   Alert,
+  Typography,
 } from '@mui/material';
 import { categoryAPI, resolveMediaUrl } from '../utils/api';
-import { Edit, Delete } from '@mui/icons-material';
+import { Edit, Delete, Visibility, OpenInNew } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
+import { categoryCover } from '../utils/visuals';
+import CategoryIcon from '../components/CategoryIcon';
 
 const ManageCategories = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [formData, setFormData] = useState({ name: '', description: '', icon: '', cover: '' });
+  const [formData, setFormData] = useState({ name: '', description: '', icon: '', cover: '', iconImage: '' });
   const [coverFile, setCoverFile] = useState(null);
+  const [iconFile, setIconFile] = useState(null);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
@@ -46,16 +51,18 @@ const ManageCategories = () => {
 
   const handleOpenDialog = (category = null) => {
     setCoverFile(null);
+    setIconFile(null);
     if (category) {
       setFormData({
         name: category.name || '',
         description: category.description || '',
         icon: category.icon || '',
         cover: category.cover || '',
+        iconImage: category.iconImage || '',
       });
       setEditingId(category._id);
     } else {
-      setFormData({ name: '', description: '', icon: '', cover: '' });
+      setFormData({ name: '', description: '', icon: '', cover: '', iconImage: '' });
       setEditingId(null);
     }
     setOpenDialog(true);
@@ -65,6 +72,7 @@ const ManageCategories = () => {
     setOpenDialog(false);
     setEditingId(null);
     setCoverFile(null);
+    setIconFile(null);
   };
 
   const handleSubmit = async (e) => {
@@ -81,6 +89,7 @@ const ManageCategories = () => {
       payload.append('description', formData.description);
       payload.append('icon', formData.icon);
       if (coverFile) payload.append('cover', coverFile);
+      if (iconFile) payload.append('iconImage', iconFile);
       if (editingId) {
         const { data } = await categoryAPI.update(editingId, payload);
         setCategories((prev) =>
@@ -130,9 +139,9 @@ const ManageCategories = () => {
           <TableHead sx={{ backgroundColor: '#f5f5f5' }}>
             <TableRow>
               <TableCell>Image</TableCell>
+              <TableCell>Icon</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Description</TableCell>
-              <TableCell>Icon</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -140,20 +149,18 @@ const ManageCategories = () => {
             {categories.map((category) => (
               <TableRow key={category._id}>
                 <TableCell>
-                  {category.cover ? (
-                    <Box
-                      component="img"
-                      src={resolveMediaUrl(category.cover)}
-                      alt=""
-                      sx={{ width: 72, height: 48, objectFit: 'cover', borderRadius: 1, display: 'block' }}
-                    />
-                  ) : (
-                    '—'
-                  )}
+                  <Box
+                    component="img"
+                    src={resolveMediaUrl(category.cover) || categoryCover(category.name)}
+                    alt=""
+                    sx={{ width: 88, height: 56, objectFit: 'cover', borderRadius: 1, display: 'block' }}
+                  />
+                </TableCell>
+                <TableCell>
+                  <CategoryIcon category={category} size={44} />
                 </TableCell>
                 <TableCell>{category.name}</TableCell>
                 <TableCell>{category.description}</TableCell>
-                <TableCell>{category.icon}</TableCell>
                 <TableCell>
                   <Button
                     type="button"
@@ -162,6 +169,22 @@ const ManageCategories = () => {
                     startIcon={<Edit />}
                   >
                     Edit
+                  </Button>
+                  <Button
+                    component={Link}
+                    to={`/admin/businesses?category=${encodeURIComponent(category._id)}`}
+                    size="small"
+                    startIcon={<Visibility />}
+                  >
+                    Businesses
+                  </Button>
+                  <Button
+                    component={Link}
+                    to={`/businesses?category=${encodeURIComponent(category._id)}`}
+                    size="small"
+                    startIcon={<OpenInNew />}
+                  >
+                    Site
                   </Button>
                   <Button
                     type="button"
@@ -200,14 +223,30 @@ const ManageCategories = () => {
           />
           <TextField
             fullWidth
-            label="Icon (Emoji)"
+            label="Icon (Emoji, optional)"
             value={formData.icon}
             onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
             margin="normal"
             placeholder="e.g., 🍽️, 🏨, etc."
           />
           <Box sx={{ mt: 2 }}>
-            <Box sx={{ fontSize: 14, fontWeight: 600, mb: 1 }}>Category image</Box>
+            <Typography sx={{ fontSize: 14, fontWeight: 600, mb: 1 }}>Category icon image</Typography>
+            {(iconFile || formData.iconImage) && (
+              <Box
+                component="img"
+                src={iconFile ? URL.createObjectURL(iconFile) : resolveMediaUrl(formData.iconImage)}
+                alt=""
+                sx={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 1, display: 'block', mb: 1, bgcolor: '#0b1c22' }}
+              />
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setIconFile(e.target.files?.[0] || null)}
+            />
+          </Box>
+          <Box sx={{ mt: 2 }}>
+            <Typography sx={{ fontSize: 14, fontWeight: 600, mb: 1 }}>Category image</Typography>
             {(coverFile || formData.cover) && (
               <Box
                 component="img"

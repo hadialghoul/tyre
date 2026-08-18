@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Hotels">
+  <defs>
+    <linearGradient id="h-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c8a36a"/>
+      <stop offset="38%" stop-color="#6b4e2e"/>
+      <stop offset="100%" stop-color="#0b1c22"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#h-sky)"/>
+  <rect y="300" width="800" height="200" fill="#16343c"/>
+  <path d="M0 300c120-30 220 20 340 0 140-24 220 28 360 4 40-8 100-6 100-6v202H0z" fill="#1d4450"/>
+  <rect x="220" y="120" width="280" height="280" fill="#0b1c22"/>
+  <rect x="250" y="150" width="48" height="40" fill="#c8a36a" opacity="0.8"/>
+  <rect x="336" y="150" width="48" height="40" fill="#f6f0e6" opacity="0.25"/>
+  <rect x="422" y="150" width="48" height="40" fill="#c8a36a" opacity="0.8"/>
+  <rect x="250" y="220" width="48" height="40" fill="#f6f0e6" opacity="0.25"/>
+  <rect x="336" y="220" width="48" height="40" fill="#c8a36a" opacity="0.8"/>
+  <rect x="422" y="220" width="48" height="40" fill="#f6f0e6" opacity="0.25"/>
+  <rect x="336" y="300" width="48" height="100" fill="#c8a36a"/>
+  <path d="M360 86l10 22 24 2-18 16 6 24-22-12-22 12 6-24-18-16 24-2z" fill="#f6f0e6"/>
+</svg>

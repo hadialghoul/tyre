@@ -303,6 +303,7 @@ const store = {
         name: data.name,
         description: data.description || '',
         icon: data.icon || '',
+        iconImage: data.iconImage || '',
         cover: data.cover || '',
         createdAt: new Date().toISOString(),
       };
@@ -336,9 +337,19 @@ const store = {
   businesses: {
     findAll({ category, search, featured } = {}) {
       const db = load();
+      const categoryDoc = category
+        ? db.categories.find(
+            (entry) =>
+              sameId(entry._id, category) ||
+              String(entry.name || '').toLowerCase() === String(category).toLowerCase() ||
+              String(entry.name || '').toLowerCase().replace(/\s+/g, '-') === String(category).toLowerCase()
+          )
+        : null;
       return db.businesses
         .filter((item) => {
-          if (category && !sameId(item.category, category)) return false;
+          if (category) {
+            if (!categoryDoc || !sameId(item.category, categoryDoc._id)) return false;
+          }
           if (featured === 'true' && !item.featured) return false;
           const cat = db.categories.find((entry) => sameId(entry._id, item.category));
           if (!matchesSearch(item, cat, search)) return false;

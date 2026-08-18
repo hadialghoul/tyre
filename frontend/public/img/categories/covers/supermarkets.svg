@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Supermarkets">
+  <defs>
+    <linearGradient id="s-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3d4a32"/>
+      <stop offset="50%" stop-color="#0b1c22"/>
+      <stop offset="100%" stop-color="#2a1c14"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#s-bg)"/>
+  <rect x="80" y="90" width="640" height="320" fill="#122026" opacity="0.85"/>
+  <rect x="120" y="130" width="160" height="220" fill="#6b4e2e" opacity="0.55"/>
+  <rect x="310" y="130" width="160" height="220" fill="#c8a36a" opacity="0.28"/>
+  <rect x="500" y="130" width="180" height="220" fill="#16343c"/>
+  <path d="M180 390h70l40  -200h180l36 140H280" fill="none" stroke="#c8a36a" stroke-width="12" stroke-linejoin="round"/>
+  <circle cx="300" cy="410" r="18" fill="#c8a36a"/>
+  <circle cx="430" cy="410" r="18" fill="#c8a36a"/>
+  <circle cx="200" cy="180" r="22" fill="#d4b37d"/>
+  <circle cx="250" cy="210" r="16" fill="#f6f0e6" opacity="0.7"/>
+</svg>

@@ -5,56 +5,64 @@
       "name": "Restaurants",
       "description": "Seafood, grills, and Lebanese tables across Tyre — with location, logo, menu, and QR.",
       "icon": "🍽️",
-      "cover": "/img/port.jpg"
+      "iconImage": "/img/categories/icons/restaurants.svg",
+      "cover": "/img/categories/covers/restaurants.svg"
     },
     {
       "key": "coffee-shops",
       "name": "Coffee Shops",
       "description": "Cafes on the corniche and in the old streets, with menus you can open or scan.",
       "icon": "☕",
-      "cover": "/img/hero.jpg"
+      "iconImage": "/img/categories/icons/coffee.svg",
+      "cover": "/img/categories/covers/coffee.svg"
     },
     {
       "key": "hotels",
       "name": "Hotels",
       "description": "Places to stay by the sea, with star rating and exact location.",
       "icon": "🏨",
-      "cover": "/img/coast.jpg"
+      "iconImage": "/img/categories/icons/hotels.svg",
+      "cover": "/img/categories/covers/hotels.svg"
     },
     {
       "key": "pools",
       "name": "Pools",
       "description": "Hotel pools and beach clubs on the Tyre coast.",
       "icon": "🏊",
-      "cover": "/img/beach.jpg"
+      "iconImage": "/img/categories/icons/pools.svg",
+      "cover": "/img/categories/covers/pools.svg"
     },
     {
       "key": "hospitals",
       "name": "Hospitals",
       "description": "Emergency and medical care in Tyre, with address and phone.",
       "icon": "🏥",
-      "cover": "/img/coast.jpg"
+      "iconImage": "/img/categories/icons/hospitals.svg",
+      "cover": "/img/categories/covers/hospitals.svg"
     },
     {
       "key": "pharmacies",
       "name": "Pharmacies",
       "description": "Pharmacies near the old city, Rest House, and main roads.",
       "icon": "💊",
-      "cover": "/img/hero.jpg"
+      "iconImage": "/img/categories/icons/pharmacies.svg",
+      "cover": "/img/categories/covers/pharmacies.svg"
     },
     {
       "key": "supermarkets",
       "name": "Supermarkets",
       "description": "Grocery stores in Tyre that offer delivery to your door.",
       "icon": "🛒",
-      "cover": "/img/port.jpg"
+      "iconImage": "/img/categories/icons/supermarkets.svg",
+      "cover": "/img/categories/covers/supermarkets.svg"
     },
     {
       "key": "services",
       "name": "Services",
       "description": "Electricity, washing machines, AC, plumbing, laundry, and more.",
       "icon": "🔧",
-      "cover": "/img/hippodrome.jpg"
+      "iconImage": "/img/categories/icons/services.svg",
+      "cover": "/img/categories/covers/services.svg"
     }
   ],
   "businesses": []

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Hospitals">
+  <defs>
+    <linearGradient id="ho-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dce8ea"/>
+      <stop offset="40%" stop-color="#7ea3ab"/>
+      <stop offset="100%" stop-color="#0b1c22"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#ho-bg)"/>
+  <rect x="160" y="120" width="480" height="300" fill="#0b1c22"/>
+  <rect x="200" y="160" width="70" height="54" fill="#f6f0e6" opacity="0.2"/>
+  <rect x="300" y="160" width="70" height="54" fill="#f6f0e6" opacity="0.2"/>
+  <rect x="430" y="160" width="70" height="54" fill="#f6f0e6" opacity="0.2"/>
+  <rect x="530" y="160" width="70" height="54" fill="#f6f0e6" opacity="0.2"/>
+  <rect x="200" y="250" width="70" height="54" fill="#f6f0e6" opacity="0.2"/>
+  <rect x="530" y="250" width="70" height="54" fill="#f6f0e6" opacity="0.2"/>
+  <rect x="360" y="240" width="80" height="180" fill="#c8a36a"/>
+  <path d="M400 150v70M365 185h70" stroke="#c8a36a" stroke-width="14" stroke-linecap="round"/>
+  <rect y="420" width="800" height="80" fill="#07141a"/>
+</svg>

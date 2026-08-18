@@ -15,8 +15,10 @@ import { Search as SearchIcon } from '@mui/icons-material';
 import { useSearchParams } from 'react-router-dom';
 import { loadBusinesses, loadCategories, getCategoryKind } from '../utils/catalog';
 import BusinessCard from '../components/BusinessCard';
-import { IMAGES } from '../utils/visuals';
+import { IMAGES, categoryCover } from '../utils/visuals';
 import { useLanguage } from '../i18n/LanguageContext';
+import { resolveMediaUrl } from '../utils/api';
+import CategoryIcon from '../components/CategoryIcon';
 
 const BusinessList = () => {
   const { t, categoryName, categoryDescription, serviceName } = useLanguage();
@@ -72,10 +74,20 @@ const BusinessList = () => {
     updateParams(draftSearch.trim(), selectedCategory);
   };
 
-  const selectedCategoryDoc = categories.find((cat) => cat._id === selectedCategory);
+  const selectedCategoryDoc = categories.find(
+    (cat) =>
+      String(cat._id) === String(selectedCategory) ||
+      String(cat.name) === String(selectedCategory) ||
+      String(cat.key) === String(selectedCategory)
+  );
   const selectedCategoryName = selectedCategoryDoc?.name || '';
+  const heroImage =
+    resolveMediaUrl(selectedCategoryDoc?.cover) ||
+    categoryCover(selectedCategoryName) ||
+    IMAGES.hippodrome ||
+    IMAGES.fallback;
   const isServices = getCategoryKind(selectedCategoryName) === 'service';
-  const pageDescription = isServices
+  const pageDescription = selectedCategoryDoc
     ? categoryDescription(selectedCategoryName, selectedCategoryDoc?.description || '')
     : '';
   const serviceTypes = [...new Set(businesses.map((item) => item.serviceType).filter(Boolean))];
@@ -88,8 +100,8 @@ const BusinessList = () => {
       <Box sx={{ position: 'relative', height: { xs: 280, md: 380 }, overflow: 'hidden', mb: 6 }}>
         <Box
           component="img"
-          src={IMAGES.hippodrome}
-          alt="Discover Tyre"
+          src={heroImage}
+          alt={categoryName(selectedCategoryName) || t('discoverTyre')}
           sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
         <Box
@@ -102,6 +114,11 @@ const BusinessList = () => {
           }}
         >
           <Container sx={{ pb: 5, textAlign: 'center' }}>
+            {selectedCategoryDoc ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', mb: 1.5 }}>
+                <CategoryIcon category={selectedCategoryDoc} size={56} />
+              </Box>
+            ) : null}
             <Typography sx={{ letterSpacing: '0.32em', fontSize: 12, color: '#c8a36a', mb: 1 }}>
               {t('cityGuide')}
             </Typography>
@@ -136,6 +153,70 @@ const BusinessList = () => {
       </Box>
 
       <Container maxWidth="lg">
+        <Box sx={{ mb: 3 }}>
+          <Typography sx={{ letterSpacing: '0.18em', fontSize: 12, color: '#c8a36a', mb: 1.5 }}>
+            {t('browseByCategory')}
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 1.2,
+              overflowX: 'auto',
+              pb: 1,
+              mx: { xs: -2, md: 0 },
+              px: { xs: 2, md: 0 },
+            }}
+          >
+            <Box
+              component="button"
+              type="button"
+              onClick={() => updateParams(draftSearch.trim(), '')}
+              sx={{
+                flexShrink: 0,
+                border: selectedCategory ? '1px solid rgba(11,28,34,0.12)' : '1px solid #0b1c22',
+                bgcolor: selectedCategory ? '#fff' : '#0b1c22',
+                color: selectedCategory ? '#0b1c22' : '#f6f0e6',
+                px: 2,
+                py: 1.2,
+                cursor: 'pointer',
+                font: 'inherit',
+                fontWeight: 600,
+              }}
+            >
+              {t('allCategories')}
+            </Box>
+            {categories.map((cat) => {
+              const active =
+                String(selectedCategory) === String(cat._id) ||
+                String(selectedCategory) === String(cat.name);
+              return (
+                <Box
+                  key={cat._id}
+                  component="button"
+                  type="button"
+                  onClick={() => updateParams(draftSearch.trim(), cat._id)}
+                  sx={{
+                    flexShrink: 0,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 1,
+                    border: active ? '1px solid #0b1c22' : '1px solid rgba(11,28,34,0.12)',
+                    bgcolor: active ? '#0b1c22' : '#fff',
+                    color: active ? '#f6f0e6' : '#0b1c22',
+                    px: 1.4,
+                    py: 0.8,
+                    cursor: 'pointer',
+                    font: 'inherit',
+                    fontWeight: 600,
+                  }}
+                >
+                  <CategoryIcon category={cat} size={28} />
+                  {categoryName(cat.name)}
+                </Box>
+              );
+            })}
+          </Box>
+        </Box>
         <Box
           component="form"
           onSubmit={handleSearchSubmit}

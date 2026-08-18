@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Coffee Shops">
+  <rect width="64" height="64" rx="14" fill="#0b1c22"/>
+  <path d="M20 28h18v12.5c0 5-4 9-9 9s-9-4-9-9z" fill="none" stroke="#c8a36a" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M38 31.5h4.2c3 0 5.3 2.4 5.3 5.4s-2.3 5.4-5.3 5.4H38" fill="none" stroke="#c8a36a" stroke-width="2.4"/>
+  <path d="M26 18c0 3 2 4.5 0 7.5M32 17.5c0 3 2 4.5 0 7.5" fill="none" stroke="#c8a36a" stroke-width="2" stroke-linecap="round"/>
+  <path d="M18 52h28" stroke="#c8a36a" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+</svg>

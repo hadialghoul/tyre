@@ -6,6 +6,13 @@ const { storedPath } = require('../media');
 
 const router = express.Router();
 
+const categoryFilesUpload = upload.fields([
+  { name: 'cover', maxCount: 1 },
+  { name: 'iconImage', maxCount: 1 },
+]);
+
+const firstFile = (files, field) => files?.[field]?.[0] || null;
+
 router.get('/', async (req, res) => {
   try {
     res.json(store.categories.findAll());
@@ -26,17 +33,20 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', auth, adminOnly, upload.single('cover'), async (req, res) => {
+router.post('/', auth, adminOnly, categoryFilesUpload, async (req, res) => {
   try {
     const { name, description, icon } = req.body;
     if (store.categories.findByName(name)) {
       return res.status(400).json({ message: 'Category already exists' });
     }
+    const coverFile = firstFile(req.files, 'cover');
+    const iconFile = firstFile(req.files, 'iconImage');
     const category = await store.categories.create({
       name,
       description,
       icon,
-      cover: req.file ? await storedPath(req.file) : req.body.cover || '',
+      iconImage: iconFile ? await storedPath(iconFile) : req.body.iconImage || '',
+      cover: coverFile ? await storedPath(coverFile) : req.body.cover || '',
     });
     res.status(201).json(category);
   } catch (err) {
@@ -44,14 +54,17 @@ router.post('/', auth, adminOnly, upload.single('cover'), async (req, res) => {
   }
 });
 
-router.put('/:id', auth, adminOnly, upload.single('cover'), async (req, res) => {
+router.put('/:id', auth, adminOnly, categoryFilesUpload, async (req, res) => {
   try {
     const { name, description, icon } = req.body;
     const updates = {};
     if (name) updates.name = name;
     if (description !== undefined) updates.description = description;
     if (icon !== undefined) updates.icon = icon;
-    if (req.file) updates.cover = await storedPath(req.file);
+    const coverFile = firstFile(req.files, 'cover');
+    const iconFile = firstFile(req.files, 'iconImage');
+    if (coverFile) updates.cover = await storedPath(coverFile);
+    if (iconFile) updates.iconImage = await storedPath(iconFile);
     const category = await store.categories.update(req.params.id, updates);
     if (!category) {
       return res.status(404).json({ message: 'Category not found' });

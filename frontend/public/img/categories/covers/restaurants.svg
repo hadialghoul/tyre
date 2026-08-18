@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Restaurants">
+  <defs>
+    <linearGradient id="r-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d3d48"/>
+      <stop offset="55%" stop-color="#0b1c22"/>
+      <stop offset="100%" stop-color="#07141a"/>
+    </linearGradient>
+    <linearGradient id="r-sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a5a66"/>
+      <stop offset="100%" stop-color="#0e2a32"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#r-sky)"/>
+  <circle cx="640" cy="90" r="46" fill="#c8a36a" opacity="0.85"/>
+  <rect y="250" width="800" height="250" fill="url(#r-sea)"/>
+  <path d="M0 250c80 18 140-8 220 6 90 16 150-14 240 4 100 20 170-10 250 8 50 12 90 4 90 4v232H0z" fill="#16343c"/>
+  <path d="M40 390h280v70H40z" fill="#0b1c22"/>
+  <path d="M40 390h280l-18-70H58z" fill="#12262d"/>
+  <ellipse cx="180" cy="352" rx="70" ry="14" fill="#f6f0e6" opacity="0.92"/>
+  <circle cx="150" cy="344" r="10" fill="#c8a36a"/>
+  <circle cx="186" cy="340" r="14" fill="#d4b37d"/>
+  <rect x="220" y="330" width="28" height="18" rx="3" fill="#f6f0e6"/>
+  <path d="M520 310l90 80H430z" fill="#0b1c22"/>
+  <path d="M548 310v-54h34v54" fill="none" stroke="#c8a36a" stroke-width="8"/>
+  <path d="M0 456h800" stroke="#c8a36a" stroke-width="3" opacity="0.35"/>
+</svg>

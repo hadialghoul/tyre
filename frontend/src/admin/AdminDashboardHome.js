@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Grid, Card, CardContent, Typography, CircularProgress } from '@mui/material';
-import { businessAPI, categoryAPI } from '../utils/api';
+import { Box, Grid, Card, CardActionArea, CardContent, Typography, CircularProgress, Button } from '@mui/material';
+import { businessAPI, categoryAPI, resolveMediaUrl } from '../utils/api';
+import { categoryCover } from '../utils/visuals';
+import CategoryIcon from '../components/CategoryIcon';
 
 const AdminDashboardHome = () => {
   const [stats, setStats] = useState({ businesses: 0, categories: 0 });
+  const [categories, setCategories] = useState([]);
+  const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,9 +21,13 @@ const AdminDashboardHome = () => {
         businessAPI.getAll({}),
         categoryAPI.getAll(),
       ]);
+      const bizList = Array.isArray(bizRes.data) ? bizRes.data : [];
+      const catList = Array.isArray(catRes.data) ? catRes.data : [];
+      setBusinesses(bizList);
+      setCategories(catList);
       setStats({
-        businesses: bizRes.data.length,
-        categories: catRes.data.length,
+        businesses: bizList.length,
+        categories: catList.length,
       });
     } catch (err) {
       console.error('Failed to fetch stats:', err);
@@ -38,7 +46,7 @@ const AdminDashboardHome = () => {
         Admin Dashboard
       </Typography>
 
-      <Grid container spacing={3}>
+      <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} sm={6} md={4}>
           <Card>
             <CardContent>
@@ -75,6 +83,49 @@ const AdminDashboardHome = () => {
             </CardContent>
           </Card>
         </Grid>
+      </Grid>
+
+      <Typography variant="h5" sx={{ mb: 2, fontWeight: 700 }}>
+        Businesses by category
+      </Typography>
+      <Grid container spacing={2}>
+        {categories.map((cat) => {
+          const count = businesses.filter(
+            (item) => String(item.category?._id || item.category) === String(cat._id)
+          ).length;
+          return (
+            <Grid item xs={12} sm={6} md={3} key={cat._id}>
+              <Card>
+                <CardActionArea component={Link} to={`/admin/businesses?category=${encodeURIComponent(cat._id)}`}>
+                  <Box
+                    component="img"
+                    src={resolveMediaUrl(cat.cover) || categoryCover(cat.name)}
+                    alt=""
+                    sx={{ width: '100%', height: 110, objectFit: 'cover', display: 'block' }}
+                  />
+                  <CardContent>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, mb: 0.8 }}>
+                      <CategoryIcon category={cat} size={36} />
+                      <Typography sx={{ fontWeight: 700 }}>{cat.name}</Typography>
+                    </Box>
+                    <Typography variant="body2" color="text.secondary">
+                      {count} {count === 1 ? 'business' : 'businesses'}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <Box sx={{ px: 2, pb: 2 }}>
+                  <Button
+                    component={Link}
+                    to={`/businesses?category=${encodeURIComponent(cat._id)}`}
+                    size="small"
+                  >
+                    View on site
+                  </Button>
+                </Box>
+              </Card>
+            </Grid>
+          );
+        })}
       </Grid>
     </Box>
   );

@@ -77,7 +77,7 @@ const BusinessCard = ({ business }) => {
                 sx={{
                   width: 48,
                   height: 48,
-                  objectFit: 'cover',
+                  objectFit: 'contain',
                   bgcolor: '#fff',
                   border: '2px solid #f6f0e6',
                 }}

@@ -71,12 +71,13 @@ app.get('/api/health', (req, res) => {
 });
 
 async function start() {
-  const { seedAll, ensureAdmin } = require('./seed');
+  const { seedAll, ensureAdmin, ensureCategoryVisuals } = require('./seed');
   await store.ready;
   if (store.isEmpty()) {
     await seedAll();
   } else {
     await ensureAdmin();
+    await ensureCategoryVisuals();
   }
 
   if (!process.env.VERCEL) {
