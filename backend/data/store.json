@@ -53,7 +53,8 @@
       "description": "Pharmacies near the old city, Rest House, and main roads.",
       "icon": "💊",
       "cover": "/api/media/1a00ccf67e3b719176d.jpg",
-      "createdAt": "2026-08-13T13:24:21.887Z"
+      "createdAt": "2026-08-13T13:24:21.887Z",
+      "iconImage": "/img/categories/icons/pharmacies.svg"
     },
     {
       "_id": "cat_19ffb4b9301b59845",
