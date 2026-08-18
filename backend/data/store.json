@@ -69,7 +69,8 @@
       "description": "Electricity, washing machines, AC, plumbing, laundry, and more.",
       "icon": "🔧",
       "cover": "/api/media/1a00cd048d388ce0420.jpg",
-      "createdAt": "2026-08-13T13:24:21.895Z"
+      "createdAt": "2026-08-13T13:24:21.895Z",
+      "iconImage": "/img/categories/icons/services.svg"
     },
     {
       "_id": "cat_1a00c31951f95a08d",
