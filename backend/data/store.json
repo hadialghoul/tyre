@@ -73,7 +73,8 @@
       "description": "Best food options, including delicious cusines",
       "icon": "🍽️",
       "cover": "/api/media/1a00cd3f208fa0aa18e.jpg",
-      "createdAt": "2026-08-16T20:09:31.167Z"
+      "createdAt": "2026-08-16T20:09:31.167Z",
+      "iconImage": "/img/categories/icons/restaurants.svg"
     },
     {
       "_id": "cat_1a0158a7dd1cb7ab1",
