@@ -90,6 +90,14 @@
       "icon": "",
       "cover": "",
       "createdAt": "2026-08-18T15:43:54.754Z"
+    },
+    {
+      "_id": "cat_1a01598a65b7fa4a2",
+      "name": "Barber Shop",
+      "description": "",
+      "icon": "",
+      "cover": "",
+      "createdAt": "2026-08-18T15:58:40.731Z"
     }
   ],
   "businesses": [
