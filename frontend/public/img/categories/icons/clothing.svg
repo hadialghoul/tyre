@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Clothing Store">
+  <rect width="64" height="64" rx="14" fill="#0b1c22"/>
+  <path d="M18 22l6-6h16l6 6 8 4v4l-8-2v20H18V28l-8 2v-4z" fill="none" stroke="#c8a36a" stroke-width="2.3" stroke-linejoin="round"/>
+  <path d="M26 16c0 5 12 5 12 0" fill="none" stroke="#c8a36a" stroke-width="2" stroke-linecap="round"/>
+</svg>

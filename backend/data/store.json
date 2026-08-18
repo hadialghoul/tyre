@@ -82,6 +82,33 @@
       "iconImage": "/img/categories/icons/services.svg",
       "cover": "/img/categories/covers/services.svg",
       "createdAt": "2026-08-13T13:24:21.895Z"
+    },
+    {
+      "_id": "cat_a8c1clothing001",
+      "name": "Clothing Store",
+      "description": "Boutiques and clothing shops in Tyre, with location and logo.",
+      "icon": "👕",
+      "iconImage": "/img/categories/icons/clothing.svg",
+      "cover": "/img/categories/covers/clothing.svg",
+      "createdAt": "2026-08-18T18:00:00.000Z"
+    },
+    {
+      "_id": "cat_a8c1techstore002",
+      "name": "Tech Store",
+      "description": "Phones, electronics, and computer shops in Tyre.",
+      "icon": "📱",
+      "iconImage": "/img/categories/icons/tech.svg",
+      "cover": "/img/categories/covers/tech.svg",
+      "createdAt": "2026-08-18T18:00:00.000Z"
+    },
+    {
+      "_id": "cat_a8c1barbershop003",
+      "name": "Barber Shop",
+      "description": "Barbers and hair salons across Tyre, with address and phone.",
+      "icon": "💈",
+      "iconImage": "/img/categories/icons/barber.svg",
+      "cover": "/img/categories/covers/barber.svg",
+      "createdAt": "2026-08-18T18:00:00.000Z"
     }
   ],
   "businesses": [],

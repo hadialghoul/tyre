@@ -38,7 +38,7 @@ export const translations = {
     story3Copy: 'Boats, grilled fish, and the old harbour that has fed Tyre for centuries.',
     findPlace: 'FIND YOUR PLACE',
     whereToGo: 'Where to go',
-    whereToGoCopy: 'Restaurants, coffee, hotels, pools, hospitals, pharmacies, delivery markets, and home services.',
+    whereToGoCopy: 'Restaurants, coffee, hotels, pools, hospitals, pharmacies, markets, clothing, tech, barbers, and home services.',
     category: 'CATEGORY',
     theEdit: 'THE EDIT',
     placesWorth: 'Places worth arriving for',
@@ -143,7 +143,7 @@ export const translations = {
     story3Copy: 'قوارب وسمك مشوي والميناء القديم الذي أطعم صور عبر القرون.',
     findPlace: 'اعثر على مكانك',
     whereToGo: 'إلى أين تذهب',
-    whereToGoCopy: 'مطاعم، مقاهي، فنادق، مسابح، مستشفيات، صيدليات، سوبرماركت مع توصيل، وخدمات منزلية.',
+    whereToGoCopy: 'مطاعم، مقاهي، فنادق، مسابح، مستشفيات، صيدليات، سوبرماركت، ملابس، إلكترونيات، حلاقة، وخدمات منزلية.',
     category: 'فئة',
     theEdit: 'المختارات',
     placesWorth: 'أماكن تستحق الوصول',
@@ -227,6 +227,9 @@ export const categoryNamesAr = {
   Pharmacies: 'صيدليات',
   Supermarkets: 'سوبرماركت',
   Services: 'خدمات',
+  'Clothing Store': 'محلات ملابس',
+  'Tech Store': 'محلات إلكترونيات',
+  'Barber Shop': 'صالون حلاقة',
 };
 
 export const categoryCopyAr = {
@@ -238,6 +241,9 @@ export const categoryCopyAr = {
   Pharmacies: 'صيدليات قرب المدينة القديمة وريست هاوس والطرق الرئيسية.',
   Supermarkets: 'بقالات في صور مع خدمة التوصيل إلى الباب.',
   Services: 'كهرباء، غسالات، تكييف، سباكة، غسيل، والمزيد.',
+  'Clothing Store': 'بوتيكات ومحلات ملابس في صور — مع الموقع والشعار.',
+  'Tech Store': 'هواتف وإلكترونيات وحواسيب في صور.',
+  'Barber Shop': 'حلاقة وصالونات في صور، مع العنوان والهاتف.',
 };
 
 export const serviceTypesAr = {

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Clothing Store">
+  <defs>
+    <linearGradient id="cl-bg" x1="0" y1="0" x2="0.2" y2="1">
+      <stop offset="0%" stop-color="#3a2a24"/>
+      <stop offset="55%" stop-color="#0b1c22"/>
+      <stop offset="100%" stop-color="#122026"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#cl-bg)"/>
+  <rect x="40" y="40" width="280" height="420" fill="#16343c"/>
+  <rect x="70" y="80" width="80" height="220" rx="8" fill="#c8a36a" opacity="0.85"/>
+  <rect x="170" y="110" width="80" height="190" rx="8" fill="#f6f0e6" opacity="0.88"/>
+  <rect x="250" y="70" width="40" height="240" fill="#6b4e2e"/>
+  <path d="M70 80c18-22 62-22 80 0" fill="none" stroke="#d4b37d" stroke-width="8"/>
+  <path d="M170 110c18-20 62-20 80 0" fill="none" stroke="#c8a36a" stroke-width="8"/>
+  <circle cx="110" cy="70" r="10" fill="#f6f0e6"/>
+  <circle cx="210" cy="98" r="10" fill="#c8a36a"/>
+  <path d="M430 90h280v320H430z" fill="none" stroke="#c8a36a" stroke-width="12"/>
+  <path d="M490 170c0-28 24-48 80-48s80 20 80 48v180H490z" fill="#122026" stroke="#c8a36a" stroke-width="10"/>
+  <circle cx="570" cy="138" r="28" fill="#f6f0e6" opacity="0.9"/>
+  <path d="M0 430h800" stroke="#c8a36a" stroke-width="4" opacity="0.4"/>
+</svg>

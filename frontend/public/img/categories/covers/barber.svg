@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Barber Shop">
+  <defs>
+    <linearGradient id="ba-bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a1818"/>
+      <stop offset="45%" stop-color="#0b1c22"/>
+      <stop offset="100%" stop-color="#122026"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#ba-bg)"/>
+  <rect x="90" y="50" width="70" height="360" rx="35" fill="#f6f0e6"/>
+  <path d="M90 90h70v50H90zM90 190h70v50H90zM90 290h70v50H90z" fill="#b23b3b"/>
+  <path d="M90 140h70v50H90zM90 240h70v50H90zM90 340h70v40H90z" fill="#16343c"/>
+  <circle cx="125" cy="50" r="22" fill="#c8a36a"/>
+  <path d="M360 120c80-40 170-20 200 70 20 58-10 110-70 130" fill="none" stroke="#c8a36a" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="360" cy="120" r="18" fill="#d4b37d"/>
+  <circle cx="490" cy="320" r="18" fill="#d4b37d"/>
+  <path d="M520 90l90 40-20 48-90-40z" fill="#c8a36a"/>
+  <path d="M590 148l70 120" stroke="#f6f0e6" stroke-width="10" stroke-linecap="round"/>
+  <path d="M340 360h260c20 0 30 16 30 34v40H310v-40c0-18 12-34 30-34z" fill="#16343c" stroke="#c8a36a" stroke-width="8"/>
+  <path d="M0 440h800" stroke="#c8a36a" stroke-width="4" opacity="0.4"/>
+</svg>

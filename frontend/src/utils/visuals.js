@@ -11,6 +11,9 @@ export const IMAGES = {
   health: '/img/categories/covers/hospitals.svg',
   market: '/img/categories/covers/supermarkets.svg',
   service: '/img/categories/covers/services.svg',
+  clothing: '/img/categories/covers/clothing.svg',
+  tech: '/img/categories/covers/tech.svg',
+  barber: '/img/categories/covers/barber.svg',
   night: '/img/beach.jpg',
   fallback: '/img/categories/covers/restaurants.svg',
   beach: '/img/categories/covers/pools.svg',
@@ -51,6 +54,18 @@ export const CATEGORY_ASSETS = {
     cover: '/img/categories/covers/services.svg',
     icon: '/img/categories/icons/services.svg',
   },
+  'clothing store': {
+    cover: '/img/categories/covers/clothing.svg',
+    icon: '/img/categories/icons/clothing.svg',
+  },
+  'tech store': {
+    cover: '/img/categories/covers/tech.svg',
+    icon: '/img/categories/icons/tech.svg',
+  },
+  'barber shop': {
+    cover: '/img/categories/covers/barber.svg',
+    icon: '/img/categories/icons/barber.svg',
+  },
 };
 
 const coverByName = Object.fromEntries(
@@ -75,7 +90,10 @@ export const categoryCover = (name = '') => {
   if (n.includes('pool')) return IMAGES.beach;
   if (n.includes('hospital') || n.includes('health')) return IMAGES.health;
   if (n.includes('pharm')) return CATEGORY_ASSETS.pharmacies.cover;
-  if (n.includes('super') || n.includes('market') || n.includes('shop')) return IMAGES.market;
+  if (n.includes('cloth') || n.includes('fashion') || n.includes('boutique')) return IMAGES.clothing;
+  if (n.includes('tech') || n.includes('phone') || n.includes('electronic')) return IMAGES.tech;
+  if (n.includes('barber') || n.includes('salon') || n.includes('hair')) return IMAGES.barber;
+  if (n.includes('super') || n.includes('market')) return IMAGES.market;
   if (n.includes('service') || n.includes('repair') || n.includes('laundry')) return IMAGES.service;
   return IMAGES.fallback;
 };
