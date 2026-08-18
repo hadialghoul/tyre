@@ -315,6 +315,26 @@
       "menus": [],
       "createdAt": "2026-08-18T16:13:11.469Z",
       "updatedAt": "2026-08-18T16:19:51.577Z"
+    },
+    {
+      "_id": "biz_1a01609b13b025797",
+      "name": "Skin",
+      "secondName": "",
+      "category": "cat_1a0158a7dd1cb7ab1",
+      "description": "",
+      "phone": "03 949 969",
+      "address": "Tyre,Abo Deeb Street",
+      "logo": "/api/media/1a01609a7ca6a432f1f.png",
+      "logo2": "",
+      "coverImage": "/api/media/1a01609ac788c7fc818.jpeg",
+      "openingHours": "",
+      "hasDelivery": false,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [],
+      "createdAt": "2026-08-18T18:02:09.083Z",
+      "updatedAt": "2026-08-18T18:02:09.083Z"
     }
   ],
   "deletedIds": [
