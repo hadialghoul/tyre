@@ -70,7 +70,7 @@
       "description": "Boutiques and clothing shops in Tyre, with location and logo.",
       "icon": "👕",
       "iconImage": "/img/categories/icons/clothing.svg",
-      "cover": "/img/categories/covers/clothing.svg"
+      "cover": "/img/categories/covers/clothing.jpg"
     },
     {
       "key": "tech-store",
@@ -78,7 +78,7 @@
       "description": "Phones, electronics, and computer shops in Tyre.",
       "icon": "📱",
       "iconImage": "/img/categories/icons/tech.svg",
-      "cover": "/img/categories/covers/tech.svg"
+      "cover": "/img/categories/covers/tech.jpg"
     },
     {
       "key": "barber-shop",
@@ -86,7 +86,7 @@
       "description": "Barbers and hair salons across Tyre, with address and phone.",
       "icon": "💈",
       "iconImage": "/img/categories/icons/barber.svg",
-      "cover": "/img/categories/covers/barber.svg"
+      "cover": "/img/categories/covers/barber.jpg"
     }
   ],
   "businesses": []

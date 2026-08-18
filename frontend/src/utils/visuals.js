@@ -11,9 +11,9 @@ export const IMAGES = {
   health: '/img/categories/covers/hospitals.svg',
   market: '/img/categories/covers/supermarkets.svg',
   service: '/img/categories/covers/services.svg',
-  clothing: '/img/categories/covers/clothing.svg',
-  tech: '/img/categories/covers/tech.svg',
-  barber: '/img/categories/covers/barber.svg',
+  clothing: '/img/categories/covers/clothing.jpg',
+  tech: '/img/categories/covers/tech.jpg',
+  barber: '/img/categories/covers/barber.jpg',
   night: '/img/beach.jpg',
   fallback: '/img/categories/covers/restaurants.svg',
   beach: '/img/categories/covers/pools.svg',
@@ -55,15 +55,15 @@ export const CATEGORY_ASSETS = {
     icon: '/img/categories/icons/services.svg',
   },
   'clothing store': {
-    cover: '/img/categories/covers/clothing.svg',
+    cover: '/img/categories/covers/clothing.jpg',
     icon: '/img/categories/icons/clothing.svg',
   },
   'tech store': {
-    cover: '/img/categories/covers/tech.svg',
+    cover: '/img/categories/covers/tech.jpg',
     icon: '/img/categories/icons/tech.svg',
   },
   'barber shop': {
-    cover: '/img/categories/covers/barber.svg',
+    cover: '/img/categories/covers/barber.jpg',
     icon: '/img/categories/icons/barber.svg',
   },
 };

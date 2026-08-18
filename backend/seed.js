@@ -49,7 +49,10 @@ async function ensureCategoryVisuals() {
     const updates = {};
     const cover = String(existing.cover || '');
     const usesSharedPhoto = !cover || /\/img\/(port|hero|coast|beach|hippodrome)\.jpg$/i.test(cover);
-    if (usesSharedPhoto && categoryData.cover) updates.cover = categoryData.cover;
+    const usesOldIllustration = /\/img\/categories\/covers\/.+\.svg$/i.test(cover);
+    if ((usesSharedPhoto || usesOldIllustration) && categoryData.cover && categoryData.cover !== cover) {
+      updates.cover = categoryData.cover;
+    }
     if (!existing.iconImage && categoryData.iconImage) updates.iconImage = categoryData.iconImage;
     if (categoryData.icon && !existing.icon) updates.icon = categoryData.icon;
     if (Object.keys(updates).length) {
