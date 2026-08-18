@@ -335,6 +335,26 @@
       "menus": [],
       "createdAt": "2026-08-18T18:02:09.083Z",
       "updatedAt": "2026-08-18T18:02:09.083Z"
+    },
+    {
+      "_id": "biz_1a01612b3dcacfb46",
+      "name": "Sajed Cell",
+      "secondName": "",
+      "category": "cat_1a0158b2182891e2c",
+      "description": "",
+      "phone": "81 110 562",
+      "address": "https://www.google.com/maps?q=33.2672460,35.2040710&entry=gps&shh=CAE&lucs=,94297699,100795625,94231188,94280568,47071704,94218641,94282134,100813469,94286869,100822504&g_ep=CAISEjI2LjMyLjUuOTU4MDQ3MzAzMBgAINeCAypdLDk0Mjk3Njk5LDEwMDc5NTYyNSw5NDIzMTE4OCw5NDI4MDU2OCw0NzA3MTcwNCw5NDIxODY0MSw5NDI4MjEzNCwxMDA4MTM0NjksOTQyODY4NjksMTAwODIyNTA0QgJMQg%3D%3D&skid=5d1154f0-100d-4718-9be1-4f9a6043cf3b&g_st=it",
+      "logo": "/api/media/1a01612afdf51e8b58c.jpg",
+      "logo2": "",
+      "coverImage": "",
+      "openingHours": "",
+      "hasDelivery": false,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [],
+      "createdAt": "2026-08-18T18:11:59.580Z",
+      "updatedAt": "2026-08-18T18:11:59.580Z"
     }
   ],
   "deletedIds": [
