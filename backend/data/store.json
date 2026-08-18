@@ -356,6 +356,35 @@
       "menus": [],
       "createdAt": "2026-08-18T18:11:59.580Z",
       "updatedAt": "2026-08-18T18:11:59.580Z"
+    },
+    {
+      "_id": "biz_1a0161b1b0814e0c0",
+      "name": "Mr.La7me",
+      "secondName": "",
+      "category": "cat_1a00c31951f95a08d",
+      "description": "",
+      "phone": "76 068 043",
+      "address": "https://www.google.com/maps?q=Mr+La7me,+Abou+Dib+Street,+Tyre&ftid=0x151e872e9143f90b:0xbcb59df8c75cebb8&entry=gps&shh=CAE&lucs=,94297699,100795625,94231188,94280568,47071704,94218641,94282134,100813469,94286869,100822504&g_ep=CAISEjI2LjMyLjUuOTU4MDQ3MzAzMBgAINeCAypdLDk0Mjk3Njk5LDEwMDc5NTYyNSw5NDIzMTE4OCw5NDI4MDU2OCw0NzA3MTcwNCw5NDIxODY0MSw5NDI4MjEzNCwxMDA4MTM0NjksOTQyODY4NjksMTAwODIyNTA0QgJMQg%3D%3D&skid=2ad8c167-8977-4f94-a167-7c3317e75111&g_st=ic",
+      "logo": "/api/media/1a0161b16a035c21cbd.png",
+      "logo2": "",
+      "coverImage": "",
+      "openingHours": "1 PM to 12AM",
+      "hasDelivery": true,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [
+        {
+          "name": "Main Menu",
+          "description": "",
+          "type": "image",
+          "link": "",
+          "image": "/api/media/1a0161b1264275df116.jpeg",
+          "items": []
+        }
+      ],
+      "createdAt": "2026-08-18T18:21:10.280Z",
+      "updatedAt": "2026-08-18T18:21:10.280Z"
     }
   ],
   "deletedIds": [
