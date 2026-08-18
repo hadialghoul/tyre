@@ -26,7 +26,8 @@
       "description": "Places to stay by the sea, with star rating and exact location.",
       "icon": "🏨",
       "cover": "/api/media/1a00c329a24462aef80.jpg",
-      "createdAt": "2026-08-13T13:24:21.875Z"
+      "createdAt": "2026-08-13T13:24:21.875Z",
+      "iconImage": "/img/categories/icons/hotels.svg"
     },
     {
       "_id": "cat_19ffb4b92f9e35131",
