@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Grid, Card, CardActionArea, CardContent, Typography, CircularProgress, Button } from '@mui/material';
 import { businessAPI, categoryAPI, statsAPI, resolveMediaUrl } from '../utils/api';
-import { categoryCover } from '../utils/visuals';
+import { displayCategoryCover } from '../utils/visuals';
 import CategoryIcon from '../components/CategoryIcon';
 
 const AdminDashboardHome = () => {
@@ -128,7 +128,7 @@ const AdminDashboardHome = () => {
                 <CardActionArea component={Link} to={`/admin/businesses?category=${encodeURIComponent(cat._id)}`}>
                   <Box
                     component="img"
-                    src={resolveMediaUrl(cat.cover) || categoryCover(cat.name)}
+                    src={resolveMediaUrl(displayCategoryCover(cat))}
                     alt=""
                     sx={{ width: '100%', height: 110, objectFit: 'cover', display: 'block' }}
                   />

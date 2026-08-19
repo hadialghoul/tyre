@@ -4,6 +4,7 @@ import { Phone, MailOutline, WhatsApp, LocationOn, AccessTime } from '@mui/icons
 import { CONTACT } from '../i18n/translations';
 import { useLanguage } from '../i18n/LanguageContext';
 import Reveal from './Reveal';
+import PhoneNumber from './PhoneNumber';
 
 const ContactSection = () => {
   const { t, isAr } = useLanguage();
@@ -79,11 +80,9 @@ const ContactSection = () => {
                           fontSize: '2rem',
                           lineHeight: 1.1,
                           mb: 2.5,
-                          direction: 'ltr',
-                          unicodeBidi: 'plaintext',
                         }}
                       >
-                        {CONTACT.phones[0].display}
+                        <PhoneNumber>{CONTACT.phones[0].display}</PhoneNumber>
                       </Typography>
                       <Stack direction="row" spacing={1}>
                         <Button

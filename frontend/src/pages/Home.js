@@ -14,7 +14,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import BusinessCard from '../components/BusinessCard';
 import Reveal from '../components/Reveal';
 import ContactSection from '../components/ContactSection';
-import { IMAGES, categoryCover } from '../utils/visuals';
+import { IMAGES, displayCategoryCover } from '../utils/visuals';
 import { loadCategories, loadBusinesses } from '../utils/catalog';
 import { resolveMediaUrl } from '../utils/api';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -394,7 +394,7 @@ const Home = () => {
                     <Box
                       className="category-cover"
                       component="img"
-                      src={resolveMediaUrl(cat.cover) || categoryCover(cat.name)}
+                      src={resolveMediaUrl(displayCategoryCover(cat))}
                       alt={categoryName(cat.name)}
                       sx={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 700ms ease' }}
                     />

@@ -18,7 +18,7 @@ import {
 import { categoryAPI, resolveMediaUrl } from '../utils/api';
 import { Edit, Delete, Visibility, OpenInNew } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { categoryCover } from '../utils/visuals';
+import { displayCategoryCover } from '../utils/visuals';
 import CategoryIcon from '../components/CategoryIcon';
 
 const ManageCategories = () => {
@@ -151,7 +151,7 @@ const ManageCategories = () => {
                 <TableCell>
                   <Box
                     component="img"
-                    src={resolveMediaUrl(category.cover) || categoryCover(category.name)}
+                    src={resolveMediaUrl(displayCategoryCover(category))}
                     alt=""
                     sx={{ width: 88, height: 56, objectFit: 'cover', borderRadius: 1, display: 'block' }}
                   />

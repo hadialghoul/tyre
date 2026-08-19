@@ -353,7 +353,11 @@ const ManageBusinesses = () => {
                 </TableCell>
                 <TableCell>{business.name}</TableCell>
                 <TableCell>{business.category?.name}</TableCell>
-                <TableCell>{business.phone}</TableCell>
+                <TableCell>
+                  <Box component="span" dir="ltr" className="phone-number" sx={{ display: 'inline-block', direction: 'ltr' }}>
+                    {business.phone}
+                  </Box>
+                </TableCell>
                 <TableCell>{business.address}</TableCell>
                 <TableCell>
                   <Button
@@ -432,6 +436,7 @@ const ManageBusinesses = () => {
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             margin="normal"
+            inputProps={{ dir: 'ltr' }}
           />
           <TextField
             fullWidth
@@ -473,6 +478,7 @@ const ManageBusinesses = () => {
               value={formData.deliveryPhone}
               onChange={(e) => setFormData({ ...formData, deliveryPhone: e.target.value })}
               margin="normal"
+              inputProps={{ dir: 'ltr' }}
             />
           )}
 

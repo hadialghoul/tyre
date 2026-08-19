@@ -3,6 +3,7 @@ import { Box, Container, Typography, Link, Grid, Stack } from '@mui/material';
 import { MailOutline } from '@mui/icons-material';
 import { CONTACT } from '../i18n/translations';
 import { useLanguage } from '../i18n/LanguageContext';
+import PhoneNumber from './PhoneNumber';
 
 const Footer = () => {
   const { t, isAr } = useLanguage();
@@ -69,7 +70,7 @@ const Footer = () => {
                   className="gold-link"
                   sx={{ color: '#f6f0e6', width: 'fit-content' }}
                 >
-                  {CONTACT.phones[0].display}
+                  <PhoneNumber>{CONTACT.phones[0].display}</PhoneNumber>
                 </Link>
               )}
               <Link

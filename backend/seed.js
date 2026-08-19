@@ -9,7 +9,7 @@ const sampleAdmin = {
 };
 
 const COVER_BY_NAME = [
-  { match: /tech\s*stores?/i, cover: '/img/categories/covers/tech.jpg', iconImage: '/img/categories/icons/tech.svg', icon: '📱' },
+  { match: /(tech|teck)\s*stores?/i, cover: '/img/categories/covers/tech.jpg', iconImage: '/img/categories/icons/tech.svg', icon: '📱' },
   { match: /clothing|clothes|fashion|boutique/i, cover: '/img/categories/covers/clothing.jpg', iconImage: '/img/categories/icons/clothing.svg' },
   { match: /barber|salon/i, cover: '/img/categories/covers/barber.jpg', iconImage: '/img/categories/icons/barber.svg' },
 ];
@@ -73,6 +73,7 @@ async function seedAll() {
 
   const categoryMap = new Map();
   for (const categoryData of catalog.categories) {
+    if (/^tech store$/i.test(categoryData.name || '')) continue;
     if (store.categories.wasDeleted(categoryData.name)) continue;
     const category = await store.categories.upsertByName({
       name: categoryData.name,

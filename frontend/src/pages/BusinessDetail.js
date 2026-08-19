@@ -18,6 +18,7 @@ import { categoryCover, IMAGES } from '../utils/visuals';
 import { getCategoryKind, loadBusinessById, mapsLink, businessLogos } from '../utils/catalog';
 import { getVisitorId, getSavedRating, saveRating } from '../utils/visitor';
 import { useLanguage } from '../i18n/LanguageContext';
+import PhoneNumber from '../components/PhoneNumber';
 
 const BusinessDetail = () => {
   const { id } = useParams();
@@ -73,15 +74,29 @@ const BusinessDetail = () => {
     IMAGES.fallback;
 
   const facts = [
-    business.phone && { icon: <Phone sx={{ color: '#c8a36a' }} />, label: t('phone'), value: business.phone },
-    business.alternatePhone && { icon: <Phone sx={{ color: '#c8a36a' }} />, label: t('alternate'), value: business.alternatePhone },
+    business.phone && {
+      icon: <Phone sx={{ color: '#c8a36a' }} />,
+      label: t('phone'),
+      value: <PhoneNumber>{business.phone}</PhoneNumber>,
+    },
+    business.alternatePhone && {
+      icon: <Phone sx={{ color: '#c8a36a' }} />,
+      label: t('alternate'),
+      value: <PhoneNumber>{business.alternatePhone}</PhoneNumber>,
+    },
     business.address && { icon: <LocationOn sx={{ color: '#c8a36a' }} />, label: t('location'), value: business.address },
     business.openingHours && { icon: <AccessTime sx={{ color: '#c8a36a' }} />, label: t('hours'), value: business.openingHours },
     business.serviceType && { icon: <LocationOn sx={{ color: '#c8a36a' }} />, label: t('service'), value: serviceName(business.serviceType) },
     business.hasDelivery && {
       icon: <LocalShipping sx={{ color: '#c8a36a' }} />,
       label: t('delivery'),
-      value: business.deliveryPhone ? `${t('deliveryAvailable')} · ${business.deliveryPhone}` : t('deliveryAvailable'),
+      value: business.deliveryPhone ? (
+        <>
+          {t('deliveryAvailable')} · <PhoneNumber>{business.deliveryPhone}</PhoneNumber>
+        </>
+      ) : (
+        t('deliveryAvailable')
+      ),
     },
   ].filter(Boolean);
 

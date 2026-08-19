@@ -66,6 +66,14 @@ export const CATEGORY_ASSETS = {
     cover: '/img/categories/covers/tech.jpg',
     icon: '/img/categories/icons/tech.svg',
   },
+  'teck store': {
+    cover: '/img/categories/covers/tech.jpg',
+    icon: '/img/categories/icons/tech.svg',
+  },
+  'teck stores': {
+    cover: '/img/categories/covers/tech.jpg',
+    icon: '/img/categories/icons/tech.svg',
+  },
   'barber shop': {
     cover: '/img/categories/covers/barber.jpg',
     icon: '/img/categories/icons/barber.svg',
@@ -83,8 +91,17 @@ const assetsFor = (name = '') => {
   return match ? match[1] : null;
 };
 
+export const isTechStoresName = (name = '') =>
+  /(tech|teck)\s*stores?/i.test(String(name));
+
+export const displayCategoryCover = (category) => {
+  if (isTechStoresName(category?.name)) return IMAGES.tech;
+  return category?.cover || categoryCover(category?.name || '');
+};
+
 export const categoryCover = (name = '') => {
   const n = name.toLowerCase();
+  if (isTechStoresName(n)) return IMAGES.tech;
   if (coverByName[n]) return coverByName[n];
   const assets = assetsFor(name);
   if (assets?.cover) return assets.cover;
@@ -102,7 +119,10 @@ export const categoryCover = (name = '') => {
   return IMAGES.fallback;
 };
 
-export const categoryIcon = (name = '') => assetsFor(name)?.icon || '';
+export const categoryIcon = (name = '') => {
+  if (isTechStoresName(name)) return CATEGORY_ASSETS['tech stores'].icon;
+  return assetsFor(name)?.icon || '';
+};
 
 export const businessCover = (business) =>
   business?.coverImage || categoryCover(business?.category?.name || '');

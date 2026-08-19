@@ -15,7 +15,7 @@ import { Search as SearchIcon } from '@mui/icons-material';
 import { useSearchParams } from 'react-router-dom';
 import { loadBusinesses, loadCategories, getCategoryKind } from '../utils/catalog';
 import BusinessCard from '../components/BusinessCard';
-import { IMAGES, categoryCover } from '../utils/visuals';
+import { IMAGES, displayCategoryCover } from '../utils/visuals';
 import { useLanguage } from '../i18n/LanguageContext';
 import { resolveMediaUrl } from '../utils/api';
 import CategoryIcon from '../components/CategoryIcon';
@@ -82,8 +82,7 @@ const BusinessList = () => {
   );
   const selectedCategoryName = selectedCategoryDoc?.name || '';
   const heroImage =
-    resolveMediaUrl(selectedCategoryDoc?.cover) ||
-    categoryCover(selectedCategoryName) ||
+    resolveMediaUrl(displayCategoryCover(selectedCategoryDoc)) ||
     IMAGES.hippodrome ||
     IMAGES.fallback;
   const isServices = getCategoryKind(selectedCategoryName) === 'service';
