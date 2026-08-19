@@ -548,5 +548,14 @@
     "Tyre Express Laundry",
     "Aljawad",
     "Ugarit International Restaurant"
-  ]
+  ],
+  "deletedCategoryNames": [
+    "Tech Store"
+  ],
+  "stats": {
+    "totalViews": 0,
+    "uniqueVisitors": 0,
+    "knownIds": [],
+    "byDay": {}
+  }
 }
