@@ -1,6 +1,7 @@
 import catalog from '../data/catalog.json';
 import { businessAPI, categoryAPI, isApiConfigured } from './api';
 import { filterDeleted } from './deleted';
+import { isSingularTechStoreName } from './visuals';
 
 export const SAMPLE_CATEGORIES = catalog.categories.map((category) => ({
   _id: `cat-${category.key}`,
@@ -97,7 +98,7 @@ export const loadCategories = async () => {
 
   try {
     const { data } = await categoryAPI.getAll();
-    if (Array.isArray(data)) return data;
+    if (Array.isArray(data)) return data.filter((cat) => !isSingularTechStoreName(cat?.name));
   } catch (err) {
     console.warn('Failed to load categories from API.');
   }

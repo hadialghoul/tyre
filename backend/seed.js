@@ -8,11 +8,57 @@ const sampleAdmin = {
   role: 'admin',
 };
 
+const TECH_PHOTO = '/img/categories/covers/tech.jpg';
+const TECH_ICON = '/img/categories/icons/tech.svg';
+
 const COVER_BY_NAME = [
-  { match: /(tech|teck)\s*stores?/i, cover: '/img/categories/covers/tech.jpg', iconImage: '/img/categories/icons/tech.svg', icon: '📱' },
+  { match: /^(tech|teck)\s*stores$/i, cover: TECH_PHOTO, iconImage: TECH_ICON, icon: '📱' },
   { match: /clothing|clothes|fashion|boutique/i, cover: '/img/categories/covers/clothing.jpg', iconImage: '/img/categories/icons/clothing.svg' },
   { match: /barber|salon/i, cover: '/img/categories/covers/barber.jpg', iconImage: '/img/categories/icons/barber.svg' },
 ];
+
+const isSingularTechStore = (name = '') => /^(tech|teck)\s*store$/i.test(String(name).trim());
+const isPluralTechStores = (name = '') => /^(tech|teck)\s*stores$/i.test(String(name).trim());
+const categoryId = (value) => String(value?._id || value || '');
+const isRealPhoto = (cover = '') => Boolean(cover) && !/\.svg$/i.test(String(cover));
+
+async function mergeTechStoreIntoTechStores() {
+  const categories = store.categories.findAll();
+  const singular = categories.find((item) => isSingularTechStore(item.name));
+  const plural = categories.find((item) => isPluralTechStores(item.name));
+  const photo = isRealPhoto(singular?.cover)
+    ? singular.cover
+    : isRealPhoto(plural?.cover)
+      ? plural.cover
+      : TECH_PHOTO;
+
+  if (singular && !plural) {
+    await store.categories.update(singular._id, {
+      name: 'Tech Stores',
+      cover: photo,
+      iconImage: singular.iconImage || TECH_ICON,
+    });
+    await store.categories.rememberDeleted('Tech Store');
+    return;
+  }
+
+  if (plural) {
+    const updates = { cover: photo };
+    if (!plural.iconImage) updates.iconImage = singular?.iconImage || TECH_ICON;
+    if (singular?.description && !plural.description) updates.description = singular.description;
+    await store.categories.update(plural._id, updates);
+  }
+
+  if (singular && plural) {
+    const businesses = store.businesses.findAll();
+    for (const business of businesses) {
+      if (categoryId(business.category) === categoryId(singular._id)) {
+        await store.businesses.update(business._id, { category: plural._id });
+      }
+    }
+    await store.categories.remove(singular._id);
+  }
+}
 
 async function ensureAdmin() {
   const existing =
@@ -42,7 +88,7 @@ async function ensureAdmin() {
 async function applyCoversToExistingCategories() {
   const categories = store.categories.findAll();
   for (const existing of categories) {
-    const preset = COVER_BY_NAME.find((item) => item.match.test(existing.name || ''));
+    const preset = COVER_BY_NAME.find((item) => item.match.test(String(existing.name || '').trim()));
     const catalogMatch = catalog.categories.find(
       (item) => String(item.name).toLowerCase() === String(existing.name || '').toLowerCase()
     );
@@ -69,6 +115,7 @@ async function applyCoversToExistingCategories() {
 
 async function seedAll() {
   const user = await ensureAdmin();
+  await mergeTechStoreIntoTechStores();
   await applyCoversToExistingCategories();
 
   const categoryMap = new Map();
@@ -116,4 +163,10 @@ if (require.main === module) {
   });
 }
 
-module.exports = { seedAll, ensureAdmin, applyCoversToExistingCategories, sampleAdmin };
+module.exports = {
+  seedAll,
+  ensureAdmin,
+  applyCoversToExistingCategories,
+  mergeTechStoreIntoTechStores,
+  sampleAdmin,
+};

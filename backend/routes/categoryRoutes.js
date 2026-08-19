@@ -15,7 +15,8 @@ const firstFile = (files, field) => files?.[field]?.[0] || null;
 
 router.get('/', async (req, res) => {
   try {
-    res.json(store.categories.findAll());
+    const isSingularTechStore = (name = '') => /^(tech|teck)\s*store$/i.test(String(name).trim());
+    res.json(store.categories.findAll().filter((item) => !isSingularTechStore(item.name)));
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }

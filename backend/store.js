@@ -305,6 +305,19 @@ const store = {
       return load().categories.find((item) => String(item.name).toLowerCase() === needle) || null;
     },
     async create(data) {
+      const requestedName = String(data.name || '').trim();
+      if (/^(tech|teck)\s*store$/i.test(requestedName)) {
+        const existingPlural = load().categories.find((item) =>
+          /^(tech|teck)\s*stores$/i.test(String(item.name || '').trim())
+        );
+        if (existingPlural) return existingPlural;
+        data = {
+          ...data,
+          name: 'Tech Stores',
+          cover: data.cover || '/img/categories/covers/tech.jpg',
+          iconImage: data.iconImage || '/img/categories/icons/tech.svg',
+        };
+      }
       const db = load();
       const category = {
         _id: makeId('cat'),

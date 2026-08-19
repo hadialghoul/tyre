@@ -190,7 +190,9 @@ img {
   transform: translateY(-3px);
 }
 
+.phone-number,
 html[dir='rtl'] .phone-number {
   direction: ltr !important;
-  unicode-bidi: isolate;
+  unicode-bidi: bidi-override !important;
+  white-space: nowrap;
 }

@@ -72,12 +72,13 @@ app.get('/api/health', (req, res) => {
 });
 
 async function start() {
-  const { seedAll, ensureAdmin, applyCoversToExistingCategories } = require('./seed');
+  const { seedAll, ensureAdmin, applyCoversToExistingCategories, mergeTechStoreIntoTechStores } = require('./seed');
   await store.ready;
   if (store.isEmpty()) {
     await seedAll();
   } else {
     await ensureAdmin();
+    await mergeTechStoreIntoTechStores();
     await applyCoversToExistingCategories();
   }
 

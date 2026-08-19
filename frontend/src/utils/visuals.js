@@ -91,17 +91,20 @@ const assetsFor = (name = '') => {
   return match ? match[1] : null;
 };
 
+export const isSingularTechStoreName = (name = '') =>
+  /^(tech|teck)\s*store$/i.test(String(name || '').trim());
+
 export const isTechStoresName = (name = '') =>
-  /(tech|teck)\s*stores?/i.test(String(name));
+  /^(tech|teck)\s*stores$/i.test(String(name || '').trim());
 
 export const displayCategoryCover = (category) => {
-  if (isTechStoresName(category?.name)) return IMAGES.tech;
+  if (isTechStoresName(category?.name) || isSingularTechStoreName(category?.name)) return IMAGES.tech;
   return category?.cover || categoryCover(category?.name || '');
 };
 
 export const categoryCover = (name = '') => {
   const n = name.toLowerCase();
-  if (isTechStoresName(n)) return IMAGES.tech;
+  if (isTechStoresName(n) || isSingularTechStoreName(n)) return IMAGES.tech;
   if (coverByName[n]) return coverByName[n];
   const assets = assetsFor(name);
   if (assets?.cover) return assets.cover;

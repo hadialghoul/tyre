@@ -25,6 +25,7 @@ import { businessAPI, categoryAPI, resolveMediaUrl } from '../utils/api';
 import { Edit, Delete, OpenInNew } from '@mui/icons-material';
 import { Link, useSearchParams } from 'react-router-dom';
 import { isDiningCategory, getCategoryKind } from '../utils/catalog';
+import { isSingularTechStoreName } from '../utils/visuals';
 import { filterDeleted, rememberDeleted, getDeletedIds, getDeletedNames } from '../utils/deleted';
 import { fileToLogoImage, isPdfFile } from '../utils/pdfLogo';
 import CategoryIcon from '../components/CategoryIcon';
@@ -102,7 +103,7 @@ const ManageBusinesses = () => {
         categoryAPI.getAll(),
       ]);
       setBusinesses(filterDeleted(Array.isArray(bizRes.data) ? bizRes.data : []));
-      setCategories(Array.isArray(catRes.data) ? catRes.data : []);
+      setCategories((Array.isArray(catRes.data) ? catRes.data : []).filter((cat) => !isSingularTechStoreName(cat.name)));
     } catch (err) {
       setError('Failed to load data');
     } finally {

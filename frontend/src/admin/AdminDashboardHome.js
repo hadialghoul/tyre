@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Grid, Card, CardActionArea, CardContent, Typography, CircularProgress, Button } from '@mui/material';
 import { businessAPI, categoryAPI, statsAPI, resolveMediaUrl } from '../utils/api';
-import { displayCategoryCover } from '../utils/visuals';
+import { displayCategoryCover, isSingularTechStoreName } from '../utils/visuals';
 import CategoryIcon from '../components/CategoryIcon';
 
 const AdminDashboardHome = () => {
@@ -26,7 +26,7 @@ const AdminDashboardHome = () => {
       const bizList = Array.isArray(bizRes.data) ? bizRes.data : [];
       const catList = Array.isArray(catRes.data) ? catRes.data : [];
       setBusinesses(bizList);
-      setCategories(catList);
+      setCategories(catList.filter((cat) => !isSingularTechStoreName(cat.name)));
       setTraffic(trafficRes?.data || null);
       setStats({
         businesses: bizList.length,

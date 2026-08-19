@@ -18,7 +18,7 @@ import {
 import { categoryAPI, resolveMediaUrl } from '../utils/api';
 import { Edit, Delete, Visibility, OpenInNew } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { displayCategoryCover } from '../utils/visuals';
+import { displayCategoryCover, isSingularTechStoreName } from '../utils/visuals';
 import CategoryIcon from '../components/CategoryIcon';
 
 const ManageCategories = () => {
@@ -41,7 +41,7 @@ const ManageCategories = () => {
     try {
       setLoading(true);
       const res = await categoryAPI.getAll();
-      setCategories(res.data);
+      setCategories((res.data || []).filter((cat) => !isSingularTechStoreName(cat.name)));
     } catch (err) {
       setError('Failed to load categories');
     } finally {

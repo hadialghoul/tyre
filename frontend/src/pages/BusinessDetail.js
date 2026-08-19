@@ -18,7 +18,7 @@ import { categoryCover, IMAGES } from '../utils/visuals';
 import { getCategoryKind, loadBusinessById, mapsLink, businessLogos } from '../utils/catalog';
 import { getVisitorId, getSavedRating, saveRating } from '../utils/visitor';
 import { useLanguage } from '../i18n/LanguageContext';
-import PhoneNumber from '../components/PhoneNumber';
+import PhoneNumber, { PhoneInText } from '../components/PhoneNumber';
 
 const BusinessDetail = () => {
   const { id } = useParams();
@@ -77,11 +77,13 @@ const BusinessDetail = () => {
     business.phone && {
       icon: <Phone sx={{ color: '#c8a36a' }} />,
       label: t('phone'),
+      ltr: true,
       value: <PhoneNumber>{business.phone}</PhoneNumber>,
     },
     business.alternatePhone && {
       icon: <Phone sx={{ color: '#c8a36a' }} />,
       label: t('alternate'),
+      ltr: true,
       value: <PhoneNumber>{business.alternatePhone}</PhoneNumber>,
     },
     business.address && { icon: <LocationOn sx={{ color: '#c8a36a' }} />, label: t('location'), value: business.address },
@@ -203,7 +205,7 @@ const BusinessDetail = () => {
               {t('theStory')}
             </Typography>
             <Typography sx={{ fontSize: 18, lineHeight: 1.9, color: 'text.secondary' }}>
-              {business.description}
+              <PhoneInText>{business.description}</PhoneInText>
             </Typography>
 
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 4 }}>
@@ -264,7 +266,18 @@ const BusinessDetail = () => {
                       <Typography sx={{ fontSize: 12, letterSpacing: '0.16em', color: 'rgba(246,240,230,0.55)', mb: 0.4 }}>
                         {fact.label}
                       </Typography>
-                      <Typography sx={{ lineHeight: 1.6 }}>{fact.value}</Typography>
+                      <Typography
+                        component="div"
+                        dir={fact.ltr ? 'ltr' : undefined}
+                        sx={{
+                          lineHeight: 1.6,
+                          ...(fact.ltr
+                            ? { direction: 'ltr', unicodeBidi: 'isolate', textAlign: 'start' }
+                            : {}),
+                        }}
+                      >
+                        {fact.value}
+                      </Typography>
                     </Box>
                   </Box>
                 ))}

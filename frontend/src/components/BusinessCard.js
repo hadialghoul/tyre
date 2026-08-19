@@ -6,6 +6,7 @@ import { resolveMediaUrl } from '../utils/api';
 import { categoryCover, IMAGES } from '../utils/visuals';
 import { getCategoryKind, businessLogos } from '../utils/catalog';
 import { useLanguage } from '../i18n/LanguageContext';
+import { PhoneInText } from './PhoneNumber';
 
 const BusinessCard = ({ business }) => {
   const { t, categoryName, serviceName, isAr } = useLanguage();
@@ -207,7 +208,7 @@ const BusinessCard = ({ business }) => {
               overflow: 'hidden',
             }}
           >
-            {business.description}
+            <PhoneInText>{business.description}</PhoneInText>
           </Typography>
         ) : null}
 

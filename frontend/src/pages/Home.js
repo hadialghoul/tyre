@@ -14,7 +14,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import BusinessCard from '../components/BusinessCard';
 import Reveal from '../components/Reveal';
 import ContactSection from '../components/ContactSection';
-import { IMAGES, displayCategoryCover } from '../utils/visuals';
+import { IMAGES, displayCategoryCover, isSingularTechStoreName } from '../utils/visuals';
 import { loadCategories, loadBusinesses } from '../utils/catalog';
 import { resolveMediaUrl } from '../utils/api';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -39,7 +39,7 @@ const Home = () => {
         loadCategories(),
         loadBusinesses({ featured: 'true' }),
       ]);
-      setCategories(cats);
+      setCategories((cats || []).filter((cat) => !isSingularTechStoreName(cat.name)));
       setFeaturedBusinesses(featured.slice(0, 6));
     } catch (err) {
       console.error('Failed to fetch data:', err);
