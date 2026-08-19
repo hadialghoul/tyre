@@ -196,7 +196,17 @@
       "serviceType": "",
       "menus": [],
       "createdAt": "2026-08-17T12:49:35.033Z",
-      "updatedAt": "2026-08-17T12:49:35.033Z"
+      "updatedAt": "2026-08-19T20:23:10.178Z",
+      "reviews": [
+        {
+          "_id": "rev_1a01bb1286276193b",
+          "stars": 5,
+          "name": "",
+          "visitorId": "v_1a01baf4ca89c801a50",
+          "createdAt": "2026-08-19T20:23:10.178Z",
+          "updatedAt": "2026-08-19T20:23:10.178Z"
+        }
+      ]
     },
     {
       "_id": "biz_1a00fc65c81804477",
