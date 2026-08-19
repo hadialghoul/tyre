@@ -35,6 +35,7 @@ async function ensureAdmin() {
 
 async function ensureCategoryVisuals() {
   for (const categoryData of catalog.categories) {
+    if (store.categories.wasDeleted(categoryData.name)) continue;
     const existing = store.categories.findByName(categoryData.name);
     if (!existing) {
       await store.categories.create({
@@ -61,12 +62,26 @@ async function ensureCategoryVisuals() {
   }
 }
 
+async function removeBlockedCategories() {
+  const blocked = ['Tech Store'];
+  for (const name of blocked) {
+    const existing = store.categories.findByName(name);
+    if (existing) {
+      await store.categories.remove(existing._id);
+    } else {
+      await store.categories.rememberDeleted(name);
+    }
+  }
+}
+
 async function seedAll() {
   const user = await ensureAdmin();
+  await removeBlockedCategories();
   await ensureCategoryVisuals();
 
   const categoryMap = new Map();
   for (const categoryData of catalog.categories) {
+    if (store.categories.wasDeleted(categoryData.name)) continue;
     const category = await store.categories.upsertByName({
       name: categoryData.name,
       description: categoryData.description,
@@ -74,6 +89,7 @@ async function seedAll() {
       iconImage: categoryData.iconImage,
       cover: categoryData.cover,
     });
+    if (!category) continue;
     categoryMap.set(categoryData.key, category);
   }
 
@@ -107,4 +123,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { seedAll, ensureAdmin, ensureCategoryVisuals, sampleAdmin };
+module.exports = { seedAll, ensureAdmin, ensureCategoryVisuals, removeBlockedCategories, sampleAdmin };

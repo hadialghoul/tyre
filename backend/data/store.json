@@ -93,15 +93,6 @@
       "createdAt": "2026-08-18T18:00:00.000Z"
     },
     {
-      "_id": "cat_a8c1techstore002",
-      "name": "Tech Store",
-      "description": "Phones, electronics, and computer shops in Tyre.",
-      "icon": "📱",
-      "iconImage": "/img/categories/icons/tech.svg",
-      "cover": "/img/categories/covers/tech.jpg",
-      "createdAt": "2026-08-18T18:00:00.000Z"
-    },
-    {
       "_id": "cat_a8c1barbershop003",
       "name": "Barber Shop",
       "description": "Barbers and hair salons across Tyre, with address and phone.",
@@ -113,5 +104,6 @@
   ],
   "businesses": [],
   "deletedIds": [],
-  "deletedNames": []
+  "deletedNames": [],
+  "deletedCategoryNames": ["Tech Store"]
 }

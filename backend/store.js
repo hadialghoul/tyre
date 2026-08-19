@@ -18,6 +18,7 @@ const emptyDb = () => ({
   businesses: [],
   deletedIds: [],
   deletedNames: [],
+  deletedCategoryNames: [],
   stats: emptyStats(),
 });
 const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
@@ -32,6 +33,7 @@ function fromParsed(parsed) {
     businesses: parsed.businesses || [],
     deletedIds: parsed.deletedIds || [],
     deletedNames: parsed.deletedNames || [],
+    deletedCategoryNames: parsed.deletedCategoryNames || [],
     stats: {
       ...emptyStats(),
       ...(parsed.stats || {}),
@@ -299,7 +301,8 @@ const store = {
       return load().categories.find((item) => sameId(item._id, id)) || null;
     },
     findByName(name) {
-      return load().categories.find((item) => item.name === name) || null;
+      const needle = String(name || '').toLowerCase();
+      return load().categories.find((item) => String(item.name).toLowerCase() === needle) || null;
     },
     async create(data) {
       const db = load();
@@ -313,6 +316,10 @@ const store = {
         createdAt: new Date().toISOString(),
       };
       db.categories.push(category);
+      const createdName = String(category.name || '').toLowerCase();
+      db.deletedCategoryNames = (db.deletedCategoryNames || []).filter(
+        (item) => String(item).toLowerCase() !== createdName
+      );
       await save(db);
       return category;
     },
@@ -325,15 +332,37 @@ const store = {
       return db.categories[index];
     },
     async upsertByName(data) {
+      if (store.categories.wasDeleted(data.name)) return null;
       const existing = store.categories.findByName(data.name);
       if (existing) return store.categories.update(existing._id, data);
       return store.categories.create(data);
+    },
+    wasDeleted(name) {
+      const needle = String(name || '').toLowerCase();
+      return (load().deletedCategoryNames || []).some((item) => String(item).toLowerCase() === needle);
+    },
+    async rememberDeleted(name) {
+      if (!name) return;
+      const db = load();
+      db.deletedCategoryNames = [...new Set([...(db.deletedCategoryNames || []), String(name)])];
+      await save(db);
     },
     async remove(id) {
       const db = load();
       const category = db.categories.find((item) => sameId(item._id, id));
       if (!category) return null;
+      const fallback = db.categories.find(
+        (item) => !sameId(item._id, id) && String(item.name).toLowerCase() === 'services'
+      ) || db.categories.find((item) => !sameId(item._id, id));
+      if (fallback) {
+        db.businesses = db.businesses.map((item) =>
+          sameId(item.category, category._id) ? { ...item, category: fallback._id } : item
+        );
+      }
       db.categories = db.categories.filter((item) => !sameId(item._id, id));
+      if (category.name) {
+        db.deletedCategoryNames = [...new Set([...(db.deletedCategoryNames || []), category.name])];
+      }
       await save(db);
       return category;
     },

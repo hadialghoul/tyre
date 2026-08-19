@@ -73,14 +73,6 @@
       "cover": "/img/categories/covers/clothing.jpg"
     },
     {
-      "key": "tech-store",
-      "name": "Tech Store",
-      "description": "Phones, electronics, and computer shops in Tyre.",
-      "icon": "📱",
-      "iconImage": "/img/categories/icons/tech.svg",
-      "cover": "/img/categories/covers/tech.jpg"
-    },
-    {
       "key": "barber-shop",
       "name": "Barber Shop",
       "description": "Barbers and hair salons across Tyre, with address and phone.",

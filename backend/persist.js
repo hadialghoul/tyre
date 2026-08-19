@@ -13,6 +13,8 @@ function fromParsed(parsed) {
     businesses: parsed.businesses || [],
     deletedIds: parsed.deletedIds || [],
     deletedNames: parsed.deletedNames || [],
+    deletedCategoryNames: parsed.deletedCategoryNames || [],
+    stats: parsed.stats || { totalViews: 0, uniqueVisitors: 0, knownIds: [], byDay: {} },
   };
 }
 
@@ -326,6 +328,8 @@ async function getMongoModel() {
           businesses: Array,
           deletedIds: Array,
           deletedNames: Array,
+          deletedCategoryNames: Array,
+          stats: Object,
           updatedAt: Date,
         },
         { collection: 'tyre_store', strict: false }
@@ -464,6 +468,8 @@ async function write(db) {
     businesses: db.businesses || [],
     deletedIds: db.deletedIds || [],
     deletedNames: db.deletedNames || [],
+    deletedCategoryNames: db.deletedCategoryNames || [],
+    stats: db.stats || { totalViews: 0, uniqueVisitors: 0, knownIds: [], byDay: {} },
   };
   if (hasGitHub()) {
     await writeGithub(payload);
