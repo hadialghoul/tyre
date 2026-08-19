@@ -553,16 +553,9 @@
     "Tech Store"
   ],
   "stats": {
-    "totalViews": 1,
-    "uniqueVisitors": 1,
-    "knownIds": [
-      "v_1a01ba81354529438cb"
-    ],
-    "byDay": {
-      "2026-08-19": {
-        "views": 1,
-        "uniques": 1
-      }
-    }
+    "totalViews": 0,
+    "uniqueVisitors": 0,
+    "knownIds": [],
+    "byDay": {}
   }
 }
