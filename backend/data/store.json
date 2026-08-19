@@ -97,8 +97,9 @@
       "name": "Tech Stores",
       "description": "",
       "icon": "",
-      "cover": "",
-      "createdAt": "2026-08-18T15:43:54.754Z"
+      "cover": "/img/categories/covers/tech.jpg",
+      "createdAt": "2026-08-18T15:43:54.754Z",
+      "iconImage": "/img/categories/icons/tech.svg"
     },
     {
       "_id": "cat_1a01598a65b7fa4a2",
