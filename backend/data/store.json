@@ -466,6 +466,26 @@
       ],
       "createdAt": "2026-08-19T17:16:01.571Z",
       "updatedAt": "2026-08-19T17:16:01.571Z"
+    },
+    {
+      "_id": "biz_1a01b085624fe9659",
+      "name": "Karaz",
+      "secondName": "",
+      "category": "cat_19ffb4b92f9e35131",
+      "description": "",
+      "phone": "76 085 966",
+      "address": "Tyre,Center Karaz",
+      "logo": "",
+      "logo2": "",
+      "coverImage": "",
+      "openingHours": "Private pool 9 AM till 5PM",
+      "hasDelivery": false,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [],
+      "createdAt": "2026-08-19T17:18:46.308Z",
+      "updatedAt": "2026-08-19T17:18:46.308Z"
     }
   ],
   "deletedIds": [
