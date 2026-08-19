@@ -186,9 +186,9 @@
       "description": "Electricity/Solar System",
       "phone": "81 045 241",
       "address": "",
-      "logo": "",
+      "logo": "/api/media/1a01bb6010698c401f6.jpeg",
       "logo2": "",
-      "coverImage": "",
+      "coverImage": "/api/media/1a01bb60643be8ade79.jpeg",
       "openingHours": "",
       "hasDelivery": false,
       "deliveryPhone": "",
@@ -196,7 +196,7 @@
       "serviceType": "",
       "menus": [],
       "createdAt": "2026-08-17T12:49:35.033Z",
-      "updatedAt": "2026-08-19T20:23:10.178Z",
+      "updatedAt": "2026-08-19T20:28:30.161Z",
       "reviews": [
         {
           "_id": "rev_1a01bb1286276193b",
