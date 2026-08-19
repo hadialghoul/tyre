@@ -417,6 +417,26 @@
       "menus": [],
       "createdAt": "2026-08-19T09:38:57.174Z",
       "updatedAt": "2026-08-19T09:38:57.174Z"
+    },
+    {
+      "_id": "biz_1a0199bc1e614a1f6",
+      "name": "Slim",
+      "secondName": "",
+      "category": "cat_1a0158a7dd1cb7ab1",
+      "description": "",
+      "phone": "76 606 192",
+      "address": "Tyre - kartaj st. near alfa store13:34",
+      "logo": "/api/media/1a0199bbdcba345d600.jpg",
+      "logo2": "",
+      "coverImage": "",
+      "openingHours": "10AM to 8:30PM",
+      "hasDelivery": true,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [],
+      "createdAt": "2026-08-19T10:40:33.254Z",
+      "updatedAt": "2026-08-19T10:40:33.254Z"
     }
   ],
   "deletedIds": [
