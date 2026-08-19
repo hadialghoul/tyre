@@ -652,16 +652,17 @@
   ],
   "deletedCategoryNames": [],
   "stats": {
-    "totalViews": 27,
-    "uniqueVisitors": 2,
+    "totalViews": 28,
+    "uniqueVisitors": 3,
     "knownIds": [
       "v_1a01baf4ca89c801a50",
-      "v_1a01b86b10c97c54533"
+      "v_1a01b86b10c97c54533",
+      "v_1a01b8a3af08ef0b883"
     ],
     "byDay": {
       "2026-08-19": {
-        "views": 27,
-        "uniques": 2
+        "views": 28,
+        "uniques": 3
       }
     }
   }
