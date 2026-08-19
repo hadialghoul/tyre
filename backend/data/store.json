@@ -652,7 +652,7 @@
   ],
   "deletedCategoryNames": [],
   "stats": {
-    "totalViews": 25,
+    "totalViews": 26,
     "uniqueVisitors": 2,
     "knownIds": [
       "v_1a01baf4ca89c801a50",
@@ -660,7 +660,7 @@
     ],
     "byDay": {
       "2026-08-19": {
-        "views": 25,
+        "views": 26,
         "uniques": 2
       }
     }
