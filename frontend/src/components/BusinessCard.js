@@ -24,6 +24,8 @@ const BusinessCard = ({ business }) => {
       to={`/business/${business._id}`}
       sx={{
         height: '100%',
+        width: '100%',
+        flex: 1,
         display: 'flex',
         flexDirection: 'column',
         textDecoration: 'none',
@@ -99,39 +101,84 @@ const BusinessCard = ({ business }) => {
               {serviceName(business.serviceType) || categoryName(business.category.name)}
             </Typography>
           )}
-          <Typography variant="h5" sx={{ fontWeight: 600, lineHeight: 1.15, color: '#f6f0e6' }}>
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: 600,
+              lineHeight: 1.15,
+              color: '#f6f0e6',
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              minHeight: '2.3em',
+            }}
+          >
             {business.name}
           </Typography>
           {business.secondName ? (
-            <Typography sx={{ mt: 0.4, fontSize: 13, color: 'rgba(246,240,230,0.82)' }}>
+            <Typography
+              sx={{
+                mt: 0.4,
+                fontSize: 13,
+                color: 'rgba(246,240,230,0.82)',
+                display: '-webkit-box',
+                WebkitLineClamp: 1,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+              }}
+            >
               {t('secondPlace')} · {business.secondName}
             </Typography>
           ) : null}
         </Box>
       </Box>
 
-      <Box sx={{ p: 2.4, flexGrow: 1, display: 'flex', flexDirection: 'column', gap: 1.2 }}>
-        {business.address && (
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 0.8 }}>
-            <LocationOn sx={{ fontSize: 18, color: '#c8a36a', mt: '1px' }} />
-            <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.5 }}>
-              {business.address}
-            </Typography>
-          </Box>
-        )}
+      <Box
+        sx={{
+          p: 2.4,
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1.2,
+          minHeight: 168,
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 0.8, minHeight: 42 }}>
+          {business.address ? (
+            <>
+              <LocationOn sx={{ fontSize: 18, color: '#c8a36a', mt: '1px' }} />
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{
+                  lineHeight: 1.5,
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                }}
+              >
+                {business.address}
+              </Typography>
+            </>
+          ) : null}
+        </Box>
 
-        {kind === 'hotel' && business.starRating ? (
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Rating value={Number(business.starRating)} readOnly size="small" />
-            <Typography variant="body2" sx={{ fontWeight: 600 }}>
-              {t('starHotel', { n: business.starRating })}
-            </Typography>
-          </Box>
-        ) : null}
+        <Box sx={{ minHeight: 28, display: 'flex', alignItems: 'center' }}>
+          {kind === 'hotel' && business.starRating ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Rating value={Number(business.starRating)} readOnly size="small" />
+              <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                {t('starHotel', { n: business.starRating })}
+              </Typography>
+            </Box>
+          ) : null}
 
-        {kind === 'service' && business.serviceType ? (
-          <Chip label={serviceName(business.serviceType)} size="small" sx={{ width: 'fit-content', bgcolor: 'rgba(200,163,106,0.16)' }} />
-        ) : null}
+          {kind === 'service' && business.serviceType ? (
+            <Chip label={serviceName(business.serviceType)} size="small" sx={{ width: 'fit-content', bgcolor: 'rgba(200,163,106,0.16)' }} />
+          ) : null}
+        </Box>
 
         {kind === 'service' && business.description ? (
           <Typography
@@ -140,7 +187,7 @@ const BusinessCard = ({ business }) => {
             sx={{
               lineHeight: 1.7,
               display: '-webkit-box',
-              WebkitLineClamp: 4,
+              WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
             }}

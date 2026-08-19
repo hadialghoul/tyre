@@ -302,10 +302,10 @@ const BusinessList = () => {
             <CircularProgress sx={{ color: '#c8a36a' }} />
           </Box>
         ) : (
-          <Grid container spacing={3}>
+          <Grid container spacing={3} alignItems="stretch">
             {visibleBusinesses.length > 0 ? (
               visibleBusinesses.map((business) => (
-                <Grid item xs={12} sm={6} md={4} key={business._id}>
+                <Grid item xs={12} sm={6} md={4} key={business._id} sx={{ display: 'flex' }}>
                   <BusinessCard business={business} />
                 </Grid>
               ))

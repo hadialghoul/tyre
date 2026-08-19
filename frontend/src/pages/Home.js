@@ -443,10 +443,10 @@ const Home = () => {
                 </Typography>
               </Box>
             </Reveal>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} alignItems="stretch">
               {featuredBusinesses.map((business, index) => (
-                <Grid item xs={12} sm={6} md={4} key={business._id}>
-                  <Reveal delay={index * 80}>
+                <Grid item xs={12} sm={6} md={4} key={business._id} sx={{ display: 'flex' }}>
+                  <Reveal delay={index * 80} fill>
                     <BusinessCard business={business} />
                   </Reveal>
                 </Grid>
