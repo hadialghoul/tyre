@@ -553,14 +553,14 @@
     "Tech Store"
   ],
   "stats": {
-    "totalViews": 2,
+    "totalViews": 3,
     "uniqueVisitors": 1,
     "knownIds": [
       "v_1a01ba8a61d6579179a"
     ],
     "byDay": {
       "2026-08-19": {
-        "views": 2,
+        "views": 3,
         "uniques": 1
       }
     }
