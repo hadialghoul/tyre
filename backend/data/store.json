@@ -541,6 +541,27 @@
       "menus": [],
       "createdAt": "2026-08-19T17:26:30.350Z",
       "updatedAt": "2026-08-19T17:26:30.350Z"
+    },
+    {
+      "_id": "biz_1a01bfa46242d83e5",
+      "name": "Candelia",
+      "secondName": "",
+      "category": "cat_19ffb4b930795d677",
+      "description": "designing Handmade candles in a variety of colors and shapes, with different fragrances and scents, and many designs and ideas to suit your taste.\r\n\r\nHigh-quality and distinctive work at suitable prices.\r\n\r\nOrder a design for your occasion: \r\n- Gift boxes containing candles inspired by the occasion (gender reveal, school events, weddings, henna parties, birthdays, special gifts, and other occasions)\r\n- Incense burners for candles with a variety of fragrant scents to add a distinctive aroma to the your place.\r\n- Everything is made to order with precision.\r\n\r\n",
+      "phone": "81 969 371",
+      "address": "Online shop",
+      "logo": "/api/media/1a01bfa3e6a6d0b768d.jpeg",
+      "logo2": "",
+      "coverImage": "/api/media/1a01bfa42859a0de453.jpeg",
+      "openingHours": "",
+      "hasDelivery": true,
+      "deliveryPhone": "81 969 371",
+      "featured": false,
+      "serviceType": "",
+      "menus": [],
+      "reviews": [],
+      "createdAt": "2026-08-19T21:43:01.924Z",
+      "updatedAt": "2026-08-19T21:43:01.924Z"
     }
   ],
   "deletedIds": [
