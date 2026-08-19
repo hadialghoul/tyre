@@ -572,15 +572,15 @@
       "reviews": [
         {
           "_id": "rev_1a01bfe57f15c1ed7",
-          "stars": 4,
+          "stars": 5,
           "name": "",
           "visitorId": "v_1a01bd83786095fc1fc",
           "createdAt": "2026-08-19T21:47:28.625Z",
-          "updatedAt": "2026-08-19T21:47:34.852Z"
+          "updatedAt": "2026-08-19T21:47:38.417Z"
         }
       ],
       "createdAt": "2026-08-19T21:43:01.924Z",
-      "updatedAt": "2026-08-19T21:47:34.852Z"
+      "updatedAt": "2026-08-19T21:47:38.417Z"
     }
   ],
   "deletedIds": [
