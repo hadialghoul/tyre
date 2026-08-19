@@ -12,6 +12,7 @@ export const IMAGES = {
   market: '/img/categories/covers/supermarkets.svg',
   service: '/img/categories/covers/services.svg',
   clothing: '/img/categories/covers/clothing.jpg',
+  tech: '/img/categories/covers/tech.jpg',
   barber: '/img/categories/covers/barber.jpg',
   night: '/img/beach.jpg',
   fallback: '/img/categories/covers/restaurants.svg',
@@ -57,6 +58,14 @@ export const CATEGORY_ASSETS = {
     cover: '/img/categories/covers/clothing.jpg',
     icon: '/img/categories/icons/clothing.svg',
   },
+  'tech store': {
+    cover: '/img/categories/covers/tech.jpg',
+    icon: '/img/categories/icons/tech.svg',
+  },
+  'tech stores': {
+    cover: '/img/categories/covers/tech.jpg',
+    icon: '/img/categories/icons/tech.svg',
+  },
   'barber shop': {
     cover: '/img/categories/covers/barber.jpg',
     icon: '/img/categories/icons/barber.svg',
@@ -86,6 +95,7 @@ export const categoryCover = (name = '') => {
   if (n.includes('hospital') || n.includes('health')) return IMAGES.health;
   if (n.includes('pharm')) return CATEGORY_ASSETS.pharmacies.cover;
   if (n.includes('cloth') || n.includes('fashion') || n.includes('boutique')) return IMAGES.clothing;
+  if (n.includes('tech') || n.includes('phone') || n.includes('electronic')) return IMAGES.tech;
   if (n.includes('barber') || n.includes('salon') || n.includes('hair')) return IMAGES.barber;
   if (n.includes('super') || n.includes('market')) return IMAGES.market;
   if (n.includes('service') || n.includes('repair') || n.includes('laundry')) return IMAGES.service;

@@ -251,6 +251,7 @@ export const categoryNamesAr = {
   Services: 'خدمات',
   'Clothing Store': 'محلات ملابس',
   'Tech Store': 'محلات إلكترونيات',
+  'Tech Stores': 'محلات إلكترونيات',
   'Barber Shop': 'صالون حلاقة',
 };
 

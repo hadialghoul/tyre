@@ -8,6 +8,12 @@ const sampleAdmin = {
   role: 'admin',
 };
 
+const COVER_BY_NAME = [
+  { match: /tech\s*stores?/i, cover: '/img/categories/covers/tech.jpg', iconImage: '/img/categories/icons/tech.svg', icon: '📱' },
+  { match: /clothing|clothes|fashion|boutique/i, cover: '/img/categories/covers/clothing.jpg', iconImage: '/img/categories/icons/clothing.svg' },
+  { match: /barber|salon/i, cover: '/img/categories/covers/barber.jpg', iconImage: '/img/categories/icons/barber.svg' },
+];
+
 async function ensureAdmin() {
   const existing =
     store.users.findByEmail(sampleAdmin.email) ||
@@ -33,51 +39,37 @@ async function ensureAdmin() {
   });
 }
 
-async function ensureCategoryVisuals() {
-  for (const categoryData of catalog.categories) {
-    if (store.categories.wasDeleted(categoryData.name)) continue;
-    const existing = store.categories.findByName(categoryData.name);
-    if (!existing) {
-      await store.categories.create({
-        name: categoryData.name,
-        description: categoryData.description,
-        icon: categoryData.icon,
-        iconImage: categoryData.iconImage,
-        cover: categoryData.cover,
-      });
-      continue;
-    }
+async function applyCoversToExistingCategories() {
+  const categories = store.categories.findAll();
+  for (const existing of categories) {
+    const preset = COVER_BY_NAME.find((item) => item.match.test(existing.name || ''));
+    const catalogMatch = catalog.categories.find(
+      (item) => String(item.name).toLowerCase() === String(existing.name || '').toLowerCase()
+    );
     const updates = {};
-    const cover = String(existing.cover || '');
-    const usesSharedPhoto = !cover || /\/img\/(port|hero|coast|beach|hippodrome)\.jpg$/i.test(cover);
-    const usesOldIllustration = /\/img\/categories\/covers\/.+\.svg$/i.test(cover);
-    if ((usesSharedPhoto || usesOldIllustration) && categoryData.cover && categoryData.cover !== cover) {
-      updates.cover = categoryData.cover;
+    if (preset) {
+      if (existing.cover !== preset.cover) updates.cover = preset.cover;
+      if (!existing.iconImage && preset.iconImage) updates.iconImage = preset.iconImage;
+      if (preset.icon && !existing.icon) updates.icon = preset.icon;
+    } else if (catalogMatch) {
+      const cover = String(existing.cover || '');
+      const usesSharedPhoto = !cover || /\/img\/(port|hero|coast|beach|hippodrome)\.jpg$/i.test(cover);
+      const usesOldIllustration = /\/img\/categories\/covers\/.+\.svg$/i.test(cover);
+      if ((usesSharedPhoto || usesOldIllustration) && catalogMatch.cover && catalogMatch.cover !== cover) {
+        updates.cover = catalogMatch.cover;
+      }
+      if (!existing.iconImage && catalogMatch.iconImage) updates.iconImage = catalogMatch.iconImage;
+      if (catalogMatch.icon && !existing.icon) updates.icon = catalogMatch.icon;
     }
-    if (!existing.iconImage && categoryData.iconImage) updates.iconImage = categoryData.iconImage;
-    if (categoryData.icon && !existing.icon) updates.icon = categoryData.icon;
     if (Object.keys(updates).length) {
       await store.categories.update(existing._id, updates);
     }
   }
 }
 
-async function removeBlockedCategories() {
-  const blocked = ['Tech Store'];
-  for (const name of blocked) {
-    const existing = store.categories.findByName(name);
-    if (existing) {
-      await store.categories.remove(existing._id);
-    } else {
-      await store.categories.rememberDeleted(name);
-    }
-  }
-}
-
 async function seedAll() {
   const user = await ensureAdmin();
-  await removeBlockedCategories();
-  await ensureCategoryVisuals();
+  await applyCoversToExistingCategories();
 
   const categoryMap = new Map();
   for (const categoryData of catalog.categories) {
@@ -123,4 +115,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { seedAll, ensureAdmin, ensureCategoryVisuals, removeBlockedCategories, sampleAdmin };
+module.exports = { seedAll, ensureAdmin, applyCoversToExistingCategories, sampleAdmin };

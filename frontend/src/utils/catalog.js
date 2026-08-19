@@ -34,6 +34,7 @@ export const getCategoryKind = (name = '') => {
   if (n.includes('hospital')) return 'hospital';
   if (n.includes('pharmac')) return 'pharmacy';
   if (n.includes('cloth') || n.includes('fashion') || n.includes('boutique')) return 'clothing';
+  if (n.includes('tech') || n.includes('phone') || n.includes('electronic')) return 'tech';
   if (n.includes('barber') || n.includes('salon') || n.includes('hair')) return 'barber';
   if (n.includes('super') || n.includes('market')) return 'supermarket';
   if (n.includes('service')) return 'service';
