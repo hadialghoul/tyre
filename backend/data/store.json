@@ -108,15 +108,6 @@
       "cover": "/img/categories/covers/barber.jpg",
       "createdAt": "2026-08-18T15:58:40.731Z",
       "iconImage": "/img/categories/icons/barber.svg"
-    },
-    {
-      "_id": "cat_1a01c0cca186be0d7",
-      "name": "Tech Store",
-      "description": "Phones, electronics, and computer shops in Tyre.",
-      "icon": "📱",
-      "iconImage": "/img/categories/icons/tech.svg",
-      "cover": "/img/categories/covers/tech.jpg",
-      "createdAt": "2026-08-19T22:03:15.352Z"
     }
   ],
   "businesses": [
@@ -650,7 +641,9 @@
     "Aljawad",
     "Ugarit International Restaurant"
   ],
-  "deletedCategoryNames": [],
+  "deletedCategoryNames": [
+    "Tech Store"
+  ],
   "stats": {
     "totalViews": 34,
     "uniqueVisitors": 4,
