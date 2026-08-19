@@ -437,6 +437,35 @@
       "menus": [],
       "createdAt": "2026-08-19T10:40:33.254Z",
       "updatedAt": "2026-08-19T10:40:33.254Z"
+    },
+    {
+      "_id": "biz_1a01b05d2a35c7600",
+      "name": "Bambo",
+      "secondName": "",
+      "category": "cat_1a00c31951f95a08d",
+      "description": "Bamboo 🌿 The Craft of Generations\r\nAuthentic Asian Flavors 🇯🇵🇻🇳🇨🇳\r\nSushi, EATHAI & more 🥢\r\nOrders & Reservations 71477236 / 71674914",
+      "phone": "71477236 ",
+      "address": "https://www.google.com/maps?q=Bamboo+Restaurant%D8%8C+Tyre&ftid=0x151e87ee7b12f027:0xcb41817287b513b9&entry=gps&shh=CAE&lucs=,94297699,94231188,94280568,47071704,94218641,94282134,100813464,94286869,100820247,100822499&g_ep=CAISEjI2LjMyLjUuOTU4MDQ3MzAzMBgAINeCAypdLDk0Mjk3Njk5LDk0MjMxMTg4LDk0MjgwNTY4LDQ3MDcxNzA0LDk0MjE4NjQxLDk0MjgyMTM0LDEwMDgxMzQ2NCw5NDI4Njg2OSwxMDA4MjAyNDcsMTAwODIyNDk5QgJMQg%3D%3D&skid=405238d2-ba3f-4b94-aa76-8e00a370df6f&g_st=iwb",
+      "logo": "/api/media/1a01b05ca43207b9d77.jpg",
+      "logo2": "",
+      "coverImage": "/api/media/1a01b05cd9c1e9d0ea8.jpg",
+      "openingHours": "",
+      "hasDelivery": true,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [
+        {
+          "name": "Main Menu",
+          "description": "",
+          "type": "image",
+          "link": "",
+          "image": "/api/media/1a01b05bf9e6aaccf72.pdf",
+          "items": []
+        }
+      ],
+      "createdAt": "2026-08-19T17:16:01.571Z",
+      "updatedAt": "2026-08-19T17:16:01.571Z"
     }
   ],
   "deletedIds": [
