@@ -486,6 +486,26 @@
       "menus": [],
       "createdAt": "2026-08-19T17:18:46.308Z",
       "updatedAt": "2026-08-19T17:20:14.497Z"
+    },
+    {
+      "_id": "biz_1a01b0f6ace53393f",
+      "name": "Storm / Alivina",
+      "secondName": "",
+      "category": "cat_1a0158a7dd1cb7ab1",
+      "description": "",
+      "phone": "71 103665",
+      "address": "Tyre, Center Karaz",
+      "logo": "/api/media/1a01b0f65748897e53c.png",
+      "logo2": "",
+      "coverImage": "",
+      "openingHours": "10 AM till 6 PM",
+      "hasDelivery": false,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [],
+      "createdAt": "2026-08-19T17:26:30.350Z",
+      "updatedAt": "2026-08-19T17:26:30.350Z"
     }
   ],
   "deletedIds": [
