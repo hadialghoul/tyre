@@ -10,6 +10,7 @@ import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './admin/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import Footer from './components/Footer';
+import AnalyticsTracker from './components/AnalyticsTracker';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 import './App.css';
 
@@ -89,6 +90,7 @@ function ThemedApp() {
       <CssBaseline />
       <Router>
         <div className="App">
+          <AnalyticsTracker />
           <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />

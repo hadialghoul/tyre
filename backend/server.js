@@ -62,6 +62,7 @@ app.get('/api/media/:id', async (req, res) => {
 app.use('/api/businesses', require('./routes/businessRoutes'));
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/categories', require('./routes/categoryRoutes'));
+app.use('/api/stats', require('./routes/statsRoutes'));
 
 app.get('/api/health', (req, res) => {
   res.json({

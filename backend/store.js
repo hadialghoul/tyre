@@ -5,7 +5,21 @@ const bundled = require('./data/store.json');
 const persist = require('./persist');
 const bundledDeleted = require('./data/deleted.json');
 
-const emptyDb = () => ({ users: [], categories: [], businesses: [], deletedIds: [], deletedNames: [] });
+const emptyStats = () => ({
+  totalViews: 0,
+  uniqueVisitors: 0,
+  knownIds: [],
+  byDay: {},
+});
+
+const emptyDb = () => ({
+  users: [],
+  categories: [],
+  businesses: [],
+  deletedIds: [],
+  deletedNames: [],
+  stats: emptyStats(),
+});
 const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
 const FILE = isServerless
   ? path.join('/tmp', 'tyre-store.json')
@@ -18,6 +32,12 @@ function fromParsed(parsed) {
     businesses: parsed.businesses || [],
     deletedIds: parsed.deletedIds || [],
     deletedNames: parsed.deletedNames || [],
+    stats: {
+      ...emptyStats(),
+      ...(parsed.stats || {}),
+      knownIds: Array.isArray(parsed.stats?.knownIds) ? parsed.stats.knownIds : [],
+      byDay: parsed.stats?.byDay && typeof parsed.stats.byDay === 'object' ? parsed.stats.byDay : {},
+    },
   };
 }
 
@@ -195,10 +215,25 @@ function sameId(a, b) {
   return String(a || '') === String(b || '');
 }
 
+function withReviewSummary(business) {
+  if (!business) return null;
+  const reviews = Array.isArray(business.reviews) ? business.reviews : [];
+  const count = reviews.length;
+  const rating = count
+    ? Math.round((reviews.reduce((sum, item) => sum + Number(item.stars || 0), 0) / count) * 10) / 10
+    : 0;
+  return {
+    ...business,
+    rating,
+    reviewCount: count,
+    reviews: reviews.map(({ visitorId, ...rest }) => rest),
+  };
+}
+
 function populateBusiness(db, business) {
   if (!business) return null;
   const category = db.categories.find((item) => sameId(item._id, business.category)) || null;
-  return { ...business, category };
+  return withReviewSummary({ ...business, category });
 }
 
 const store = {
@@ -346,6 +381,7 @@ const store = {
       const business = {
         _id: makeId('biz'),
         ...data,
+        reviews: Array.isArray(data.reviews) ? data.reviews : [],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -398,6 +434,88 @@ const store = {
         deletedIds: db.deletedIds,
         remaining: db.businesses.length,
       };
+    },
+    async addReview(id, { stars, visitorId, name } = {}) {
+      const value = Number(stars);
+      const visitor = String(visitorId || '').trim().slice(0, 80);
+      if (!visitor || !Number.isFinite(value) || value < 1 || value > 5) {
+        return { error: 'Choose a rating from 1 to 5 stars.' };
+      }
+      const db = load();
+      const index = db.businesses.findIndex((item) => sameId(item._id, id));
+      if (index === -1) return null;
+      const reviews = [...(db.businesses[index].reviews || [])];
+      const existing = reviews.findIndex((item) => item.visitorId === visitor);
+      const now = new Date().toISOString();
+      const entry = {
+        _id: existing >= 0 ? reviews[existing]._id : makeId('rev'),
+        stars: Math.round(value),
+        name: String(name || '').trim().slice(0, 80),
+        visitorId: visitor,
+        createdAt: existing >= 0 ? reviews[existing].createdAt : now,
+        updatedAt: now,
+      };
+      if (existing >= 0) reviews[existing] = entry;
+      else reviews.push(entry);
+      db.businesses[index] = {
+        ...db.businesses[index],
+        reviews,
+        updatedAt: now,
+      };
+      await save(db);
+      return populateBusiness(db, db.businesses[index]);
+    },
+  },
+
+  stats: {
+    summary() {
+      const stats = load().stats || emptyStats();
+      const today = new Date().toISOString().slice(0, 10);
+      const last7Days = [];
+      for (let i = 6; i >= 0; i -= 1) {
+        const day = new Date(Date.now() - i * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+        const row = stats.byDay?.[day] || { views: 0, uniques: 0 };
+        last7Days.push({ date: day, views: row.views || 0, uniques: row.uniques || 0 });
+      }
+      const todayRow = stats.byDay?.[today] || { views: 0, uniques: 0 };
+      return {
+        totalViews: stats.totalViews || 0,
+        uniqueVisitors: stats.uniqueVisitors || 0,
+        todayViews: todayRow.views || 0,
+        todayUniques: todayRow.uniques || 0,
+        last7Days,
+        measurementId: 'G-929FC0LLN1',
+      };
+    },
+    async trackView(visitorId) {
+      const visitor = String(visitorId || '').trim().slice(0, 80);
+      if (!visitor) return store.stats.summary();
+      const db = load();
+      const stats = { ...emptyStats(), ...(db.stats || {}) };
+      stats.knownIds = Array.isArray(stats.knownIds) ? stats.knownIds : [];
+      stats.byDay = stats.byDay && typeof stats.byDay === 'object' ? { ...stats.byDay } : {};
+      const today = new Date().toISOString().slice(0, 10);
+      const day = { views: 0, uniques: 0, ...(stats.byDay[today] || {}) };
+      stats.totalViews = (stats.totalViews || 0) + 1;
+      day.views = (day.views || 0) + 1;
+      if (!stats.knownIds.includes(visitor)) {
+        stats.uniqueVisitors = (stats.uniqueVisitors || 0) + 1;
+        stats.knownIds.push(visitor);
+        day.uniques = (day.uniques || 0) + 1;
+        if (stats.knownIds.length > 50000) {
+          stats.knownIds = stats.knownIds.slice(-40000);
+        }
+      }
+      const dayKeys = Object.keys(stats.byDay).sort();
+      if (dayKeys.length > 90) {
+        dayKeys.slice(0, dayKeys.length - 90).forEach((key) => {
+          delete stats.byDay[key];
+        });
+      }
+      stats.byDay[today] = day;
+      db.stats = stats;
+      await save(db);
+      return store.stats.summary();
     },
   },
 };

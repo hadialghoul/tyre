@@ -13,9 +13,10 @@ import {
   Chip,
 } from '@mui/material';
 import { Phone, LocationOn, Language, AccessTime, LocalShipping, MenuBook } from '@mui/icons-material';
-import { resolveMediaUrl } from '../utils/api';
+import { resolveMediaUrl, businessAPI } from '../utils/api';
 import { categoryCover, IMAGES } from '../utils/visuals';
 import { getCategoryKind, loadBusinessById, mapsLink, businessLogos } from '../utils/catalog';
+import { getVisitorId, getSavedRating, saveRating } from '../utils/visitor';
 import { useLanguage } from '../i18n/LanguageContext';
 
 const BusinessDetail = () => {
@@ -24,19 +25,23 @@ const BusinessDetail = () => {
   const [business, setBusiness] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [myRating, setMyRating] = useState(0);
+  const [ratingMessage, setRatingMessage] = useState('');
+  const [savingRating, setSavingRating] = useState(false);
 
   const fetchBusiness = useCallback(async () => {
     try {
       setLoading(true);
       const data = await loadBusinessById(id);
       setBusiness(data);
+      setMyRating(getSavedRating(id));
     } catch (err) {
       setError(t('detailsFailed'));
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  }, [id, t]);
 
   useEffect(() => {
     fetchBusiness();
@@ -79,6 +84,27 @@ const BusinessDetail = () => {
       value: business.deliveryPhone ? `${t('deliveryAvailable')} · ${business.deliveryPhone}` : t('deliveryAvailable'),
     },
   ].filter(Boolean);
+
+  const handleRate = async (value) => {
+    const stars = Number(value);
+    if (!stars || savingRating) return;
+    try {
+      setSavingRating(true);
+      setRatingMessage('');
+      const { data } = await businessAPI.addReview(business._id, {
+        stars,
+        visitorId: getVisitorId(),
+      });
+      setBusiness(data);
+      setMyRating(stars);
+      saveRating(business._id, stars);
+      setRatingMessage(t('thanksRating'));
+    } catch (err) {
+      setRatingMessage(err.response?.data?.message || t('ratingFailed'));
+    } finally {
+      setSavingRating(false);
+    }
+  };
 
   return (
     <Box sx={{ bgcolor: '#f6f0e6', pb: 10 }}>
@@ -133,6 +159,19 @@ const BusinessDetail = () => {
                 <Typography sx={{ color: '#f6f0e6' }}>{t('starHotel', { n: business.starRating })}</Typography>
               </Box>
             ) : null}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, mt: 2 }}>
+              <Rating
+                value={Number(business.rating) || 0}
+                precision={0.5}
+                readOnly
+                sx={{ color: '#c8a36a' }}
+              />
+              <Typography sx={{ color: '#f6f0e6' }}>
+                {business.reviewCount
+                  ? `${Number(business.rating).toFixed(1)} · ${t('reviewsCount', { n: business.reviewCount })}`
+                  : t('noReviewsYet')}
+              </Typography>
+            </Box>
           </Container>
         </Box>
       </Box>
@@ -218,6 +257,38 @@ const BusinessDetail = () => {
             </Box>
           </Grid>
         </Grid>
+
+        <Box sx={{ mt: 8, bgcolor: '#fff', p: { xs: 3, md: 4 }, border: '1px solid rgba(11,28,34,0.06)' }}>
+          <Typography sx={{ letterSpacing: '0.22em', fontSize: 12, color: '#c8a36a', mb: 1 }}>
+            {t('visitorRating')}
+          </Typography>
+          <Typography variant="h4" sx={{ mb: 1, fontSize: { xs: '1.6rem', md: '2rem' } }}>
+            {t('rateThisPlace')}
+          </Typography>
+          <Typography sx={{ color: 'text.secondary', mb: 2 }}>
+            {business.reviewCount
+              ? `${Number(business.rating || 0).toFixed(1)} / 5 · ${t('reviewsCount', { n: business.reviewCount })}`
+              : t('noReviewsYet')}
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flexWrap: 'wrap' }}>
+            <Rating
+              name="business-review"
+              value={myRating}
+              onChange={(_, value) => handleRate(value)}
+              disabled={savingRating}
+              size="large"
+              sx={{ color: '#c8a36a' }}
+            />
+            <Typography sx={{ color: 'text.secondary' }}>
+              {myRating ? t('yourRating') : t('rateThisPlace')}
+            </Typography>
+          </Box>
+          {ratingMessage ? (
+            <Alert severity={ratingMessage === t('thanksRating') ? 'success' : 'error'} sx={{ mt: 2 }}>
+              {ratingMessage}
+            </Alert>
+          ) : null}
+        </Box>
 
         {business.menus && business.menus.length > 0 && (
           <Box sx={{ mt: 10 }}>

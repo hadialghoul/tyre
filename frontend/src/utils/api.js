@@ -52,6 +52,12 @@ export const businessAPI = {
   delete: (id) => api.delete(`/businesses/${encodeURIComponent(id)}`),
   rememberDeleted: (ids, names) => api.post('/businesses/tombstones', { ids, names }),
   addMenu: (id, data) => api.post(`/businesses/${encodeURIComponent(id)}/menus`, data),
+  addReview: (id, data) => api.post(`/businesses/${encodeURIComponent(id)}/reviews`, data),
+};
+
+export const statsAPI = {
+  get: () => api.get('/stats'),
+  trackView: (visitorId) => api.post('/stats/view', { visitorId }),
 };
 
 export const categoryAPI = {

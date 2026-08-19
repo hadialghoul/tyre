@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Grid, Card, CardActionArea, CardContent, Typography, CircularProgress, Button } from '@mui/material';
-import { businessAPI, categoryAPI, resolveMediaUrl } from '../utils/api';
+import { businessAPI, categoryAPI, statsAPI, resolveMediaUrl } from '../utils/api';
 import { categoryCover } from '../utils/visuals';
 import CategoryIcon from '../components/CategoryIcon';
 
 const AdminDashboardHome = () => {
   const [stats, setStats] = useState({ businesses: 0, categories: 0 });
+  const [traffic, setTraffic] = useState(null);
   const [categories, setCategories] = useState([]);
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,14 +18,16 @@ const AdminDashboardHome = () => {
 
   const fetchStats = async () => {
     try {
-      const [bizRes, catRes] = await Promise.all([
+      const [bizRes, catRes, trafficRes] = await Promise.all([
         businessAPI.getAll({}),
         categoryAPI.getAll(),
+        statsAPI.get().catch(() => ({ data: null })),
       ]);
       const bizList = Array.isArray(bizRes.data) ? bizRes.data : [];
       const catList = Array.isArray(catRes.data) ? catRes.data : [];
       setBusinesses(bizList);
       setCategories(catList);
+      setTraffic(trafficRes?.data || null);
       setStats({
         businesses: bizList.length,
         categories: catList.length,
@@ -65,6 +68,32 @@ const AdminDashboardHome = () => {
                 Total Categories
               </Typography>
               <Typography variant="h5">{stats.categories}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={4}>
+          <Card>
+            <CardContent>
+              <Typography color="textSecondary" gutterBottom>
+                Website visits
+              </Typography>
+              <Typography variant="h5">{traffic?.totalViews ?? 0}</Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+                Unique visitors: {traffic?.uniqueVisitors ?? 0}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Today: {traffic?.todayViews ?? 0}
+              </Typography>
+              <Button
+                href="https://analytics.google.com/analytics/web/"
+                target="_blank"
+                rel="noopener noreferrer"
+                size="small"
+                sx={{ mt: 1, px: 0 }}
+              >
+                Open Google Analytics · G-929FC0LLN1
+              </Button>
             </CardContent>
           </Card>
         </Grid>

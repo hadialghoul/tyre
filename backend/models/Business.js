@@ -40,6 +40,17 @@ const businessSchema = new mongoose.Schema({
     max: 5,
     default: 0
   },
+  reviewCount: {
+    type: Number,
+    default: 0
+  },
+  reviews: [{
+    stars: { type: Number, min: 1, max: 5 },
+    name: String,
+    visitorId: String,
+    createdAt: Date,
+    updatedAt: Date
+  }],
   latitude: Number,
   longitude: Number,
   featured: {

@@ -205,6 +205,25 @@ router.post('/:id/menus', auth, adminOnly, upload.single('image'), async (req, r
   }
 });
 
+router.post('/:id/reviews', async (req, res) => {
+  try {
+    const result = await store.businesses.addReview(req.params.id, {
+      stars: req.body.stars,
+      visitorId: req.body.visitorId,
+      name: req.body.name,
+    });
+    if (!result) {
+      return res.status(404).json({ message: 'Business not found' });
+    }
+    if (result.error) {
+      return res.status(400).json({ message: result.error });
+    }
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: err.message || 'Server error' });
+  }
+});
+
 router.delete('/:id', auth, adminOnly, async (req, res) => {
   try {
     const business = await store.businesses.remove(req.params.id);

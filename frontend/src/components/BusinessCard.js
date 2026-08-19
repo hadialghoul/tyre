@@ -165,6 +165,21 @@ const BusinessCard = ({ business }) => {
           ) : null}
         </Box>
 
+        <Box sx={{ minHeight: 32, display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Rating
+            value={Number(business.rating) || 0}
+            precision={0.5}
+            readOnly
+            size="small"
+            sx={{ color: '#c8a36a' }}
+          />
+          <Typography variant="body2" sx={{ fontWeight: 600 }}>
+            {business.reviewCount
+              ? `${Number(business.rating).toFixed(1)} · ${t('reviewsCount', { n: business.reviewCount })}`
+              : t('noReviewsYet')}
+          </Typography>
+        </Box>
+
         <Box sx={{ minHeight: 28, display: 'flex', alignItems: 'center' }}>
           {kind === 'hotel' && business.starRating ? (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
