@@ -176,41 +176,11 @@ async function save(db) {
   return next;
 }
 
-const categoryNamesAr = {
-  Restaurants: 'مطاعم',
-  'Coffee Shops': 'مقاهي',
-  Hotels: 'فنادق',
-  Pools: 'مسابح',
-  Hospitals: 'مستشفيات',
-  Pharmacies: 'صيدليات',
-  Supermarkets: 'سوبرماركت',
-  Services: 'خدمات',
-};
-
-const serviceTypesAr = {
-  Electricity: 'كهرباء',
-  'Washing machines': 'غسالات',
-  'Air conditioning': 'تكييف',
-  Plumbing: 'سباكة',
-  Laundry: 'غسيل ملابس',
-  Painting: 'دهان',
-  'Refrigerator repair': 'تصليح برادات',
-};
-
 function matchesSearch(item, category, search) {
   if (!search) return true;
   const q = String(search).trim().toLowerCase();
   if (!q) return true;
-  const haystack = [
-    item.name,
-    item.description,
-    item.address,
-    item.serviceType,
-    item.phone,
-    category?.name,
-    categoryNamesAr[category?.name],
-    serviceTypesAr[item.serviceType],
-  ]
+  const haystack = [item.name, item.secondName]
     .filter(Boolean)
     .join(' ')
     .toLowerCase();

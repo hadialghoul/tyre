@@ -1,6 +1,5 @@
 import catalog from '../data/catalog.json';
 import { businessAPI, categoryAPI, isApiConfigured } from './api';
-import { categoryNamesAr, serviceTypesAr } from '../i18n/translations';
 import { filterDeleted } from './deleted';
 
 export const SAMPLE_CATEGORIES = catalog.categories.map((category) => ({
@@ -68,17 +67,7 @@ const matchesSearch = (business, search) => {
   if (!search) return true;
   const q = String(search).trim().toLowerCase();
   if (!q) return true;
-  const catName = business.category?.name || '';
-  const haystack = [
-    business.name,
-    business.description,
-    business.address,
-    business.serviceType,
-    business.phone,
-    catName,
-    categoryNamesAr[catName],
-    serviceTypesAr[business.serviceType],
-  ]
+  const haystack = [business.name, business.secondName]
     .filter(Boolean)
     .join(' ')
     .toLowerCase();
