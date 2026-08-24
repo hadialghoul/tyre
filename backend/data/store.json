@@ -662,7 +662,7 @@
     "Tech Store"
   ],
   "stats": {
-    "totalViews": 202,
+    "totalViews": 201,
     "uniqueVisitors": 60,
     "knownIds": [
       "v_1a01baf4ca89c801a50",
@@ -748,7 +748,7 @@
         "uniques": 10
       },
       "2026-08-24": {
-        "views": 6,
+        "views": 5,
         "uniques": 4
       }
     }
