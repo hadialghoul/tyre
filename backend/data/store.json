@@ -646,6 +646,27 @@
       "reviews": [],
       "createdAt": "2026-08-25T10:33:30.101Z",
       "updatedAt": "2026-08-25T10:33:30.101Z"
+    },
+    {
+      "_id": "biz_1a0387f4110ec499c",
+      "name": "Rest House",
+      "secondName": "",
+      "category": "cat_19ffb4b92f3e740ca",
+      "description": "",
+      "phone": "78 862 251",
+      "address": "Tyre , Cornish Street",
+      "logo": "/api/media/1a0387f38db967aa2d0.jpg",
+      "logo2": "",
+      "coverImage": "/api/media/1a0387f3d3b2119f4b7.jpg",
+      "openingHours": "",
+      "hasDelivery": false,
+      "deliveryPhone": "",
+      "featured": true,
+      "serviceType": "",
+      "menus": [],
+      "reviews": [],
+      "createdAt": "2026-08-25T10:37:38.960Z",
+      "updatedAt": "2026-08-25T10:37:38.961Z"
     }
   ],
   "deletedIds": [
