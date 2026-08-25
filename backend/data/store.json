@@ -667,6 +667,36 @@
       "reviews": [],
       "createdAt": "2026-08-25T10:37:38.960Z",
       "updatedAt": "2026-08-25T10:37:38.961Z"
+    },
+    {
+      "_id": "biz_1a03883d019e74ee1",
+      "name": "Koub",
+      "secondName": "",
+      "category": "cat_19ffb4b92eedcc224",
+      "description": "",
+      "phone": "",
+      "address": "Tyre, Cornish street",
+      "logo": "/api/media/1a03883ccd3ebcbdcea.jpg",
+      "logo2": "",
+      "coverImage": "",
+      "openingHours": "",
+      "hasDelivery": false,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [
+        {
+          "name": "Main Menu",
+          "description": "",
+          "type": "link",
+          "link": "https://www.menu-links.com/api/menu/version/tF6fxc4s3AYxzXy48qC9?utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAdGRleAT6UIhwZG9mAmZkaWQWUNIGAcbrfpscJtXmzznk3lyiA-6VumV4dG4DYWVtAjExAHNydGMGYXBwX2lkDzEyNDAyNDU3NDI4NzQxNAABp-7HMLjdH_ksn3awan5p6ok2AnXOgR9DIW-aEuioaZj9n91ptlbIALiW18Lw_aem_tRCCObqx3v2Tcw7116cM3A",
+          "image": "",
+          "items": []
+        }
+      ],
+      "reviews": [],
+      "createdAt": "2026-08-25T10:42:37.721Z",
+      "updatedAt": "2026-08-25T10:42:37.721Z"
     }
   ],
   "deletedIds": [
