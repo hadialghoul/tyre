@@ -488,17 +488,7 @@
       "serviceType": "",
       "menus": [],
       "createdAt": "2026-08-19T09:38:57.174Z",
-      "updatedAt": "2026-08-25T10:50:26.053Z",
-      "reviews": [
-        {
-          "_id": "rev_1a0388af585b761b0",
-          "stars": 5,
-          "name": "",
-          "visitorId": "v_1a0386f4ceffd496cb0",
-          "createdAt": "2026-08-25T10:50:26.053Z",
-          "updatedAt": "2026-08-25T10:50:26.053Z"
-        }
-      ]
+      "updatedAt": "2026-08-19T09:38:57.174Z"
     },
     {
       "_id": "biz_1a0199bc1e614a1f6",
@@ -761,7 +751,7 @@
     "Tech Store"
   ],
   "stats": {
-    "totalViews": 257,
+    "totalViews": 255,
     "uniqueVisitors": 78,
     "knownIds": [
       "v_1a01baf4ca89c801a50",
@@ -869,7 +859,7 @@
         "uniques": 13
       },
       "2026-08-25": {
-        "views": 46,
+        "views": 44,
         "uniques": 9
       }
     }
