@@ -749,6 +749,27 @@
       "reviews": [],
       "createdAt": "2026-08-25T11:02:22.335Z",
       "updatedAt": "2026-08-25T11:02:22.335Z"
+    },
+    {
+      "_id": "biz_1a038986687cf595e",
+      "name": "Smart Mart",
+      "secondName": "",
+      "category": "cat_19ffb4b9301b59845",
+      "description": "",
+      "phone": "78 972 592",
+      "address": "Tyre , Alfa Street",
+      "logo": "/api/media/1a0389860ae903b740c.png",
+      "logo2": "",
+      "coverImage": "",
+      "openingHours": "",
+      "hasDelivery": true,
+      "deliveryPhone": "78 972 592",
+      "featured": false,
+      "serviceType": "",
+      "menus": [],
+      "reviews": [],
+      "createdAt": "2026-08-25T11:05:06.951Z",
+      "updatedAt": "2026-08-25T11:05:06.951Z"
     }
   ],
   "deletedIds": [
