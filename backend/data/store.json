@@ -707,6 +707,27 @@
       "reviews": [],
       "createdAt": "2026-08-25T10:42:37.721Z",
       "updatedAt": "2026-08-25T10:42:37.721Z"
+    },
+    {
+      "_id": "biz_1a03893272c667747",
+      "name": "Jabal Amel Hospital",
+      "secondName": "",
+      "category": "cat_19ffb4b92fcba225f",
+      "description": "",
+      "phone": "",
+      "address": "Tyre, Jal Al Baher",
+      "logo": "/api/media/1a0389322b89cf002c5.jpg",
+      "logo2": "",
+      "coverImage": "",
+      "openingHours": "24 hours",
+      "hasDelivery": false,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [],
+      "reviews": [],
+      "createdAt": "2026-08-25T10:59:23.052Z",
+      "updatedAt": "2026-08-25T10:59:23.052Z"
     }
   ],
   "deletedIds": [
@@ -746,7 +767,6 @@
     "Dar Al Mina",
     "El Fanar Hotel",
     "Rest House Swimming Pool",
-    "Jabal Amel Hospital",
     "Tyre Governmental Hospital",
     "Pharmacy Al Baher",
     "Pharmacy Al Nour",
