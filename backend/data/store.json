@@ -616,6 +616,36 @@
       ],
       "createdAt": "2026-08-19T21:43:01.924Z",
       "updatedAt": "2026-08-19T22:09:42.184Z"
+    },
+    {
+      "_id": "biz_1a0387b74f5d893d6",
+      "name": "Aljawad",
+      "secondName": "",
+      "category": "cat_1a00c31951f95a08d",
+      "description": "",
+      "phone": "1617",
+      "address": "https://maps.apple.com/place?address=Western%20Sea%20Sue%0ATyr%0ALebanon&coordinate=33.266483,35.203564&name=Aljawad%20Restaurant&place-id=I8DC7A8B7FABA3817&map=explore",
+      "logo": "/api/media/1a0387b71ae8116fa0c.jpg",
+      "logo2": "",
+      "coverImage": "",
+      "openingHours": "24 hours",
+      "hasDelivery": true,
+      "deliveryPhone": "1617",
+      "featured": true,
+      "serviceType": "",
+      "menus": [
+        {
+          "name": "Main Menu",
+          "description": "",
+          "type": "link",
+          "link": "https://menu.omegasoftware.ca/branches/aljawadrestaurantsour",
+          "image": "",
+          "items": []
+        }
+      ],
+      "reviews": [],
+      "createdAt": "2026-08-25T10:33:30.101Z",
+      "updatedAt": "2026-08-25T10:33:30.101Z"
     }
   ],
   "deletedIds": [
@@ -644,7 +674,6 @@
     "biz_1a00b002b7b047d81"
   ],
   "deletedNames": [
-    "aljawad",
     "Mina Fish House",
     "Rest House Grill",
     "Corniche Café",
@@ -665,7 +694,6 @@
     "Cool Air Tyre",
     "Al Safa Plumbing",
     "Tyre Express Laundry",
-    "Aljawad",
     "Ugarit International Restaurant"
   ],
   "deletedCategoryNames": [
