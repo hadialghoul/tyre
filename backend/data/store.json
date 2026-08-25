@@ -728,6 +728,27 @@
       "reviews": [],
       "createdAt": "2026-08-25T10:59:23.052Z",
       "updatedAt": "2026-08-25T10:59:23.052Z"
+    },
+    {
+      "_id": "biz_1a03895e37fd4622d",
+      "name": "Hiram Hospital",
+      "secondName": "",
+      "category": "cat_19ffb4b92fcba225f",
+      "description": "",
+      "phone": "",
+      "address": "Abbassiye,Tyre",
+      "logo": "/api/media/1a03895e01d35933c4c.png",
+      "logo2": "",
+      "coverImage": "",
+      "openingHours": "24 hours",
+      "hasDelivery": false,
+      "deliveryPhone": "",
+      "featured": false,
+      "serviceType": "",
+      "menus": [],
+      "reviews": [],
+      "createdAt": "2026-08-25T11:02:22.335Z",
+      "updatedAt": "2026-08-25T11:02:22.335Z"
     }
   ],
   "deletedIds": [
