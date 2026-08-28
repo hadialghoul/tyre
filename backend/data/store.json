@@ -823,8 +823,8 @@
     "Tech Store"
   ],
   "stats": {
-    "totalViews": 332,
-    "uniqueVisitors": 104,
+    "totalViews": 333,
+    "uniqueVisitors": 105,
     "knownIds": [
       "v_1a01baf4ca89c801a50",
       "v_1a01b86b10c97c54533",
@@ -929,7 +929,8 @@
       "v_1a040d94e225b3f6225",
       "v_1a041f16ebfb62674a4",
       "v_1a042002dcc1da5f197",
-      "v_1a04309c351880ecba7"
+      "v_1a04309c351880ecba7",
+      "v_1a046ae330a66d2788d"
     ],
     "byDay": {
       "2026-08-19": {
@@ -967,6 +968,10 @@
       "2026-08-27": {
         "views": 4,
         "uniques": 4
+      },
+      "2026-08-28": {
+        "views": 1,
+        "uniques": 1
       }
     }
   }
