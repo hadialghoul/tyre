@@ -139,7 +139,17 @@
         }
       ],
       "createdAt": "2026-08-16T15:08:07.896Z",
-      "updatedAt": "2026-08-17T12:43:16.375Z"
+      "updatedAt": "2026-08-28T13:19:52.794Z",
+      "reviews": [
+        {
+          "_id": "rev_1a04886dbdabc61de",
+          "stars": 5,
+          "name": "",
+          "visitorId": "v_1a048867e3d4942db15",
+          "createdAt": "2026-08-28T13:19:52.794Z",
+          "updatedAt": "2026-08-28T13:19:52.794Z"
+        }
+      ]
     },
     {
       "_id": "biz_1a00fc301d4d46e4a",
