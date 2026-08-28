@@ -139,15 +139,15 @@
         }
       ],
       "createdAt": "2026-08-16T15:08:07.896Z",
-      "updatedAt": "2026-08-28T13:19:52.794Z",
+      "updatedAt": "2026-08-28T13:19:56.229Z",
       "reviews": [
         {
           "_id": "rev_1a04886dbdabc61de",
-          "stars": 5,
+          "stars": 2,
           "name": "",
           "visitorId": "v_1a048867e3d4942db15",
           "createdAt": "2026-08-28T13:19:52.794Z",
-          "updatedAt": "2026-08-28T13:19:52.794Z"
+          "updatedAt": "2026-08-28T13:19:56.229Z"
         }
       ]
     },
