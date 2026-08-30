@@ -349,7 +349,17 @@
       "serviceType": "",
       "menus": [],
       "createdAt": "2026-08-18T15:48:00.976Z",
-      "updatedAt": "2026-08-18T15:48:00.976Z"
+      "updatedAt": "2026-08-30T07:17:55.235Z",
+      "reviews": [
+        {
+          "_id": "rev_1a0518831a3709b8f",
+          "stars": 1,
+          "name": "",
+          "visitorId": "v_1a05187b60d060d79a2",
+          "createdAt": "2026-08-30T07:17:55.235Z",
+          "updatedAt": "2026-08-30T07:17:55.235Z"
+        }
+      ]
     },
     {
       "_id": "biz_1a01596f1b87c09a9",
